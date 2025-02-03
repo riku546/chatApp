@@ -1,0 +1,73 @@
+<?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class ChannelController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        try {
+            DB::insert('insert into channels (name, type ) values (?, ?)', [
+                $request->name,
+                $request->type,
+            ]);
+            return response()->json(['message' => 'Channel created successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'failed to create channel']);
+        }
+    }
+
+    //特定のサーバー内のチャンネルを取得
+    public function show(int $server_id)
+    {
+        try {
+            $channels = DB::select('select id , name , type from channels where server_id = ?', [$server_id]);
+            return response()->json($channels);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'failed to get channels']);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, int $id)
+    {
+        try {
+            DB::select('update channels set name = ?, type = ? where id = ?', [
+                $request->name,
+                $request->type,
+                $id,
+            ]);
+            return response()->json(['message' => 'Channel updated successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'failed to update channel']);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $id)
+    {
+        try {
+            DB::delete('delete from channels where id = ?', [$id]);
+            return response()->json(['message' => 'Channel deleted successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'failed to delete channel']);
+        }
+    }
+}
