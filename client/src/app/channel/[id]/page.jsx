@@ -3,7 +3,7 @@
 import axios from '@/lib/axios'
 import { useEffect, useState } from 'react'
 import Pusher from 'pusher-js'
-import { pusherApiKey, pusherCluster } from '@/app/secretEnv'
+import { pusherApiKey, pusherCluster } from '/client/pusher-env.js'
 import { useParams } from 'next/navigation'
 
 const Page = () => {
