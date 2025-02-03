@@ -32,7 +32,7 @@ yarn-error.log*
 .env.production.local
 
 #pusher secret env
-.pusherEnv.js
+pusher-env.js
 
 # vercel
 .vercel
