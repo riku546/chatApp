@@ -15,14 +15,14 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import useLeftNav from '@/hooks/useLeftNav'
 
-export default function LeftNav() {
+export default function LeftNav({ currentWatchDmId }) {
     const { serverList, dmList, userInfo } = useLeftNav()
 
     return (
         <div className="flex">
             <ServerList serverList={serverList} />
             <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList dmList={dmList} />
+                <DmList dmList={dmList} currentWatchDmId={currentWatchDmId} />
                 <UserFiled userInfo={userInfo} />
             </div>
         </div>
@@ -64,11 +64,11 @@ const ServerList = ({ serverList }) => {
     )
 }
 
-const DmList = ({ dmList }) => {
+const DmList = ({ dmList, currentWatchDmId }) => {
     return (
         <ScrollArea className="flex-1">
             <div className="p-2 space-y-1">
-                <Link href={`${process.env.NEXT_PUBLIC_APP_URL}`}>
+                <Link href={'/'}>
                     <Button
                         variant="ghost"
                         className="w-full justify-start gap-2 h-9">
@@ -93,14 +93,24 @@ const DmList = ({ dmList }) => {
                 <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                     ダイレクトメッセージ
                 </div>
-                {dmList.map((dm, i) => (
-                    <Button
-                        key={dm.dm_id}
-                        variant="ghost"
-                        className="w-full justify-start gap-2 h-11">
-                        <User />
-                        <span className="text-sm">{dm.name}</span>
-                    </Button>
+                {dmList.map(dm => (
+                    <Link href={`/dm/${dm.dm_id}`} key={dm.dm_id}>
+                        {currentWatchDmId === dm.dm_id ? (
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start gap-2 h-11 bg-[#3e434d]">
+                                <User />
+                                <span className="text-sm">{dm.name}</span>
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start gap-2 h-11">
+                                <User />
+                                <span className="text-sm">{dm.name}</span>
+                            </Button>
+                        )}
+                    </Link>
                 ))}
             </div>
         </ScrollArea>

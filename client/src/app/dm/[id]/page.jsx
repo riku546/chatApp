@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import MessageContent from '@/components/selfMade/MessageContent'
 import LeftNav from '@/components/selfMade/LeftNav'
+import { useParams } from 'next/navigation'
 
 export default function Page() {
     // ダミーメッセージ
@@ -16,8 +17,8 @@ export default function Page() {
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
-            <LeftNav />
-            <div className='flex-1'>
+            <LeftNav currentWatchDmId={useParams().id} />
+            <div className="flex-1">
                 <MessageContent messages={messages} />
             </div>
         </div>
