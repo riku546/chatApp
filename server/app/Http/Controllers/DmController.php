@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ChatEvent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,7 @@ class DmController extends Controller
     public function show_message_specific_dm(string $dm_id)
     {
         try {
-            $messages = DB::select('select u.name, m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ?', [$dm_id]);
+            $messages = DB::select('select u.name, m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ? order by m.created_at', [$dm_id]);
             return response()->json(["data" => $messages, "message" => "DM show successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             throw $th;
@@ -30,12 +31,14 @@ class DmController extends Controller
 
     public function send_message(Request $request)
     {
+        $formattedTimestamp = Carbon::now()->format('Y-m-d H:i');
+
         try {
             //websocketsを使ってメッセージを送信
-            event(new ChatEvent($request->content, $request->dm_id, auth()->user()->name));
+            event(new ChatEvent($request->content, 'dm', $request->dm_id, auth()->user()->name, $formattedTimestamp));
 
             //メッセージをDBに保存
-            DB::select('insert into messages_in_dm (content, dm_id) values (?, ?)', [$request->content, $request->dm_id]);
+            DB::select('insert into messages_in_dm (content , created_at , updated_at , dm_id , user_id) values (?, ? , ?, ?, ?)', [$request->content, $formattedTimestamp, $formattedTimestamp, $request->dm_id, auth()->id()]);
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to send dm", "status" => "error"]);

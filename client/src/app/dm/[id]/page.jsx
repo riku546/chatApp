@@ -28,7 +28,11 @@ export default function Page() {
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <LeftNav currentWatchDmId={dmId} />
             <div className="flex-1">
-                <MessageContent messages={messages} />
+                <MessageContent
+                    messages={messages}
+                    messageType={'dm'}
+                    id={dmId}
+                />
             </div>
         </div>
     )

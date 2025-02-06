@@ -4,16 +4,63 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ImageIcon, User } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Pusher from 'pusher-js'
+import { pusherApiKey, pusherCluster } from '../../../pusher-env.js'
+import axios from '@/lib/axios.js'
 
-export default function MessageContent({ messages }) {
+export default function MessageContent({
+    messages, // サーバーからfetchしたメッセージ
+    messageType, // dm or channel
+    id /*dm_id or サーバーのチャンネルid */,
+}) {
+    //websocketで取得したメッセージを保持するためのstate
+    const [RealTimeMessages, setRealTimeMessage] = useState([])
+
     // ページにアクセスした時に自動スクロールするための参照
     const scrollRef = useRef(null)
-
     useEffect(() => {
         // ページにアクセスした時に一番下までスクロール
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ behavior: 'auto' })
+        }
+    }, [])
+
+    //メッセージの送信
+    const messageInputRef = useRef(null)
+    const sendMessage = async () => {
+        try {
+            const res = await axios.post('/api/dm/message/send', {
+                dm_id: id,
+                content: messageInputRef.current.value,
+            })
+
+            messageInputRef.current.value = ''
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const handleEnterKey = event => {
+        if (event.key === 'Enter') {
+            sendMessage()
+        }
+    }
+
+    useEffect(() => {
+        //pusherの設定
+        const pusher = new Pusher(pusherApiKey, {
+            cluster: pusherCluster,
+        })
+
+        //websocketのチャンネルのリッスン
+        pusher.subscribe(messageType + id).bind('chat-event', data => {
+            setRealTimeMessage(prev => [...prev, data])
+        })
+
+        //ページから離れる時にwebsocketのチャンネルから切断
+        return () => {
+            pusher.unsubscribe(messageType + id)
         }
     }, [])
 
@@ -22,7 +69,13 @@ export default function MessageContent({ messages }) {
             {/* Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-6">
                 <div className="space-y-4">
+                    {/* サーバーからfetchしたメッセージ */}
                     {messages.map(message => (
+                        <Message key={message.id} message={message} />
+                    ))}
+
+                    {/* websocketで取得したメッセージ */}
+                    {RealTimeMessages.map(message => (
                         <Message key={message.id} message={message} />
                     ))}
                     <div ref={scrollRef}></div>
@@ -34,6 +87,9 @@ export default function MessageContent({ messages }) {
                 <div className="flex items-center gap-2">
                     <div className="flex-1 relative">
                         <Input
+                            type="text"
+                            ref={messageInputRef}
+                            onKeyDown={handleEnterKey}
                             placeholder="メッセージを送信"
                             className="bg-[#383A40] border-none text-gray-100 placeholder:text-gray-400"
                         />
