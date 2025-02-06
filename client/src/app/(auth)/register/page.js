@@ -36,7 +36,9 @@ const Page = () => {
         <form onSubmit={submitForm}>
             {/* Name */}
             <div>
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-gray-300">
+                    Name
+                </Label>
 
                 <Input
                     id="name"
@@ -48,12 +50,17 @@ const Page = () => {
                     autoFocus
                 />
 
-                <InputError messages={errors.name} className="mt-2" />
+                <InputError
+                    messages={errors.name}
+                    className="mt-2 text-gray-300"
+                />
             </div>
 
             {/* Email Address */}
             <div className="mt-4">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-gray-300">
+                    Email
+                </Label>
 
                 <Input
                     id="email"
@@ -64,12 +71,17 @@ const Page = () => {
                     required
                 />
 
-                <InputError messages={errors.email} className="mt-2" />
+                <InputError
+                    messages={errors.email}
+                    className="mt-2 text-gray-300"
+                />
             </div>
 
             {/* Password */}
             <div className="mt-4">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-gray-300">
+                    Password
+                </Label>
 
                 <Input
                     id="password"
@@ -81,12 +93,15 @@ const Page = () => {
                     autoComplete="new-password"
                 />
 
-                <InputError messages={errors.password} className="mt-2" />
+                <InputError
+                    messages={errors.password}
+                    className="mt-2 text-gray-300"
+                />
             </div>
 
             {/* Confirm Password */}
             <div className="mt-4">
-                <Label htmlFor="passwordConfirmation">
+                <Label htmlFor="passwordConfirmation" className="text-gray-300">
                     Confirm Password
                 </Label>
 
@@ -103,18 +118,20 @@ const Page = () => {
 
                 <InputError
                     messages={errors.password_confirmation}
-                    className="mt-2"
+                    className="mt-2 text-gray-300"
                 />
             </div>
 
             <div className="flex items-center justify-end mt-4">
                 <Link
                     href="/login"
-                    className="underline text-sm text-gray-600 hover:text-gray-900">
+                    className="underline text-sm text-gray-300 hover:text-gray-600">
                     Already registered?
                 </Link>
 
-                <Button className="ml-4">Register</Button>
+                <Button className="ml-4 bg-indigo-600 hover:bg-indigo-700 text-white">
+                    Register
+                </Button>
             </div>
         </form>
     )

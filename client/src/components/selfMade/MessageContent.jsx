@@ -30,7 +30,7 @@ export default function MessageContent({
     const messageInputRef = useRef(null)
     const sendMessage = async () => {
         try {
-            const res = await axios.post('/api/dm/message/send', {
+            await axios.post('/api/dm/message/send', {
                 dm_id: id,
                 content: messageInputRef.current.value,
             })

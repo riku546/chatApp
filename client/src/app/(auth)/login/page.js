@@ -45,78 +45,89 @@ const Login = () => {
     }
 
     return (
-        <>
-            <AuthSessionStatus className="mb-4" status={status} />
-            <form onSubmit={submitForm}>
-                {/* Email Address */}
-                <div>
-                    <Label htmlFor="email">Email</Label>
+        <div className="flex items-center justify-center ">
+            <div className="w-full max-w-md p-6 space-y-8">
+                <AuthSessionStatus className="mb-4" status={status} />
+                <form onSubmit={submitForm} className="space-y-6">
+                    {/* Email Address */}
+                    <div>
+                        <Label htmlFor="email" className="text-gray-300">
+                            Email
+                        </Label>
 
-                    <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        className="block mt-1 w-full"
-                        onChange={event => setEmail(event.target.value)}
-                        required
-                        autoFocus
-                    />
+                        <Input
+                            id="email"
+                            type="email"
+                            value={email}
+                            className="block mt-1 w-full "
+                            onChange={event => setEmail(event.target.value)}
+                            required
+                            autoFocus
+                        />
 
-                    <InputError messages={errors.email} className="mt-2" />
-                </div>
+                        <InputError messages={errors.email} className="mt-2" />
+                    </div>
 
-                {/* Password */}
-                <div className="mt-4">
-                    <Label htmlFor="password">Password</Label>
+                    {/* Password */}
+                    <div>
+                        <Label htmlFor="password" className="text-gray-300">
+                            Password
+                        </Label>
 
-                    <Input
-                        id="password"
-                        type="password"
-                        value={password}
-                        className="block mt-1 w-full"
-                        onChange={event => setPassword(event.target.value)}
-                        required
-                        autoComplete="current-password"
-                    />
+                        <Input
+                            id="password"
+                            type="password"
+                            value={password}
+                            className="block mt-1 w-full "
+                            onChange={event => setPassword(event.target.value)}
+                            required
+                            autoComplete="current-password"
+                        />
 
-                    <InputError
-                        messages={errors.password}
-                        className="mt-2"
-                    />
-                </div>
+                        <InputError
+                            messages={errors.password}
+                            className="mt-2"
+                        />
+                    </div>
 
-                {/* Remember Me */}
-                <div className="block mt-4">
-                    <label
-                        htmlFor="remember_me"
-                        className="inline-flex items-center">
+                    {/* Remember Me */}
+                    <div className="flex items-center">
                         <input
                             id="remember_me"
                             type="checkbox"
                             name="remember"
-                            className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            className="rounded border-gray-600 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-gray-700"
                             onChange={event =>
                                 setShouldRemember(event.target.checked)
                             }
                         />
 
-                        <span className="ml-2 text-sm text-gray-600">
+                        <label
+                            htmlFor="remember_me"
+                            className="ml-2 text-sm text-gray-300">
                             Remember me
-                        </span>
-                    </label>
-                </div>
+                        </label>
+                    </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href="/forgot-password"
-                        className="underline text-sm text-gray-600 hover:text-gray-900">
-                        Forgot your password?
-                    </Link>
+                    <div className="flex items-center justify-between">
+                        <div className='flex flex-col space-y-3'>
+                            <Link
+                                href="/forgot-password"
+                                className="text-sm text-indigo-400 hover:text-indigo-300">
+                                Forgot your password?
+                            </Link>
+                            <Link href={'/register'} className="text-sm hover:text-indigo-300">
+                                Not registered yet?
+                            </Link>
+                        </div>
 
-                    <Button className="ml-3">Login</Button>
-                </div>
-            </form>
-        </>
+                        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                            Login
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
     )
 }
 
