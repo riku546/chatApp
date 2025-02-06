@@ -23,12 +23,7 @@ export default function MessageContent({ messages }) {
             <div className="flex-1 overflow-y-auto p-4 space-y-6">
                 <div className="space-y-4">
                     {messages.map(message => (
-                        <Message
-                            key={message.id}
-                            userName={message.userName}
-                            content={message.content}
-                            timestamp={message.timestamp}
-                        />
+                        <Message key={message.id} message={message} />
                     ))}
                     <div ref={scrollRef}></div>
                 </div>
@@ -49,7 +44,15 @@ export default function MessageContent({ messages }) {
     )
 }
 
-function Message({ userName, timestamp, content }) {
+function Message({ message }) {
+    //メッセージの作成日時から秒を削除する
+    //引数 2022-01-01 10:00:00
+    //返り値 2022-01-01 10:00
+    const formattedTimestamp = () => {
+        const splitTimestamp = message.created_at.split(':')
+        return splitTimestamp[0] + ':' + splitTimestamp[1]
+    }
+
     return (
         <div className="flex items-start gap-4 group">
             <Avatar className="w-10 h-10">
@@ -57,13 +60,13 @@ function Message({ userName, timestamp, content }) {
             </Avatar>
             <div className="flex-1">
                 <div className="flex items-center gap-2">
-                    <span className="font-medium text-[#5865f2]">
-                        {userName}
+                    <span className="font-medium">{message.name}</span>
+                    <span className="text-xs text-gray-400">
+                        {formattedTimestamp(message.created_at)}
                     </span>
-                    <span className="text-xs text-gray-400">{timestamp}</span>
                 </div>
                 <div className="mt-1 text-gray-100 whitespace-pre-line">
-                    {content}
+                    {message.content}
                 </div>
             </div>
         </div>

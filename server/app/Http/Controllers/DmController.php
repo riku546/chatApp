@@ -17,12 +17,13 @@ class DmController extends Controller
         }
     }
 
-    public function show_specific_dm(Request $request)
+    public function show_message_specific_dm(string $dm_id)
     {
         try {
-            $messages = DB::select('select content ,  created_at , updated_at from messages_in_dm where dm_id = ?', [$request->dm_id]);
+            $messages = DB::select('select u.name, m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ?', [$dm_id]);
             return response()->json(["data" => $messages, "message" => "DM show successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to show dm", "status" => "error"]);
         }
     }

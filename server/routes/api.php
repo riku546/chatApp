@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dm-list', [DmController::class, 'list_dms']);
-    Route::get('/dm/{dm_id}', [DmController::class, 'show_specific_dm']);
+    Route::get('/dm/{dm_id}/message/', [DmController::class, 'show_message_specific_dm']);
     Route::post('/dm/create', [DmController::class, 'create_dm']);
     Route::post('/dm/message/send', [DmController::class, 'send_message']);
     Route::put('/dm/message/edit', [DmController::class, 'edit_message']);
