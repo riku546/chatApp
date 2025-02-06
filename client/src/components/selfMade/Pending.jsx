@@ -7,14 +7,15 @@ import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 
 export default function Pending() {
-    const [sendFriendRequest, setSendFriendRequest] = useState([])
-    const [receiveFriendRequest, setReceiveFriendRequest] = useState([])
+    const [sendFriendRequests, setSendFriendRequests] = useState([])
+    const [receiveFriendRequests, setReceiveFriendRequests] = useState([])
     const fetchSendFriendRequest = async () => {
         try {
             const friendRequests = (
                 await axios.get('/api/friend-request/list/send')
             ).data.data
-            setSendFriendRequest(friendRequests)
+
+            setSendFriendRequests(friendRequests)
         } catch (error) {
             throw error
         }
@@ -25,10 +26,26 @@ export default function Pending() {
             const friendRequests = (
                 await axios.get('/api/friend-request/list/receive')
             ).data.data
-            setReceiveFriendRequest(friendRequests)
+            setReceiveFriendRequests(friendRequests)
         } catch (error) {
             throw error
         }
+    }
+
+    //フレンド申請拒否・承認後のフレンドリクエストの更新
+    const updateReceivedFriendRequest = userId => {
+        const filteredData = receiveFriendRequests.filter(
+            item => item.id !== userId,
+        )
+        setReceiveFriendRequests(filteredData)
+    }
+
+    //フレンド申請キャンセル後にフレンドリクエストの更新
+    const updateSendFriendRequest = userId => {
+        const filteredData = sendFriendRequests.filter(
+            item => item.id !== userId,
+        )
+        setSendFriendRequests(filteredData)
     }
 
     useEffect(() => {
@@ -40,17 +57,23 @@ export default function Pending() {
         <div>
             <FriendRequestList
                 friendRequestType={'receive'}
-                friendRequests={receiveFriendRequest}
+                friendRequests={receiveFriendRequests}
+                updateFriendRequest={updateReceivedFriendRequest}
             />
             <FriendRequestList
                 friendRequestType={'send'}
-                friendRequests={sendFriendRequest}
+                friendRequests={sendFriendRequests}
+                updateFriendRequest={updateSendFriendRequest}
             />
         </div>
     )
 }
 
-const FriendRequestList = ({ friendRequestType, friendRequests }) => {
+const FriendRequestList = ({
+    friendRequestType,
+    friendRequests,
+    updateFriendRequest,
+}) => {
     return (
         <>
             <div className="text-sm font-semibold text-gray-400 mb-2 pb-1 border-b border-zinc-600">
@@ -68,9 +91,15 @@ const FriendRequestList = ({ friendRequestType, friendRequests }) => {
                             <div className="font-medium">{user.name}</div>
                         </div>
                         {friendRequestType === 'receive' ? (
-                            <ReceiveButtons senderId={user.id} />
+                            <ReceiveButtons
+                                senderId={user.id}
+                                updateFriendRequest={updateFriendRequest}
+                            />
                         ) : (
-                            <SendButtons receiverId={user.id} />
+                            <SendButtons
+                                receiverId={user.id}
+                                updateFriendRequest={updateFriendRequest}
+                            />
                         )}
                     </div>
                 ))}
@@ -79,7 +108,7 @@ const FriendRequestList = ({ friendRequestType, friendRequests }) => {
     )
 }
 
-const ReceiveButtons = ({ senderId }) => {
+const ReceiveButtons = ({ senderId, updateFriendRequest }) => {
     const acceptFriendRequest = async senderId => {
         try {
             const newUuid = uuidv4()
@@ -103,22 +132,29 @@ const ReceiveButtons = ({ senderId }) => {
             throw error
         }
     }
+
     return (
         <div className="flex space-x-4">
             <CircleX
                 className="hover:cursor-pointer"
-                onClick={() => rejectFriendRequest(senderId)}
+                onClick={() => {
+                    rejectFriendRequest(senderId)
+                    updateFriendRequest(senderId)
+                }}
             />
             <CircleCheck
                 color="#46b937"
                 className="hover:cursor-pointer "
-                onClick={() => acceptFriendRequest(senderId)}
+                onClick={() => {
+                    acceptFriendRequest(senderId)
+                    updateFriendRequest(senderId)
+                }}
             />
         </div>
     )
 }
 
-const SendButtons = ({ receiverId }) => {
+const SendButtons = ({ receiverId, updateFriendRequest }) => {
     const cancelFriendRequest = async receiverId => {
         try {
             await axios.delete(`/api/friend-request/cancel/${receiverId}`)
@@ -131,7 +167,10 @@ const SendButtons = ({ receiverId }) => {
         <div className="flex space-x-4">
             <CircleX
                 className="hover:cursor-pointer "
-                onClick={() => cancelFriendRequest(receiverId)}
+                onClick={() => {
+                    cancelFriendRequest(receiverId)
+                    updateFriendRequest(receiverId)
+                }}
             />
         </div>
     )
