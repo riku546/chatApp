@@ -15,9 +15,6 @@ export default function MessageContent({ messages }) {
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ behavior: 'auto' })
         }
-
-        
-
     }, [])
 
     return (
@@ -27,6 +24,7 @@ export default function MessageContent({ messages }) {
                 <div className="space-y-4">
                     {messages.map(message => (
                         <Message
+                            key={message.id}
                             userName={message.userName}
                             content={message.content}
                             timestamp={message.timestamp}
@@ -39,7 +37,6 @@ export default function MessageContent({ messages }) {
             {/* Input Area */}
             <div className="p-4 bg-[#313338] border-t border-gray-700">
                 <div className="flex items-center gap-2">
-
                     <div className="flex-1 relative">
                         <Input
                             placeholder="メッセージを送信"

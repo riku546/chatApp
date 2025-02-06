@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/friend-request/accept', [FriendController::class, 'accept_friend_request']);
 
     //送られてきたフレンドリクエストを拒否する
-    Route::delete('/friend-request/reject', [FriendController::class, 'reject_friend_request']);
+    Route::delete('/friend-request/reject/{sender_id}', [FriendController::class, 'reject_friend_request']);
     //送ったフレンドリクエストをキャンセルする
-    Route::delete('/friend-request/cancel', [FriendController::class, 'cancel_friend_request']);
+    Route::delete('/friend-request/cancel/{receiver_id}', [FriendController::class, 'cancel_friend_request']);
 });

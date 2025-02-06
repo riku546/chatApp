@@ -44,7 +44,7 @@ class DmController extends Controller
     public function create_dm(Request $request)
     {
         try {
-            DB::select('insert into dms (id) values (?)', [$request->dm_id]);
+            DB::select('insert into dm (id) values (?)', [$request->dm_id]);
             return response()->json(["message" => "DM created successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to create dm", "status" => "error"]);

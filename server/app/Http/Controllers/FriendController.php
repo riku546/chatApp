@@ -59,32 +59,42 @@ class FriendController extends Controller
     public function accept_friend_request(Request $request)
     {
         try {
-            DB::select('insert into friends (user_id, friend_id) values (?, ?)', [auth()->id(), $request->sender_id]);
-            DB::select('insert into friends (user_id, friend_id) values (?, ?)', [$request->sender_id, auth()->id()]);
+            //フレンドを作成
+            DB::select('insert into friends (user_id, friend_id , dm_id) values (?, ? , ?)', [auth()->id(), $request->sender_id, $request->dm_id]);
+            DB::select('insert into friends (user_id, friend_id , dm_id) values (?, ? , ?)', [$request->sender_id, auth()->id(), $request->dm_id]);
+
+            //フレンドリクエストを削除
+            DB::select('delete from friend_requests where sender_id = ? and receiver_id = ?', [$request->sender_id, auth()->id()]);
+
             return response()->json(["message" => "Friend request accepted successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to accept friend request", "status" => "error"]);
         }
     }
 
     //送られてきたフレンドリクエストを拒否する
-    public function reject_friend_request(Request $request)
+    public function reject_friend_request(int $sender_id)
     {
         try {
-            DB::select('delete from friend_requests where sender_id = ? and receiver_id = ?', [$request->sender_id, auth()->id()]);
+
+            DB::select('delete from friend_requests where sender_id = ? and receiver_id = ?', [$sender_id, auth()->id()]);
             return response()->json(["message" => "Friend request rejected successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to reject friend request", "status" => "error"]);
         }
     }
 
     //送ったフレンドリクエストを削除する
-    public function cancel_friend_request(Request $request)
+    public function cancel_friend_request(int $receiver_id)
     {
         try {
-            DB::select('delete from friend_requests where sender_id = ? and receiver_id = ?', [auth()->id(), $request->receiver_id]);
+
+            DB::select('delete from friend_requests where sender_id = ? and receiver_id = ?', [auth()->id(), $receiver_id]);
             return response()->json(["message" => "Friend request deleted successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to delete friend request", "status" => "error"]);
         }
     }

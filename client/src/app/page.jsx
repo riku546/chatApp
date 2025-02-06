@@ -4,7 +4,7 @@ import { Users, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar } from '@/components/ui/avatar'
 import LeftNav from '@/components/selfMade/LeftNav'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import Pending from '@/components/selfMade/Pending'
 import axios from '@/lib/axios'
@@ -131,6 +131,17 @@ const AllFriends = ({ friendList }) => (
 )
 
 const AddFriend = () => {
+    const inputRef = useRef(null)
+
+    const sendFriendRequest = async () => {
+        try {
+            await axios.post('/api/friend-request/send', {
+                receiver_id: inputRef.current.value,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
     return (
         <div className="text-gray-100 p-4">
             <div className="max-w-4xl mx-auto">
@@ -141,10 +152,13 @@ const AddFriend = () => {
 
                 <div className="flex gap-2">
                     <Input
+                        ref={inputRef}
                         placeholder="DiscordユーザーIDでフレンドを追加できます。"
                         className="flex-1 bg-[#1E1F22] border-none text-gray-100 placeholder:text-gray-500"
                     />
-                    <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white">
+                    <Button
+                        className="bg-[#5865F2] hover:bg-[#4752C4] text-white"
+                        onClick={sendFriendRequest}>
                         フレンド申請を送信
                     </Button>
                 </div>
