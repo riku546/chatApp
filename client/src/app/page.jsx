@@ -11,10 +11,8 @@ import axios from '@/lib/axios'
 
 export default function Page() {
     const [friendList, setFriendList] = useState([])
-    const [sendFriendRequest, setSendFriendRequest] = useState([])
-    const [receiveFriendRequest, setReceiveFriendRequest] = useState([])
 
-    const getFriendList = async () => {
+    const fetchFriendList = async () => {
         try {
             const friends = (await axios.get('/api/all-friends')).data.data
             setFriendList(friends)
@@ -23,32 +21,8 @@ export default function Page() {
         }
     }
 
-    const getSendFriendRequest = async () => {
-        try {
-            const friendRequests = (
-                await axios.get('/api/friend-request/list/send')
-            ).data.data
-            setSendFriendRequest(friendRequests)
-        } catch (error) {
-            throw error
-        }
-    }
-
-    const getReceiveFriendRequest = async () => {
-        try {
-            const friendRequests = (
-                await axios.get('/api/friend-request/list/receive')
-            ).data.data
-            setReceiveFriendRequest(friendRequests)
-        } catch (error) {
-            throw error
-        }
-    }
-
     useEffect(() => {
-        getFriendList()
-        getSendFriendRequest()
-        getReceiveFriendRequest()
+        fetchFriendList()
     }, [])
 
     //フレンド全員 保留中 フレンド追加ページの切り替えるためのstate
@@ -58,12 +32,7 @@ export default function Page() {
         if (type === '全員') {
             return <AllFriends friendList={friendList} />
         } else if (type === '保留中') {
-            return (
-                <Pending
-                    sendFriendRequest={sendFriendRequest}
-                    receiveFriendRequest={receiveFriendRequest}
-                />
-            )
+            return <Pending />
         } else if (type === 'フレンド追加') {
             return <AddFriend />
         }
@@ -115,14 +84,11 @@ const AllFriends = ({ friendList }) => (
                 <div
                     key={friend.id}
                     className="flex items-center gap-3 p-2  border-t border-zinc-600 hover:bg-[#2b2d31] ">
-                    <Avatar className="w-8 h-8 ">
+                    <Avatar className="w-8 h-8 flex items-center justify-center">
                         <User />
                     </Avatar>
                     <div className="flex-1">
-                        <div className="font-medium">
-                            オンラインユーザー {i + 1}
-                        </div>
-                        <div className="text-sm text-gray-400">遊戯中</div>
+                        <div className="font-medium">{friend.name} </div>
                     </div>
                 </div>
             ))}
@@ -138,6 +104,9 @@ const AddFriend = () => {
             await axios.post('/api/friend-request/send', {
                 receiver_id: inputRef.current.value,
             })
+
+            //inputの中身を空にする
+            inputRef.current.value = ''
         } catch (error) {
             throw error
         }
@@ -149,7 +118,6 @@ const AddFriend = () => {
                 <p className="text-gray-400 text-sm mb-4">
                     DiscordユーザーIDでフレンドを追加できます。
                 </p>
-
                 <div className="flex gap-2">
                     <Input
                         ref={inputRef}

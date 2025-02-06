@@ -1,9 +1,41 @@
+'use client'
+
 import { User, CircleCheck, CircleX } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import axios from '@/lib/axios'
 import { v4 as uuidv4 } from 'uuid'
+import { useEffect, useState } from 'react'
 
-export default function Pending({ sendFriendRequest, receiveFriendRequest }) {
+export default function Pending() {
+    const [sendFriendRequest, setSendFriendRequest] = useState([])
+    const [receiveFriendRequest, setReceiveFriendRequest] = useState([])
+    const fetchSendFriendRequest = async () => {
+        try {
+            const friendRequests = (
+                await axios.get('/api/friend-request/list/send')
+            ).data.data
+            setSendFriendRequest(friendRequests)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const fetchReceiveFriendRequest = async () => {
+        try {
+            const friendRequests = (
+                await axios.get('/api/friend-request/list/receive')
+            ).data.data
+            setReceiveFriendRequest(friendRequests)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    useEffect(() => {
+        fetchSendFriendRequest()
+        fetchReceiveFriendRequest()
+    }, [])
+
     return (
         <div>
             <FriendRequestList
@@ -51,30 +83,23 @@ const ReceiveButtons = ({ senderId }) => {
     const acceptFriendRequest = async senderId => {
         try {
             const newUuid = uuidv4()
-            const dmApiRes = await axios.post('api/dm/create', {
+            await axios.post('api/dm/create', {
                 dm_id: newUuid,
             })
 
-            const friendRequestRes = await axios.post(
-                '/api/friend-request/accept',
-                {
-                    sender_id: senderId,
-                    dm_id: newUuid,
-                },
-            )
+            await axios.post('/api/friend-request/accept', {
+                sender_id: senderId,
+                dm_id: newUuid,
+            })
         } catch (error) {
-            console.error('Failed to accept friend request', error)
             throw error
         }
     }
 
     const rejectFriendRequest = async senderId => {
         try {
-            const response = await axios.delete(
-                `/api/friend-request/reject/${senderId}`,
-            )
+            await axios.delete(`/api/friend-request/reject/${senderId}`)
         } catch (error) {
-            console.error('Failed to reject friend request', error)
             throw error
         }
     }
@@ -96,9 +121,7 @@ const ReceiveButtons = ({ senderId }) => {
 const SendButtons = ({ receiverId }) => {
     const cancelFriendRequest = async receiverId => {
         try {
-            const response = await axios.delete(
-                `/api/friend-request/cancel/${receiverId}`,
-            )
+            await axios.delete(`/api/friend-request/cancel/${receiverId}`)
         } catch (error) {
             console.error('Failed to cancel friend request', error)
             throw error
