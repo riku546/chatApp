@@ -1,83 +1,41 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+
 import { Input } from '@/components/ui/input'
 import { ImageIcon, User } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import Pusher from 'pusher-js'
-import { pusherApiKey, pusherCluster } from '../../../pusher-env.js'
-import axios from '@/lib/axios.js'
+
+import {
+    useAutoScroll,
+    useFetchUserId,
+    useSendMessage,
+} from '@/hooks/components/MessageContent.jsx'
+import { usePusher } from '@/hooks/usePusher.js'
 
 export default function MessageContent({
     messages, // サーバーからfetchしたメッセージ
+    setMessages,
     messageType, // dm or channel
     id /*dm_id or サーバーのチャンネルid */,
 }) {
-    //websocketで取得したメッセージを保持するためのstate
-    const [RealTimeMessages, setRealTimeMessage] = useState([])
-
-    // ページにアクセスした時に自動スクロールするための参照
-    const scrollRef = useRef(null)
-    useEffect(() => {
-        // ページにアクセスした時に一番下までスクロール
-        if (scrollRef.current) {
-            scrollRef.current.scrollIntoView({ behavior: 'auto' })
-        }
-    }, [])
-
-    //メッセージの送信
-    const messageInputRef = useRef(null)
-    const sendMessage = async () => {
-        try {
-            await axios.post('/api/dm/message/send', {
-                dm_id: id,
-                content: messageInputRef.current.value,
-            })
-
-            messageInputRef.current.value = ''
-        } catch (error) {
-            throw error
-        }
-    }
-
-    const handleEnterKey = event => {
-        if (event.key === 'Enter') {
-            sendMessage()
-        }
-    }
-
-    useEffect(() => {
-        //pusherの設定
-        const pusher = new Pusher(pusherApiKey, {
-            cluster: pusherCluster,
-        })
-
-        //websocketのチャンネルのリッスン
-        pusher.subscribe(messageType + id).bind('chat-event', data => {
-            setRealTimeMessage(prev => [...prev, data])
-        })
-
-        //ページから離れる時にwebsocketのチャンネルから切断
-        return () => {
-            pusher.unsubscribe(messageType + id)
-        }
-    }, [])
+    const userId = useFetchUserId()
+    const scrollRef = useAutoScroll(messages)
+    usePusher(messageType, id, setMessages)
+    const { messageInputRef, handleEnterKey } = useSendMessage(id)
 
     return (
         <div className="flex flex-col h-screen bg-[#313338] text-gray-100">
             {/* Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-6">
                 <div className="space-y-4">
-                    {/* サーバーからfetchしたメッセージ */}
                     {messages.map(message => (
-                        <Message key={message.id} message={message} />
+                        <Message
+                            key={message.created_at}
+                            message={message}
+                            userId={userId}
+                        />
                     ))}
 
-                    {/* websocketで取得したメッセージ */}
-                    {RealTimeMessages.map(message => (
-                        <Message key={message.id} message={message} />
-                    ))}
                     <div ref={scrollRef}></div>
                 </div>
             </div>
@@ -100,7 +58,7 @@ export default function MessageContent({
     )
 }
 
-function Message({ message }) {
+function Message({ message, userId }) {
     //メッセージの作成日時から秒を削除する
     //引数 2022-01-01 10:00:00
     //返り値 2022-01-01 10:00
@@ -110,19 +68,25 @@ function Message({ message }) {
     }
 
     return (
-        <div className="flex items-start gap-4 group">
-            <Avatar className="w-10 h-10">
+        <div className="flex  items-start gap-4 group">
+            <Avatar className="flex justify-center items-center">
                 <User />
             </Avatar>
-            <div className="flex-1">
-                <div className="flex items-center gap-2">
-                    <span className="font-medium">{message.name}</span>
-                    <span className="text-xs text-gray-400">
-                        {formattedTimestamp(message.created_at)}
-                    </span>
+            <div className="flex flex-1 justify-between items-center px-2 py-1">
+                <div className="w-9/12">
+                    <div className="flex items-center gap-2">
+                        <span className="font-medium">{message.name}</span>
+                        <span className="text-xs text-gray-400">
+                            {formattedTimestamp(message.created_at)}
+                        </span>
+                    </div>
+                    <div className="mt-1 text-gray-100 whitespace-pre-line  break-words">
+                        {message.content}
+                    </div>
                 </div>
-                <div className="mt-1 text-gray-100 whitespace-pre-line">
-                    {message.content}
+                <div>
+                    {message.id /*message.idはメッセージを投稿したユーザーのid */ ===
+                        userId && <div>f</div>}
                 </div>
             </div>
         </div>

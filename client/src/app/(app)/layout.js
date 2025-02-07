@@ -12,10 +12,8 @@ const AppLayout = ({ children }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navigation user={user} />
-
-            <main>{children}</main>
+        <div className="h-screen  flex justify-center items-center bg-[#313338]">
+            {children}
         </div>
     )
 }

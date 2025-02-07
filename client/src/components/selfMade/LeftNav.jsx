@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
-import useLeftNav from '@/hooks/useLeftNav'
+import useLeftNav from '@/hooks/components/useLeftNav'
 
 export default function LeftNav({ currentWatchDmId }) {
     const { serverList, dmList, userInfo } = useLeftNav()

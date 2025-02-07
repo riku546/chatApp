@@ -30,6 +30,7 @@ export default function Page() {
             <div className="flex-1">
                 <MessageContent
                     messages={messages}
+                    setMessages={setMessages}
                     messageType={'dm'}
                     id={dmId}
                 />
