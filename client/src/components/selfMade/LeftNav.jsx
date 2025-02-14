@@ -67,28 +67,6 @@ const ServerList = ({ serverList }) => {
 const DmList = ({ dmList, currentWatchDmId }) => {
     return (
         <ScrollArea className="flex-1">
-            <div className="p-2 space-y-1">
-                <Link href={'/'}>
-                    <Button
-                        variant="ghost"
-                        className="w-full justify-start gap-2 h-9">
-                        <Users className="w-4 h-4" />
-                        フレンド
-                    </Button>
-                </Link>
-                <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-2 h-9">
-                    <Nitro className="w-4 h-4" />
-                    Nitro
-                </Button>
-                <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-2 h-9">
-                    <ShoppingCart className="w-4 h-4" />
-                    ショップ
-                </Button>
-            </div>
             <div className="p-2">
                 <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                     ダイレクトメッセージ
