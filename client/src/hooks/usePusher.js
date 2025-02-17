@@ -10,6 +10,7 @@ export const usePusher = (messageType, id, setMessages) => {
 
         //websocket通信を確立して、サーバからのメッセージを受け取る
         pusher.subscribe(messageType + id).bind('chat-event', data => {
+            console.log(data)
             setMessages(prev => [...prev, data])
         })
 

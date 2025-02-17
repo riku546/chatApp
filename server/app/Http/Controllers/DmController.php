@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Events\ChatEvent;
+use App\Events\Chat\Concrete\DmEvent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +35,7 @@ class DmController extends Controller
 
         try {
             //websocketsを使ってメッセージを送信
-            event(new ChatEvent($request->content, 'dm', $request->dm_id, auth()->user()->name, $formattedTimestamp));
+            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formattedTimestamp, $request->dm_id, ));
 
             //メッセージをDBに保存
             DB::select('insert into messages_in_dm (content , created_at , updated_at , dm_id , user_id) values (?, ? , ?, ?, ?)', [$request->content, $formattedTimestamp, $formattedTimestamp, $request->dm_id, auth()->id()]);

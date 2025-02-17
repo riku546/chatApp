@@ -1,9 +1,9 @@
 <?php
-namespace App\Events;
+namespace App\Events\Chat\Concrete;
 
-use App\Events\Abstract\ChatEvent;
+use App\Events\Chat\Abstract\AbstractChatEvent;
 
-class ChannelEvent extends ChatEvent
+class ChannelEvent extends AbstractChatEvent
 {
     public $channel_id;
 

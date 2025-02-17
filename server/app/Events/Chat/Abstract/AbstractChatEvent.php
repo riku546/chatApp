@@ -1,17 +1,17 @@
 <?php
-namespace App\Events\Abstract;
+namespace App\Events\Chat\Abstract;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-abstract class ChatEvent implements ShouldBroadcast
+abstract class AbstractChatEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $content;
-    public $user_name;
+    public $name;
     public $user_id;
     public $created_at;
 
@@ -19,7 +19,7 @@ abstract class ChatEvent implements ShouldBroadcast
     {
         $this->content    = $content;
         $this->user_id    = $user_id;
-        $this->user_name  = $user_name;
+        $this->name       = $user_name;
         $this->created_at = $timestamp;
     }
 

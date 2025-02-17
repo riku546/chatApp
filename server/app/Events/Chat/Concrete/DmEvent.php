@@ -1,9 +1,9 @@
 <?php
-namespace App\Events;
+namespace App\Events\Chat\Concrete;
 
-use App\Events\Abstract\ChatEvent;
+use App\Events\Chat\Abstract\AbstractChatEvent;
 
-class DmEvent extends ChatEvent
+class DmEvent extends AbstractChatEvent
 {
     public $dm_id;
 
