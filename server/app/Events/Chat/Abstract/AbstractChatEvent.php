@@ -29,4 +29,5 @@ abstract class AbstractChatEvent implements ShouldBroadcast
     {
         return 'chat-event';
     }
+
 }

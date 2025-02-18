@@ -2,18 +2,25 @@
 namespace App\Http\Controllers;
 
 use App\Events\Chat\Concrete\DmEvent;
+use App\Repository\Dm\Concrete\DmRepositorySql;
+use App\Repository\Dm\DmRepositoryContext;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DmController extends Controller
 {
     public function list_dms()
     {
         try {
-            $dms = DB::select('select u.name , f.dm_id  from friends as f inner join users as u on f.friend_id = u.id  where f.user_id = ?', [auth()->id()]);
+            //使用する具象クラスをインスタンス化
+            $dm_repository = new DmRepositorySql();
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+            $dms                   = $dm_repository_context->list_dms();
+
             return response()->json(["data" => $dms, "message" => "DMs listed successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to list dms", "status" => "error"]);
         }
     }
@@ -21,10 +28,11 @@ class DmController extends Controller
     public function show_message_specific_dm(string $dm_id)
     {
         try {
-            $messages = DB::select('select u.name , u.id , m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ? order by m.created_at', [$dm_id]);
+            $dm_repository = new DmRepositorySql();
+            $messages      = $dm_repository->show_specific_dm($dm_id);
+
             return response()->json(["data" => $messages, "message" => "DM show successfully", "status" => "success"]);
         } catch (\Throwable $th) {
-            throw $th;
             return response()->json(["message" => "failed to show dm", "status" => "error"]);
         }
     }
@@ -35,10 +43,12 @@ class DmController extends Controller
 
         try {
             //websocketsを使ってメッセージを送信
-            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formattedTimestamp, $request->dm_id, ));
+            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formattedTimestamp, $request->dm_id));
 
             //メッセージをDBに保存
-            DB::select('insert into messages_in_dm (content , created_at , updated_at , dm_id , user_id) values (?, ? , ?, ?, ?)', [$request->content, $formattedTimestamp, $formattedTimestamp, $request->dm_id, auth()->id()]);
+            $dm_repository = new DmRepositorySql();
+            $dm_repository->send_message($request->content, $request->dm_id, $formattedTimestamp);
+
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to send dm", "status" => "error"]);
@@ -48,7 +58,9 @@ class DmController extends Controller
     public function create_dm(Request $request)
     {
         try {
-            DB::select('insert into dm (id) values (?)', [$request->dm_id]);
+            $dm_repository = new DmRepositorySql();
+            $dm_repository->create_dm($request->dm_id);
+
             return response()->json(["message" => "DM created successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to create dm", "status" => "error"]);
@@ -58,17 +70,21 @@ class DmController extends Controller
     public function edit_message(Request $request)
     {
         try {
-            DB::select('update messages_in_dm set content = ? where dm_id = ? and created_at = ?', [$request->content, $request->dm_id, $request->created_at]);
+            $dm_repository = new DmRepositorySql();
+            $dm_repository->edit_message($request->dm_id, $request->created_at, $request->content);
+
             return response()->json(["message" => "Message edited successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to edit message", "status" => "error"]);
         }
     }
 
-    public function delete_message(Request $request)
+    public function delete_message($dm_id, $created_at)
     {
         try {
-            DB::select('delete from messages_in_dm where dm_id = ? and created_at = ?', [$request->dm_id, $request->created_at]);
+            $dm_repository = new DmRepositorySql();
+            $dm_repository->delete_message($dm_id, $created_at);
+
             return response()->json(["message" => "Message deleted successfully", "status" => "success"]);
         } catch (\Throwable $th) {
             return response()->json(["message" => "failed to delete message", "status" => "error"]);
