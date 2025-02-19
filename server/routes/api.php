@@ -25,8 +25,8 @@ Route::get('/checkLogin', function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/all-servers', [ServerController::class, 'index']);
-    Route::get('/user-servers', [ServerController::class, 'list_user_server']);
+    Route::get('/all-servers', [ServerController::class, 'list_all_servers']);
+    Route::get('/user-servers', [ServerController::class, 'list_user_servers']);
     Route::post('/server/create', [ServerController::class, 'store']);
     Route::get('/server/{id}', [ServerController::class, 'show']);
     Route::put('/server/update/{id}', [ServerController::class, 'update']);
