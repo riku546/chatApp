@@ -16,7 +16,8 @@ class DmController extends Controller
             $dm_repository = new DmRepositorySql();
 
             $dm_repository_context = new DmRepositoryContext($dm_repository);
-            $dms                   = $dm_repository_context->list_dms();
+
+            $dms = $dm_repository_context->list_dms();
 
             return response()->json(["data" => $dms, "message" => "DMs listed successfully", "status" => "success"]);
         } catch (\Throwable $th) {
