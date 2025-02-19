@@ -12,7 +12,7 @@ class DmController extends Controller
     public function list_dms()
     {
         try {
-            //使用する具象クラスをインスタンス化
+
             $dm_repository = new DmRepositorySql();
 
             $dm_repository_context = new DmRepositoryContext($dm_repository);
@@ -29,7 +29,10 @@ class DmController extends Controller
     {
         try {
             $dm_repository = new DmRepositorySql();
-            $messages      = $dm_repository->show_specific_dm($dm_id);
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $messages = $dm_repository_context->show_specific_dm($dm_id);
 
             return response()->json(["data" => $messages, "message" => "DM show successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -47,7 +50,10 @@ class DmController extends Controller
 
             //メッセージをDBに保存
             $dm_repository = new DmRepositorySql();
-            $dm_repository->send_message($request->content, $request->dm_id, $formattedTimestamp);
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $dm_repository_context->send_message($request->content, $request->dm_id, $formattedTimestamp);
 
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -59,7 +65,10 @@ class DmController extends Controller
     {
         try {
             $dm_repository = new DmRepositorySql();
-            $dm_repository->create_dm($request->dm_id);
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $dm_repository_context->create_dm($request->dm_id);
 
             return response()->json(["message" => "DM created successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -71,7 +80,10 @@ class DmController extends Controller
     {
         try {
             $dm_repository = new DmRepositorySql();
-            $dm_repository->edit_message($request->dm_id, $request->created_at, $request->content);
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $dm_repository_context->edit_message($request->dm_id, $request->created_at, $request->content);
 
             return response()->json(["message" => "Message edited successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -83,7 +95,10 @@ class DmController extends Controller
     {
         try {
             $dm_repository = new DmRepositorySql();
-            $dm_repository->delete_message($dm_id, $created_at);
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $dm_repository_context->delete_message($dm_id, $created_at);
 
             return response()->json(["message" => "Message deleted successfully", "status" => "success"]);
         } catch (\Throwable $th) {
