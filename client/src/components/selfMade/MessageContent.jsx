@@ -92,7 +92,7 @@ function Message({ message, userId }) {
                         {message.content}
                     </div>
                 </div>
-                <div>{console.log(message.id)}
+                <div>
                     {/* message.idはメッセージを投稿したユーザーのid  */}
                     {message.id === userId && <MessageOperations />}
                 </div>

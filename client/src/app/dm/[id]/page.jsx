@@ -6,12 +6,15 @@ import MessageContent from '@/components/selfMade/MessageContent'
 import LeftNav from '@/components/selfMade/LeftNav'
 import { useParams } from 'next/navigation'
 import axios from '@/lib/axios'
+import useLeftNav from '@/hooks/components/useLeftNav'
 
 export default function Page() {
-    const [messages, setMessages] = useState([])
-    const dmId = useParams().id
+    const { serverList, dmList, userInfo } = useLeftNav()
 
-    const fetchMessages = async () => {
+    const [messages, setMessages] = useState([])
+    const [dmId, setDmId] = useState(useParams().id)
+    console.log(dmId)
+    const fetchMessages = async dmId => {
         try {
             const res = await axios.get(`api/dm/${dmId}/message`)
             setMessages(res.data.data)
@@ -21,12 +24,19 @@ export default function Page() {
     }
 
     useEffect(() => {
-        fetchMessages()
+        fetchMessages(dmId)
     }, [])
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
-            <LeftNav currentWatchDmId={dmId} />
+            <LeftNav
+                currentWatchDmId={dmId}
+                serverList={serverList}
+                dmList={dmList}
+                userInfo={userInfo}
+                fetchMessages={fetchMessages}
+                setDmId={setDmId}
+            />
             <div className="flex-1">
                 <MessageContent
                     messages={messages}

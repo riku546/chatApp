@@ -26,18 +26,18 @@ class MessageInDmController extends Controller
 
     public function send_message(Request $request)
     {
-        $formattedTimestamp = Carbon::now()->format('Y-m-d H:i');
+        $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
         try {
             //websocketsを使ってメッセージを送信
-            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formattedTimestamp, $request->dm_id));
+            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->dm_id));
 
             //メッセージをDBに保存
             $dm_repository = new MessageInDmRepositorySql();
 
             $dm_repository_context = new MessageInDmRepositoryContext($dm_repository);
 
-            $dm_repository_context->send_message($request->content, $request->dm_id, $formattedTimestamp);
+            $dm_repository_context->send_message($request->content, $request->dm_id, $formatted_timestamp);
 
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {

@@ -13,16 +13,25 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
-import useLeftNav from '@/hooks/components/useLeftNav'
 
-export default function LeftNav({ currentWatchDmId }) {
-    const { serverList, dmList, userInfo } = useLeftNav()
-
+export default function LeftNav({
+    currentWatchDmId,
+    serverList,
+    dmList,
+    userInfo,
+    fetchMessages,
+    setDmId,
+}) {
     return (
         <div className="flex">
             <ServerList serverList={serverList} />
             <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList dmList={dmList} currentWatchDmId={currentWatchDmId} />
+                <DmList
+                    dmList={dmList}
+                    currentWatchDmId={currentWatchDmId}
+                    fetchMessages={fetchMessages}
+                    setDmId={setDmId}
+                />
                 <UserFiled userInfo={userInfo} />
             </div>
         </div>
@@ -64,7 +73,7 @@ const ServerList = ({ serverList }) => {
     )
 }
 
-const DmList = ({ dmList, currentWatchDmId }) => {
+const DmList = ({ dmList, currentWatchDmId, fetchMessages, setDmId }) => {
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">
@@ -72,7 +81,11 @@ const DmList = ({ dmList, currentWatchDmId }) => {
                     ダイレクトメッセージ
                 </div>
                 {dmList.map(dm => (
-                    <Link href={`/dm/${dm.dm_id}`} key={dm.dm_id}>
+                    <div
+                        onClick={() => {
+                            fetchMessages(dm.dm_id)
+                            setDmId(dm.dm_id)
+                        }}>
                         {currentWatchDmId === dm.dm_id ? (
                             <Button
                                 variant="ghost"
@@ -88,7 +101,7 @@ const DmList = ({ dmList, currentWatchDmId }) => {
                                 <span className="text-sm">{dm.name}</span>
                             </Button>
                         )}
-                    </Link>
+                    </div>
                 ))}
             </div>
         </ScrollArea>
