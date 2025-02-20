@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DmController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\MessageInDmController;
 use App\Http\Controllers\ServerController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,11 +36,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dm-list', [DmController::class, 'list_dms']);
-    Route::get('/dm/{dm_id}/message/', [DmController::class, 'show_message_specific_dm']);
     Route::post('/dm/create', [DmController::class, 'create_dm']);
-    Route::post('/dm/message/send', [DmController::class, 'send_message']);
-    Route::put('/dm/message/edit', [DmController::class, 'edit_message']);
-    Route::delete('/dm/message/delete', [DmController::class, 'delete_message']);
+});
+
+//Dm内でのメッセージの表示、送信、編集、削除
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/dm/{dm_id}/message/', [MessageInDmController::class, 'show_message_specific_dm']);
+    Route::post('/dm/message/send', [MessageInDmController::class, 'send_message']);
+    Route::put('/dm/message/edit', [MessageInDmController::class, 'edit_message']);
+    Route::delete('/dm/message/delete', [MessageInDmController::class, 'delete_message']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

@@ -6,18 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 class ChannelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function create_channel(Request $request)
     {
         try {
             DB::insert('insert into channels (name, type ) values (?, ?)', [
@@ -31,7 +24,7 @@ class ChannelController extends Controller
     }
 
     //特定のサーバー内のチャンネルを取得
-    public function show(int $server_id)
+    public function list_channel_in_server(int $server_id)
     {
         try {
             $channels = DB::select('select id , name , type from channels where server_id = ?', [$server_id]);
@@ -44,7 +37,7 @@ class ChannelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update_channel(Request $request, int $id)
     {
         try {
             DB::select('update channels set name = ?, type = ? where id = ?', [
@@ -61,7 +54,7 @@ class ChannelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function delete_channel(int $id)
     {
         try {
             DB::delete('delete from channels where id = ?', [$id]);
@@ -70,4 +63,5 @@ class ChannelController extends Controller
             return response()->json(['message' => 'failed to delete channel']);
         }
     }
+
 }
