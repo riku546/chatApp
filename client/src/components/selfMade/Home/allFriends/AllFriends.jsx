@@ -1,16 +1,17 @@
 'use client'
 
-import axios from "@/lib/axios"
-import { Avatar } from "@radix-ui/react-avatar"
-import { User } from "lucide-react"
-import { useEffect, useState } from "react"
+import axios from '@/lib/axios'
+import { Avatar } from '@radix-ui/react-avatar'
+import { User } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 
 const AllFriends = () => {
     const [friendList, setFriendList] = useState([])
 
     const fetchFriendList = async () => {
         try {
-            const friends = (await axios.get('/api/all-friends')).data.data
+            const friends = (await axios.get('api/all-friends')).data.data
             setFriendList(friends)
         } catch (error) {
             throw error
