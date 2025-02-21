@@ -50,7 +50,7 @@ class ServerController extends Controller
 
             $server_repository_context = new ServerRepositoryContext($server_repository);
 
-            $server_repository_context->create_server($request->name, $request->type);
+            $server_repository_context->create_server($request->name);
 
             return response()->json(['message' => 'server created', "status" => "success"]);
         } catch (\Throwable $th) {
@@ -86,7 +86,7 @@ class ServerController extends Controller
 
             $server_repository_context = new ServerRepositoryContext($server_repository);
 
-            $server_repository_context->update_server($request->name, $request->type, $request->id);
+            $server_repository_context->update_server($request->name, $request->id);
 
             return response()->json(['message' => 'server updated', "status" => "success"]);
         } catch (\Throwable $th) {

@@ -29,10 +29,10 @@ class ServerRepositorySql implements ServerRepositoryInterface
         }
     }
 
-    public function create_server(string $server_name, string $server_type)
+    public function create_server(string $server_name)
     {
         try {
-            DB::select('insert into servers (name, type) values (?, ?)', [$server_name, $server_type]);
+            DB::select('insert into servers (name, type) values (?, ?)', [$server_name]);
 
         } catch (\Throwable $th) {
             throw $th;
@@ -50,10 +50,10 @@ class ServerRepositorySql implements ServerRepositoryInterface
         }
     }
 
-    public function update_server(string $server_name, string $server_type, int $id)
+    public function update_server(string $server_name, int $id)
     {
         try {
-            DB::select('update servers set name = ?, type = ? where id = ?', [$server_name, $server_type, $id]);
+            DB::select('update servers set name = ?, type = ? where id = ?', [$server_name, $id]);
 
         } catch (\Throwable $th) {
             throw $th;

@@ -22,9 +22,9 @@ class ServerRepositoryContext implements ServerRepositoryInterface
         return $this->serverRepository->list_user_servers();
     }
 
-    public function create_server(string $server_name, string $server_type)
+    public function create_server(string $server_name)
     {
-        return $this->serverRepository->create_server($server_name, $server_type);
+        return $this->serverRepository->create_server($server_name);
     }
 
     public function show_detail_info(int $id)
@@ -32,9 +32,9 @@ class ServerRepositoryContext implements ServerRepositoryInterface
         return $this->serverRepository->show_detail_info($id);
     }
 
-    public function update_server(string $server_name, string $server_type, int $id)
+    public function update_server(string $server_name, int $id)
     {
-        return $this->serverRepository->update_server($server_name, $server_type, $id);
+        return $this->serverRepository->update_server($server_name, $id);
     }
 
     public function delete_server(int $id)

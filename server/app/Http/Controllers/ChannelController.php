@@ -15,7 +15,7 @@ class ChannelController extends Controller
         try {
             DB::insert('insert into channels (name, type ) values (?, ?)', [
                 $request->name,
-                $request->type,
+
             ]);
             return response()->json(['message' => 'Channel created successfully']);
         } catch (\Throwable $th) {
@@ -42,7 +42,7 @@ class ChannelController extends Controller
         try {
             DB::select('update channels set name = ?, type = ? where id = ?', [
                 $request->name,
-                $request->type,
+
                 $id,
             ]);
             return response()->json(['message' => 'Channel updated successfully']);
