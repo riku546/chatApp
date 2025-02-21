@@ -11,15 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belonger_in_channel', function (Blueprint $table) {
-            $table->id();
+
+        Schema::create('friends', function (Blueprint $table) {
+
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedBigInteger('channel_id');
-            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+            $table->unsignedBigInteger('friend_id');
+            $table->foreign('friend_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->uuid('dm_id');
+            $table->foreign('dm_id')->references('id')->on('dm')->onDelete('cascade');
+
+            $table->primary(['user_id', 'friend_id']);
         });
     }
 
@@ -28,6 +34,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-
     }
 };

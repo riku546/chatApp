@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('messages_in_dm');
 
         Schema::create('messages_in_dm', function (Blueprint $table) {
             $table->text('content');
@@ -20,6 +19,9 @@ return new class extends Migration
 
             $table->uuid('dm_id');
             $table->foreign('dm_id')->references('id')->on('dm')->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->primary(['dm_id', 'created_at']);
         });
@@ -31,8 +33,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('messages_in_dm', function (Blueprint $table) {
-            //
-        });
     }
 };

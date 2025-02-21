@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('invitations', function (Blueprint $table) {
-            $table->bigIncrements('id');
+
             $table->timestamps();
 
             $table->unsignedBigInteger('invited_user_id');
@@ -20,7 +21,10 @@ return new class extends Migration
 
             $table->unsignedBigInteger('server_id');
             $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
+
+            $table->primary(['invited_user_id', 'server_id']);
         });
+
     }
 
     /**
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+
     }
 };

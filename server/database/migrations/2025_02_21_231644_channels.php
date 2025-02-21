@@ -11,20 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        Schema::dropIfExists('invitations');
-
-        Schema::create('invitations', function (Blueprint $table) {
-
+        Schema::create('channels', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
             $table->timestamps();
-
-            $table->unsignedBigInteger('invited_user_id');
-            $table->foreign('invited_user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->unsignedBigInteger('server_id');
             $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
-
-            $table->primary(['invited_user_id', 'server_id']);
         });
 
     }
@@ -34,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('invitations', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

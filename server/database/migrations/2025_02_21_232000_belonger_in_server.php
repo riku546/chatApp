@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages_in_dm', function (Blueprint $table) {
-            $table->id();
-            $table->text('content');
+
+        Schema::create('belonger_in_server', function (Blueprint $table) {
+
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedBigInteger('friend_table_id');
-            $table->foreign('friend_table_id')->references('id')->on('friends')->onDelete('cascade');
+            $table->unsignedBigInteger('server_id');
+            $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
+
+            $table->primary(['user_id', 'server_id']);
 
         });
     }
@@ -30,6 +32,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-
     }
 };

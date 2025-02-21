@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('belonger_in_server', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
 
+        Schema::create('messages_in_channel', function (Blueprint $table) {
+            $table->text('message');
+            $table->timestamp("created_at");
+            $table->timestamp("updated_at");
+
+            $table->unsignedBigInteger('channel_id');
+            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedBigInteger('server_id');
-            $table->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
+            $table->primary(['channel_id', 'user_id', 'created_at']);
         });
-
     }
 
     /**
