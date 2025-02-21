@@ -8,11 +8,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import Pending from '@/components/selfMade/Pending'
 import axios from '@/lib/axios'
-import useLeftNav from '@/hooks/components/useLeftNav'
 
 export default function Page() {
-    const { serverList, dmList, userInfo } = useLeftNav()
-
     const [friendList, setFriendList] = useState([])
 
     const fetchFriendList = async () => {
@@ -43,11 +40,7 @@ export default function Page() {
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
-            <LeftNav
-                serverList={serverList}
-                dmList={dmList}
-                userInfo={userInfo}
-            />
+            <LeftNav />
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col">
                 <div className="h-12 border-b border-[#1f2023] flex items-center px-4 gap-4">

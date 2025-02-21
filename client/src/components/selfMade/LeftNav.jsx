@@ -13,15 +13,11 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
+import useLeftNav from '@/hooks/components/useLeftNav'
 
-export default function LeftNav({
-    currentWatchDmId,
-    serverList,
-    dmList,
-    userInfo,
-    fetchMessages,
-    setDmId,
-}) {
+export default function LeftNav({ currentWatchDmId, fetchMessages, setDmId }) {
+    const { serverList, dmList, userInfo } = useLeftNav()
+
     return (
         <div className="flex">
             <ServerList serverList={serverList} />
@@ -82,6 +78,7 @@ const DmList = ({ dmList, currentWatchDmId, fetchMessages, setDmId }) => {
                 </div>
                 {dmList.map(dm => (
                     <div
+                        key={dm.dm_id}
                         onClick={() => {
                             fetchMessages(dm.dm_id)
                             setDmId(dm.dm_id)
