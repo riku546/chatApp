@@ -6,7 +6,7 @@ import AllFriends from './allFriends/AllFriends'
 import Pending from './pending/Pending'
 import AddFriend from './addFriend/AddFriend'
 import HomeHeader from './HomeHeader/HomeHeader'
-import DmListAndUserFiled from './dmList/DmList'
+import DmListAndUserFiled from './dmList/DmListAndUserFiled'
 
 const Home = () => {
     //フレンド全員 保留中 フレンド追加ページの切り替えるためのstate

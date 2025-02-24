@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class ServerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function list_all_servers()
     {
         try {
@@ -40,9 +38,6 @@ class ServerController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function create_server(Request $request)
     {
         try {
@@ -59,9 +54,6 @@ class ServerController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show_detail_info(int $id)
     {
         try {
@@ -77,9 +69,6 @@ class ServerController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update_server(Request $request)
     {
         try {
@@ -95,9 +84,6 @@ class ServerController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function delete_server(int $id)
     {
         try {
@@ -112,4 +98,5 @@ class ServerController extends Controller
             return response()->json(['message' => 'failed to delete server', "status" => "error"]);
         }
     }
+
 }

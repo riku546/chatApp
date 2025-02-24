@@ -37,7 +37,7 @@ export default function DmListAndUserFiled({
     )
 }
 
-const DmList = ({ dmList, currentWatchDmId, fetchMessages, setDmId }) => {
+const DmList = ({ dmList, currentWatchDmId }) => {
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">

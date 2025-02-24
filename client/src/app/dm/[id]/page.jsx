@@ -1,12 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { useEffect, useState } from 'react'
 import MessageContent from '@/components/selfMade/MessageContent'
 import LeftNav from '@/components/selfMade/LeftNav'
 import { useParams } from 'next/navigation'
 import axios from '@/lib/axios'
-import useLeftNav from '@/hooks/components/useLeftNav'
 import ServerList from '@/components/selfMade/ServerList'
 
 export default function Page() {
