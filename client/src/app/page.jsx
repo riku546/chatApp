@@ -8,7 +8,6 @@ export default function Page() {
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
-            <LeftNav />
             <Home></Home>
         </div>
     )

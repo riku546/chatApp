@@ -27,11 +27,11 @@ Route::get('/checkLogin', function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/all-servers', [ServerController::class, 'list_all_servers']);
-    Route::get('/user-servers', [ServerController::class, 'list_user_servers']);
-    Route::post('/server/create', [ServerController::class, 'store']);
-    Route::get('/server/{id}', [ServerController::class, 'show']);
-    Route::put('/server/update/{id}', [ServerController::class, 'update']);
-    Route::delete('/server/delete/{id}', [ServerController::class, 'destroy']);
+    Route::get('/users-servers', [ServerController::class, 'list_users_servers']);
+    Route::post('/server/create', [ServerController::class, 'create_server']);
+    Route::get('/server/{id}', [ServerController::class, 'show_detail_info']);
+    Route::put('/server/update/{id}', [ServerController::class, 'update_server']);
+    Route::delete('/server/delete/{id}', [ServerController::class, 'delete_server']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

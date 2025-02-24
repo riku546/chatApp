@@ -17,9 +17,9 @@ class ServerRepositoryContext implements ServerRepositoryInterface
         return $this->serverRepository->list_all_servers();
     }
 
-    public function list_user_servers()
+    public function list_users_servers()
     {
-        return $this->serverRepository->list_user_servers();
+        return $this->serverRepository->list_users_servers();
     }
 
     public function create_server(string $server_name)

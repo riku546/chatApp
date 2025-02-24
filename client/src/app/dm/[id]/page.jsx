@@ -7,6 +7,7 @@ import LeftNav from '@/components/selfMade/LeftNav'
 import { useParams } from 'next/navigation'
 import axios from '@/lib/axios'
 import useLeftNav from '@/hooks/components/useLeftNav'
+import ServerList from '@/components/selfMade/ServerList'
 
 export default function Page() {
     const [messages, setMessages] = useState([])
@@ -26,6 +27,8 @@ export default function Page() {
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
+            <ServerList></ServerList>
+
             <LeftNav
                 currentWatchDmId={dmId}
                 fetchMessages={fetchMessages}

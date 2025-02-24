@@ -45,25 +45,31 @@ export default function MessageContent({
                     <div ref={scrollRef}></div>
                 </div>
             </div>
+            <InputArea
+                messageInputRef={messageInputRef}
+                handleEnterKey={handleEnterKey}
+            />
+        </div>
+    )
+}
 
-            {/* Input Area */}
-            <div className="p-4 bg-[#313338] border-t border-gray-700">
-                <div className="flex items-center gap-2">
-                    <div className="flex-1 relative">
-                        <Input
-                            type="text"
-                            ref={messageInputRef}
-                            onKeyDown={handleEnterKey}
-                            placeholder="メッセージを送信"
-                            className="bg-[#383A40] border-none text-gray-100 placeholder:text-gray-400"
-                        />
-                    </div>
+const InputArea = ({ messageInputRef, handleEnterKey }) => {
+    return (
+        <div className="p-4 bg-[#313338] border-t border-gray-700">
+            <div className="flex items-center gap-2">
+                <div className="flex-1 relative">
+                    <Input
+                        type="text"
+                        ref={messageInputRef}
+                        onKeyDown={handleEnterKey}
+                        placeholder="メッセージを送信"
+                        className="bg-[#383A40] border-none text-gray-100 placeholder:text-gray-400"
+                    />
                 </div>
             </div>
         </div>
     )
 }
-
 function Message({ message, userId }) {
     const [isEditing, setIsEditing] = useState(false)
 
@@ -88,7 +94,7 @@ function Message({ message, userId }) {
                             {formattedTimestamp(message.created_at)}
                         </span>
                     </div>
-                    <div className="mt-1 text-gray-100 whitespace-pre-line  break-words">
+                    <div className="w-4/5  mt-1 text-gray-100 whitespace-pre-line  break-words">
                         {message.content}
                     </div>
                 </div>

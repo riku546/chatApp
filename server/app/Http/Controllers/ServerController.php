@@ -25,14 +25,14 @@ class ServerController extends Controller
         }
     }
 
-    public function list_user_servers()
+    public function list_users_servers()
     {
         try {
             $server_repository = new ServerRepositorySql();
 
             $server_repository_context = new ServerRepositoryContext($server_repository);
 
-            $server_list = $server_repository_context->list_user_servers();
+            $server_list = $server_repository_context->list_users_servers();
 
             return response()->json(["data" => $server_list, "message" => "server listed successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -54,6 +54,7 @@ class ServerController extends Controller
 
             return response()->json(['message' => 'server created', "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(['message' => 'failed to create server', "status" => "error"]);
         }
     }
