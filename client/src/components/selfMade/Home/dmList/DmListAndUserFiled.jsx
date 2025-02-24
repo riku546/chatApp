@@ -14,6 +14,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import useLeftNav from '@/hooks/components/useLeftNav'
+import { useDispatch } from 'react-redux'
+import { setDmId } from '@/app/store/slice/dmIdSlice'
 
 export default function DmListAndUserFiled({
     currentWatchDmId,
@@ -38,6 +40,8 @@ export default function DmListAndUserFiled({
 }
 
 const DmList = ({ dmList, currentWatchDmId }) => {
+    const dispatch = useDispatch()
+
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">
@@ -45,7 +49,10 @@ const DmList = ({ dmList, currentWatchDmId }) => {
                     ダイレクトメッセージ
                 </div>
                 {dmList.map(dm => (
-                    <Link href={`dm/${dm.dm_id}`} key={dm.dm_id}>
+                    <Link
+                        onClick={() => dispatch(setDmId(dm.dm_id))}
+                        href={`dm`}
+                        key={dm.dm_id}>
                         {currentWatchDmId === dm.dm_id ? (
                             <Button
                                 variant="ghost"

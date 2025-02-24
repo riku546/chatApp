@@ -14,8 +14,10 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import useLeftNav from '@/hooks/components/useLeftNav'
+import { useDispatch } from 'react-redux'
+import { setDmId } from '@/app/store/slice/dmIdSlice'
 
-export default function LeftNav({ currentWatchDmId, fetchMessages, setDmId }) {
+export default function LeftNav({ currentWatchDmId, fetchMessages }) {
     const { dmList, userInfo } = useLeftNav()
 
     return (
@@ -25,7 +27,6 @@ export default function LeftNav({ currentWatchDmId, fetchMessages, setDmId }) {
                     dmList={dmList}
                     currentWatchDmId={currentWatchDmId}
                     fetchMessages={fetchMessages}
-                    setDmId={setDmId}
                 />
                 <UserFiled userInfo={userInfo} />
             </div>
@@ -33,7 +34,9 @@ export default function LeftNav({ currentWatchDmId, fetchMessages, setDmId }) {
     )
 }
 
-const DmList = ({ dmList, currentWatchDmId, fetchMessages, setDmId }) => {
+const DmList = ({ dmList, currentWatchDmId, fetchMessages }) => {
+    const dispatch = useDispatch()
+
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">
@@ -45,7 +48,7 @@ const DmList = ({ dmList, currentWatchDmId, fetchMessages, setDmId }) => {
                         key={dm.dm_id}
                         onClick={() => {
                             fetchMessages(dm.dm_id)
-                            setDmId(dm.dm_id)
+                            dispatch(setDmId(dm.dm_id))
                         }}>
                         {currentWatchDmId === dm.dm_id ? (
                             <Button

@@ -5,6 +5,7 @@ import '@/app/global.css'
 import { useEffect } from 'react'
 import axios from '@/lib/axios'
 import { useRouter } from 'next/navigation'
+import StoreProvider from './store/StoreProvider'
 
 const nunitoFont = Nunito({
     subsets: ['latin'],
@@ -28,7 +29,9 @@ const RootLayout = ({ children }) => {
 
     return (
         <html lang="en" className={nunitoFont.className}>
-            <body className="antialiased">{children}</body>
+            <body className="antialiased">
+                <StoreProvider>{children}</StoreProvider>
+            </body>
         </html>
     )
 }
