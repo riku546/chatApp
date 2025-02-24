@@ -6,12 +6,12 @@ const dmIdSlice = createSlice({
         value: null,
     },
     reducers: {
-        setDmId: (state, action) => {
+        setCurrentWatchDmId: (state, action) => {
             state.value = action.payload
         },
     },
 })
 
-export const { setDmId } = dmIdSlice.actions
+export const { setCurrentWatchDmId } = dmIdSlice.actions
 
 export default dmIdSlice.reducer

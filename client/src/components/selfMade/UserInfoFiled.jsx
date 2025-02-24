@@ -1,4 +1,7 @@
-const UserFiled = ({ userInfo }) => {
+import { Settings, User } from 'lucide-react'
+import Link from 'next/link'
+
+const UserInfoFiled = ({ userInfo }) => {
     return (
         <div className="p-2 bg-[#232428] flex items-center gap-2">
             <User></User>
@@ -16,4 +19,4 @@ const UserFiled = ({ userInfo }) => {
     )
 }
 
-export default UserFiled
+export default UserInfoFiled

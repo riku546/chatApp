@@ -1,6 +1,5 @@
 'use client'
 
-import LeftNav from '@/components/selfMade/LeftNav'
 import Home from '@/components/selfMade/Home/Home'
 import ServerList from '@/components/selfMade/ServerList'
 
