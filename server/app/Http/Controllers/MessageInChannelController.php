@@ -2,16 +2,23 @@
 namespace App\Http\Controllers;
 
 use App\Events\Chat\Concrete\ChannelEvent;
+use App\Repositories\MessageInChannelRepositoryContext;
+use App\Repositories\MessageInChannel\Concrete\MessageInChannelRepositorySql;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class MessageInChannelController extends Controller
 {
     public function list_messages($channel_id)
     {
+
         try {
-            $messages = DB::select('select message , created_at user_id from messages_in_channel where channel_id = ? order by created_at', [$channel_id]);
+            $messageRepository = new MessageInChannelRepositorySql();
+
+            $messageRepositoryContext = new MessageInChannelRepositoryContext
+                ($messageRepository);
+
+            $messages = $messageRepositoryContext->list_messages($channel_id);
 
             return response()->json(["data" => $messages, "message" => "Messages listed successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -21,15 +28,19 @@ class MessageInChannelController extends Controller
 
     public function send_message(Request $request)
     {
-        $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
         try {
+            $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
-            //websocketsを使ってメッセージを送信
+            // Websocketsを使ってメッセージを送信
             event(new ChannelEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->channel_id));
 
-            //DBにメッセージを保存
-            DB::insert('insert into messages_in_channel (message, user_id, channel_id, created_at, updated_at) values (?, ?, ?, ?, ?)', [$request->message, auth()->id(), $request->channel_id, $formatted_timestamp, $formatted_timestamp]);
+            $messageRepository = new MessageInChannelRepositorySql();
+
+            $messageRepositoryContext = new MessageInChannelRepositoryContext($messageRepository);
+
+            // DBにメッセージを保存
+            $messageRepositoryContext->send_message($request->message, $request->channel_id);
 
             return response()->json(["message" => "Message sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -39,10 +50,14 @@ class MessageInChannelController extends Controller
 
     public function edit_message(Request $request)
     {
-        $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
         try {
-            DB::update('update messages_in_channel set message = ?, updated_at = ? where channel_id = ? and user_id = ?  and created_at = ?', [$request->message, $formatted_timestamp, $request->channel_id, auth()->id(), $request->created_at]);
+
+            $messageRepository = new MessageInChannelRepositorySql();
+
+            $messageRepositoryContext = new MessageInChannelRepositoryContext($messageRepository);
+
+            $messageRepositoryContext->edit_message($request->message, $request->channel_id, $request->created_at);
 
             return response()->json(["message" => "Message edited successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -52,8 +67,14 @@ class MessageInChannelController extends Controller
 
     public function delete_message(int $channel_id, string $created_at)
     {
+
         try {
-            DB::delete('delete from messages_in_channel where channel_id = ? and user_id = ? and created_at = ?', [$channel_id, auth()->id(), $created_at]);
+            $messageRepository = new MessageInChannelRepositorySql();
+
+            $messageRepositoryContext = new MessageInChannelRepositoryContext
+                ($messageRepository);
+
+            $messageRepositoryContext->delete_message($channel_id, $created_at);
 
             return response()->json(["message" => "Message deleted successfully", "status" => "success"]);
         } catch (\Throwable $th) {

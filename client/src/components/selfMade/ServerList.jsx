@@ -54,7 +54,6 @@ const ServerList = () => {
             {/* Server Icons */}
             <ScrollArea className="flex-1 w-full ">
                 <div className="flex flex-col gap-2 items-center">
-                    {console.log(serverList)}
                     {serverList.map((server, i) => (
                         <div
                             key={server.id}
