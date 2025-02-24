@@ -15,17 +15,17 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import Link from 'next/link'
 import useLeftNav from '@/hooks/components/useLeftNav'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentWatchDmId } from '@/app/store/slice/dmIdSlice'
+import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import UserInfoFiled from '../../UserInfoFiled'
 
 export default function DmListAndUserFiled({ fetchMessages }) {
-    const { dmList, userInfo } = useLeftNav()
+    const { dmList } = useLeftNav()
 
     return (
         <div className="flex">
             <div className="w-60 bg-[#2b2d31] flex flex-col">
                 <DmList dmList={dmList} />
-                <UserInfoFiled userInfo={userInfo} />
+                <UserInfoFiled />
             </div>
         </div>
     )

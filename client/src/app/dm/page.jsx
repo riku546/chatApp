@@ -9,7 +9,7 @@ import Dm from '@/components/selfMade/Dm/Dm'
 export default function Page() {
     const [messages, setMessages] = useState([])
 
-    const dmId = useSelector(state => state.dmId.value)
+    const dmId = useSelector(state => state.currentWatchDmId.value)
 
     const fetchDmMessage = async id => {
         try {

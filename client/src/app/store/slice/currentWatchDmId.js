@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const dmIdSlice = createSlice({
-    name: 'dmId',
+const currentWatchDmIdSlice = createSlice({
+    name: 'currentWatchDmId',
     initialState: {
         value: null,
     },
@@ -12,6 +12,6 @@ const dmIdSlice = createSlice({
     },
 })
 
-export const { setCurrentWatchDmId } = dmIdSlice.actions
+export const { setCurrentWatchDmId } = currentWatchDmIdSlice.actions
 
-export default dmIdSlice.reducer
+export default currentWatchDmIdSlice.reducer

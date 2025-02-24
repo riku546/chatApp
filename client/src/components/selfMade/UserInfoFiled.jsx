@@ -1,7 +1,11 @@
 import { Settings, User } from 'lucide-react'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
 
-const UserInfoFiled = ({ userInfo }) => {
+const UserInfoFiled = () => {
+    const userInfo = useSelector(state => state.userInfo.value)
+    console.log(userInfo)
+
     return (
         <div className="p-2 bg-[#232428] flex items-center gap-2">
             <User></User>
