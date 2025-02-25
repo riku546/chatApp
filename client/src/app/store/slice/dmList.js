@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const dmListSlice = createSlice({
     name: 'dmListSlice',
     initialState: {
-        value: null,
+        value: [],
     },
     reducers: {
         setDmList: (state, action) => {

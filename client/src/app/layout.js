@@ -5,7 +5,8 @@ import '@/app/global.css'
 import { useEffect } from 'react'
 import axios from '@/lib/axios'
 import { useRouter } from 'next/navigation'
-import StoreProvider from './store/StoreProvider'
+import { Provider } from 'react-redux'
+import store from './store/store'
 
 const nunitoFont = Nunito({
     subsets: ['latin'],
@@ -28,9 +29,9 @@ const RootLayout = ({ children }) => {
     }, [])
 
     return (
-        <html lang="en" className={nunitoFont.className}>
+        <html lang="ja" className={nunitoFont.className}>
             <body className="antialiased">
-                <StoreProvider>{children}</StoreProvider>
+                <Provider store={store}>{children}</Provider>
             </body>
         </html>
     )

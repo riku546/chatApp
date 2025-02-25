@@ -8,21 +8,22 @@ import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import UserInfoFiled from '../../UserInfoFiled'
 
 export default function DmListAndUserFiled({ fetchDmMessage }) {
-    const { dmList } = useLeftNav()
-
     return (
         <div className="flex">
             <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList dmList={dmList} fetchDmMessage={fetchDmMessage} />
+                <DmList fetchDmMessage={fetchDmMessage} />
                 <UserInfoFiled />
             </div>
         </div>
     )
 }
 
-const DmList = ({ dmList, fetchDmMessage }) => {
+const DmList = ({ fetchDmMessage }) => {
     const dispatch = useDispatch()
+
     const currentWatchDmId = useSelector(state => state.currentWatchDmId.value)
+
+    const dmList = useSelector(state => state.dmList.value)
 
     return (
         <ScrollArea className="flex-1">

@@ -18,31 +18,11 @@ import {
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { useDispatch, useSelector } from 'react-redux'
+import { addServerToServerList } from '@/app/store/slice/serverList'
 
 const ServerList = () => {
-    const [serverList, setServerList] = useState([])
-
-    //apiサーバー側にサーバー作成リクエスト送ったあとに、画面上で即時に反映させるための関数
-    const addServerToServerList = server => {
-        setServerList(prev => [
-            ...prev,
-            { id: serverList.length + 1, name: server },
-        ])
-    }
-
-    const getServerList = async () => {
-        try {
-            const serverList = (await axios.get('/api/all-servers')).data.data
-
-            setServerList(serverList)
-        } catch (error) {
-            throw error
-        }
-    }
-
-    useEffect(() => {
-        getServerList()
-    }, [])
+    const serverList = useSelector(state => state.serverList.value)
 
     return (
         <div className="w-[72px] bg-[#1e1f22] flex flex-col items-center gap-2 p-2">
@@ -67,7 +47,9 @@ const ServerList = () => {
                     ))}
                 </div>
             </ScrollArea>
-            <ServerCreateDialog addServerToServerList={addServerToServerList} />
+
+            <ServerCreateDialog />
+
             <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
                 <Compass />
             </div>
@@ -75,18 +57,26 @@ const ServerList = () => {
     )
 }
 
-const ServerCreateDialog = ({ addServerToServerList }) => {
+const ServerCreateDialog = () => {
     const inputRef = useRef(null)
 
     const createServer = async () => {
         try {
+            const inputValue = inputRef.current.value
+            console.log(inputValue)
+            //データベースに新しいサーバーを登録
             await axios.post('/api/server/create', {
-                name: inputRef.current.value,
+                name: inputValue,
             })
+
+            //reduxで管理しているサーバーリストに新しいサーバーを追加
+            dispatch(addServerToServerList(inputValue))
         } catch (error) {
             throw error
         }
     }
+
+    const dispatch = useDispatch()
 
     return (
         <Dialog>
@@ -103,7 +93,6 @@ const ServerCreateDialog = ({ addServerToServerList }) => {
                         <Button
                             onClick={() => {
                                 createServer()
-                                addServerToServerList(inputRef.current.value)
                             }}
                             type="submit"
                             className="bg-[#5865f2]">

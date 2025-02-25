@@ -18,21 +18,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import UserInfoFiled from '../../UserInfoFiled'
 
-export default function DmListAndUserFiled({ fetchMessages }) {
-    const { dmList } = useLeftNav()
-
+export default function DmListAndUserFiled() {
     return (
         <div className="flex">
             <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList dmList={dmList} />
+                <DmList />
                 <UserInfoFiled />
             </div>
         </div>
     )
 }
 
-const DmList = ({ dmList }) => {
+const DmList = () => {
     const dispatch = useDispatch()
+
+    const dmList = useSelector(state => state.dmList.value)
 
     return (
         <ScrollArea className="flex-1">
