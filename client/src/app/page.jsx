@@ -14,7 +14,7 @@ export default function Page() {
 
     const fetchServerList = async () => {
         try {
-            const serverList = (await axios.get('/api/all-servers')).data.data
+            const serverList = (await axios.get('/api/users-servers')).data.data
             dispatch(setServerList(serverList))
         } catch (error) {
             throw error
@@ -49,8 +49,8 @@ export default function Page() {
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
-            <ServerList></ServerList>
-            <Home></Home>
+            <ServerList />
+            <Home />
         </div>
     )
 }

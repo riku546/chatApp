@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\DmController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\MessageInDmController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\UsersInServerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +37,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/server/{server_id}/belongers', [UsersInServerController::class, 'list_belongers_in_server']);
+    Route::post('/server/join', [UsersInServerController::class, 'join_to_server']);
+    Route::post('/server/leave', [UsersInServerController::class, 'leave_from_server']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dm-list', [DmController::class, 'list_dms']);
     Route::post('/dm/create', [DmController::class, 'create_dm']);
 });
@@ -59,4 +67,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/friend-request/reject/{sender_id}', [FriendController::class, 'reject_friend_request']);
     //送ったフレンドリクエストをキャンセルする
     Route::delete('/friend-request/cancel/{receiver_id}', [FriendController::class, 'cancel_friend_request']);
+});
+
+//チャンネル内でのメッセージの表示、送信、編集、削除
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/server/{server_id}/channels', [ChannelController::class, 'list_channel_in_server']);
+    Route::post('/channel/create', [ChannelController::class, 'create_channel']);
+    Route::put('/channel/update/{id}', [ChannelController::class, 'update_channel']);
+    Route::delete('/channel/delete/{id}', [ChannelController::class, 'delete_channel']);
 });

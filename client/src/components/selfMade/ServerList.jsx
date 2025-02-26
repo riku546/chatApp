@@ -48,7 +48,7 @@ const ServerList = () => {
                 </div>
             </ScrollArea>
 
-            <ServerCreateDialog />
+            <ServerCreateDialog serverList={serverList} />
 
             <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
                 <Compass />
@@ -57,26 +57,53 @@ const ServerList = () => {
     )
 }
 
-const ServerCreateDialog = () => {
+const ServerCreateDialog = ({ serverList }) => {
     const inputRef = useRef(null)
 
-    const createServer = async () => {
-        try {
-            const inputValue = inputRef.current.value
-            console.log(inputValue)
-            //データベースに新しいサーバーを登録
-            await axios.post('/api/server/create', {
-                name: inputValue,
-            })
+    const dispatch = useDispatch()
 
-            //reduxで管理しているサーバーリストに新しいサーバーを追加
-            dispatch(addServerToServerList(inputValue))
+    const handleCreateServer = async () => {
+        createServer()
+
+        createChannel()
+
+        joinServer()
+    }
+
+    const createChannel = async () => {
+        try {
+            await axios.post('api/channel/create', {
+                name: '一般',
+            })
         } catch (error) {
             throw error
         }
     }
 
-    const dispatch = useDispatch()
+    const joinServer = async () => {
+        try {
+            await axios.post('api/server/join', {
+                server_id: serverList.length + 1,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const createServer = async () => {
+        try {
+            const serverName = inputRef.current.value
+            //データベースに新しいサーバーを登録
+            await axios.post('/api/server/create', {
+                name: serverName,
+            })
+
+            //reduxで管理しているサーバーリストに新しいサーバーを追加
+            dispatch(addServerToServerList(serverName))
+        } catch (error) {
+            throw error
+        }
+    }
 
     return (
         <Dialog>
@@ -91,9 +118,7 @@ const ServerCreateDialog = () => {
                 <DialogFooter>
                     <DialogClose>
                         <Button
-                            onClick={() => {
-                                createServer()
-                            }}
+                            onClick={() => handleCreateServer()}
                             type="submit"
                             className="bg-[#5865f2]">
                             作成
