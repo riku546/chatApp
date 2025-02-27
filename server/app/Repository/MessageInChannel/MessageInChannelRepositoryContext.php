@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories;
+namespace App\Repository\MessageInChannel;
 
 use App\Repository\MessageInChannel\MessageInChannelRepositoryInterface;
 
@@ -12,23 +12,23 @@ class MessageInChannelRepositoryContext implements MessageInChannelRepositoryInt
         $this->repository = $repository;
     }
 
-    public function list_messages($channel_id):array
+    public function list_messages($channel_id): array
     {
         return $this->repository->list_messages($channel_id);
     }
 
-    public function send_message($message,  $channel_id):void
+    public function send_message($message, $channel_id): void
     {
-        return $this->repository->send_message($message,  $channel_id);
+        $this->repository->send_message($message, $channel_id);
     }
 
-    public function edit_message($message, $channel_id,  $created_at):void
+    public function edit_message($message, $channel_id, $created_at): void
     {
-        return $this->repository->edit_message($message, $channel_id,  $created_at);
+        $this->repository->edit_message($message, $channel_id, $created_at);
     }
 
-    public function delete_message($channel_id,  $created_at):void
+    public function delete_message($channel_id, $created_at): void
     {
-        return $this->repository->delete_message($channel_id,  $created_at);
+        $this->repository->delete_message($channel_id, $created_at);
     }
 }

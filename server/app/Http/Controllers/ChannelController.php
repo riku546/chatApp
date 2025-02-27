@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ChannelController extends Controller
 {
@@ -11,8 +12,12 @@ class ChannelController extends Controller
     public function list_channel_in_server(int $server_id)
     {
         try {
-            $channels = DB::select('select id , name  from channels where server_id = ?', [$server_id]);
-            return response()->json($channels);
+            $channels = DB::select('select id , name  from channels where server_id = ? order by created_at', [$server_id]);
+
+            Log::debug($server_id);
+            Log::debug($channels);
+
+            return response()->json(['data' => $channels, 'message' => 'Channels fetched successfully']);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'failed to get channels']);
         }
@@ -30,6 +35,7 @@ class ChannelController extends Controller
             ]);
             return response()->json(['message' => 'Channel created successfully']);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(['message' => 'failed to create channel']);
         }
     }

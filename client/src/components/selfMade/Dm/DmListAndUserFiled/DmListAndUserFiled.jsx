@@ -5,6 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import UserInfoFiled from '../../UserInfoFiled'
+import Link from 'next/link'
 
 export default function DmListAndUserFiled({ fetchDmMessage }) {
     return (
@@ -31,7 +32,8 @@ const DmList = ({ fetchDmMessage }) => {
                     ダイレクトメッセージ
                 </div>
                 {dmList.map(dm => (
-                    <div
+                    <Link
+                        href={`/dm`}
                         key={dm.dm_id}
                         onClick={() => {
                             dispatch(setCurrentWatchDmId(dm.dm_id))
@@ -49,7 +51,7 @@ const DmList = ({ fetchDmMessage }) => {
                             <User />
                             <span className="text-sm">{dm.name}</span>
                         </Button>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </ScrollArea>

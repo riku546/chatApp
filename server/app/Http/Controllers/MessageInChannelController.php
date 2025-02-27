@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\Chat\Concrete\ChannelEvent;
-use App\Repositories\MessageInChannelRepositoryContext;
-use App\Repositories\MessageInChannel\Concrete\MessageInChannelRepositorySql;
+use App\Repository\MessageInChannel\Concrete\MessageInChannelRepositorySql;
+use App\Repository\MessageInChannel\MessageInChannelRepositoryContext;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

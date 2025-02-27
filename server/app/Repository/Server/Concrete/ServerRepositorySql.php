@@ -33,7 +33,6 @@ class ServerRepositorySql implements ServerRepositoryInterface
     {
         try {
             DB::select('insert into servers (name) values (?)', [$server_name]);
-
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -6,6 +6,7 @@ import Pending from './pending/Pending'
 import AddFriend from './addFriend/AddFriend'
 import HomeHeader from './HomeHeader/HomeHeader'
 import DmListAndUserFiled from './DmListAndUserFiled/DmListAndUserFiled'
+import ServerList from './ServerList/ServerList'
 
 const Home = () => {
     //フレンド全員 保留中 フレンド追加ページの切り替えるためのstate
@@ -25,18 +26,19 @@ const Home = () => {
         }
     }
 
-
-
     return (
-        <>
+        <div className="flex h-screen bg-[#313338] text-gray-100">
+            <ServerList />
+
             <DmListAndUserFiled />
+
             <div className="flex-1 flex flex-col">
                 <HomeHeader changeDisplayType={changeDisplayType}></HomeHeader>
                 <div className="flex-1 p-4">
                     {handleDisplayType(displayType)}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

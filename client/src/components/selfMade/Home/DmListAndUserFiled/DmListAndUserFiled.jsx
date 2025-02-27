@@ -40,7 +40,7 @@ const DmList = () => {
                 </div>
                 {dmList.map(dm => (
                     <Link
-                        href={'dm'}
+                        href={`/dm`}
                         key={dm.dm_id}
                         onClick={() => {
                             dispatch(setCurrentWatchDmId(dm.dm_id))

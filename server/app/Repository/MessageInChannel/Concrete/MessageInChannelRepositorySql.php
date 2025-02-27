@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories\MessageInChannel\Concrete;
+namespace App\Repository\MessageInChannel\Concrete;
 
 use App\Repository\MessageInChannel\MessageInChannelRepositoryInterface;
 use Carbon\Carbon;

@@ -1,7 +1,6 @@
 'use client'
 
 import Home from '@/components/selfMade/Home/Home'
-import ServerList from '@/components/selfMade/ServerList'
 import axios from '@/lib/axios'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -47,10 +46,5 @@ export default function Page() {
         fetchDmList()
     }, [])
 
-    return (
-        <div className="flex h-screen bg-[#313338] text-gray-100">
-            <ServerList />
-            <Home />
-        </div>
-    )
+    return <Home />
 }

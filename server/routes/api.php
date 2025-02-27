@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\DmController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\MessageInChannelController;
 use App\Http\Controllers\MessageInDmController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\UsersInServerController;
@@ -69,10 +70,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/friend-request/cancel/{receiver_id}', [FriendController::class, 'cancel_friend_request']);
 });
 
-//チャンネル内でのメッセージの表示、送信、編集、削除
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/server/{server_id}/channels', [ChannelController::class, 'list_channel_in_server']);
     Route::post('/channel/create', [ChannelController::class, 'create_channel']);
     Route::put('/channel/update/{id}', [ChannelController::class, 'update_channel']);
     Route::delete('/channel/delete/{id}', [ChannelController::class, 'delete_channel']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/channel/{channel_id}/messages', [MessageInChannelController::class, 'list_messages']);
+    Route::post('/channel/message/send', [MessageInChannelController::class, 'send_message']);
+    Route::put('/channel/message/edit', [MessageInChannelController::class, 'edit_message']);
+    Route::delete('/channel/message/{channel_id}/delete/{created_at}', [MessageInChannelController::class, 'delete_message']);
 });

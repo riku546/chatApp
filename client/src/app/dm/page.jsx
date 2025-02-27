@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
-import ServerList from '@/components/selfMade/ServerList'
 import { useSelector } from 'react-redux'
 import Dm from '@/components/selfMade/Dm/Dm'
 
@@ -25,14 +24,10 @@ export default function Page() {
     }, [])
 
     return (
-        <div className="flex h-screen bg-[#313338] text-gray-100">
-            <ServerList></ServerList>
-
-            <Dm
-                fetchDmMessage={fetchDmMessage}
-                messages={messages}
-                setMessages={setMessages}
-                dmId={dmId}></Dm>
-        </div>
+        <Dm
+            fetchDmMessage={fetchDmMessage}
+            messages={messages}
+            setMessages={setMessages}
+            dmId={dmId}></Dm>
     )
 }

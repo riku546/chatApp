@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Repository\Server\Concrete\ServerRepositorySql;
 use App\Repository\Server\ServerRepositoryContext;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ServerController extends Controller
 {
@@ -47,9 +48,12 @@ class ServerController extends Controller
 
             $server_repository_context->create_server($request->name);
 
-            return response()->json(['message' => 'server created', "status" => "success"]);
+            //新しく作成したサーバーのidを返しているのは、サーバー作成後にサーバーへの参加とサーバにチャンネルを作成するために
+            //serversテーブルのidはint型のauto incrementなのでmax(id)で最新のidを取得している
+            $new_server_id = DB::select('select max(id) as new_server_id from servers');
+
+            return response()->json(['data' => $new_server_id, 'message' => 'server created', "status" => "success"]);
         } catch (\Throwable $th) {
-            throw $th;
             return response()->json(['message' => 'failed to create server', "status" => "error"]);
         }
     }
