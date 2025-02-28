@@ -46,8 +46,7 @@ const ServerCreateDialog = () => {
                 name: serverName,
             })
 
-            //サーバーのidはint型のauto incrementなので、現在のサーバー数がサーバーのidとなる
-            const newServerId = res.data.data[0].new_server_id
+            const newServerId = res.data.data.id
 
             return newServerId
         } catch (error) {

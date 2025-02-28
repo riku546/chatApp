@@ -57,6 +57,7 @@ const page = () => {
             setMessages={setMessages}
             channelList={channelList}
             currentWatchChannelId={currentWatchChannelId}
+            setChannelList={setChannelList}
         />
     )
 }

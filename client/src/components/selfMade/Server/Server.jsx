@@ -9,6 +9,7 @@ const Server = ({
     channelId,
     channelList,
     currentWatchChannelId,
+    setChannelList,
 }) => {
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
@@ -17,6 +18,7 @@ const Server = ({
             <ChannelListAndUserFiled
                 channelList={channelList}
                 currentWatchChannelId={currentWatchChannelId}
+                setChannelList={setChannelList}
             />
 
             <div className="flex-1 flex flex-col">

@@ -11,7 +11,6 @@ const serverListSlice = createSlice({
         },
         //apiサーバー側にサーバー作成リクエスト送ったあとに、画面上で即時に反映させるための関数
         addServerToServerList: (state, action) => {
-            console.log(action.payload)
             state.value = [
                 ...state.value,
                 {

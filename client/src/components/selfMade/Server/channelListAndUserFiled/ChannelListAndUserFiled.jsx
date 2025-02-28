@@ -1,13 +1,11 @@
 import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Plus, User } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import UserInfoFiled from '../../UserInfoFiled'
-import axios from '@/lib/axios'
 import { useRef } from 'react'
-import { useDispatch } from 'react-redux'
 import {
     Dialog,
     DialogContent,
@@ -18,10 +16,13 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { DialogClose } from '@radix-ui/react-dialog'
+import axios from '@/lib/axios'
+import { useSelector } from 'react-redux'
 
 export default function channelListAndUserFiled({
     channelList,
     currentWatchChannelId,
+    setChannelList,
 }) {
     return (
         <div className="flex">
@@ -29,6 +30,7 @@ export default function channelListAndUserFiled({
                 <ChannelList
                     channelList={channelList}
                     currentWatchChannelId={currentWatchChannelId}
+                    setChannelList={setChannelList}
                 />
                 <UserInfoFiled />
             </div>
@@ -36,7 +38,11 @@ export default function channelListAndUserFiled({
     )
 }
 
-const ChannelList = ({ channelList, currentWatchChannelId }) => {
+const ChannelList = ({
+    channelList,
+    currentWatchChannelId,
+    setChannelList,
+}) => {
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">
@@ -44,7 +50,8 @@ const ChannelList = ({ channelList, currentWatchChannelId }) => {
                     <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                         チャンネル
                     </div>
-                    <ChannelCreateDialog></ChannelCreateDialog>
+                    <ChannelCreateDialog
+                        setChannelList={setChannelList}></ChannelCreateDialog>
                 </div>
                 {channelList.map(channel => (
                     <Link
@@ -63,7 +70,6 @@ const ChannelList = ({ channelList, currentWatchChannelId }) => {
                                         ? '#36393f'
                                         : '',
                             }}>
-                            <User />
                             <span className="text-sm">{channel.name}</span>
                         </Button>
                     </Link>
@@ -73,10 +79,23 @@ const ChannelList = ({ channelList, currentWatchChannelId }) => {
     )
 }
 
-const ChannelCreateDialog = () => {
+const ChannelCreateDialog = ({ setChannelList }) => {
     const inputRef = useRef(null)
 
-    const handleCreateChannel = async () => {}
+    const serverId = useSelector(state => state.currentWatchServerId.value)
+
+    const handleCreateChannel = async () => {
+        try {
+            await axios.post('api/channel/create', {
+                name: inputRef.current.value,
+                server_id: serverId,
+            })
+
+            setChannelList(prev => [...prev, {}])
+        } catch (error) {
+            throw error
+        }
+    }
 
     return (
         <Dialog>
@@ -91,7 +110,7 @@ const ChannelCreateDialog = () => {
                 <DialogFooter>
                     <DialogClose>
                         <Button
-                            onClick={() => handleCrateChannel()}
+                            onClick={() => handleCreateChannel()}
                             type="submit"
                             className="bg-[#5865f2]">
                             作成
