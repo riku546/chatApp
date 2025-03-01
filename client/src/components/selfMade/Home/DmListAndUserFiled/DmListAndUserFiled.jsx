@@ -38,21 +38,22 @@ const DmList = () => {
                 <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                     ダイレクトメッセージ
                 </div>
-                {dmList.map(dm => (
-                    <Link
-                        href={`/dm`}
-                        key={dm.dm_id}
-                        onClick={() => {
-                            dispatch(setCurrentWatchDmId(dm.dm_id))
-                        }}>
-                        <Button
-                            variant="ghost"
-                            className={'w-full justify-start gap-2 h-11 '}>
-                            <User />
-                            <span className="text-sm">{dm.name}</span>
-                        </Button>
-                    </Link>
-                ))}
+                {dmList &&
+                    dmList.map(dm => (
+                        <Link
+                            href={`/dm/${dm.dm_id}`}
+                            key={dm.dm_id}
+                            onClick={() => {
+                                dispatch(setCurrentWatchDmId(dm.dm_id))
+                            }}>
+                            <Button
+                                variant="ghost"
+                                className={'w-full justify-start gap-2 h-11 '}>
+                                <User />
+                                <span className="text-sm">{dm.name}</span>
+                            </Button>
+                        </Link>
+                    ))}
             </div>
         </ScrollArea>
     )

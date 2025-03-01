@@ -5,8 +5,11 @@ import React, { useEffect, useState } from 'react'
 import Server from '@/components/selfMade/Server/Server'
 import axios from '@/lib/axios'
 import { useSelector } from 'react-redux'
+import useInitialProcess from '@/hooks/useInitialProcess'
 
 const page = () => {
+    useInitialProcess()
+
     const [messages, setMessages] = useState([])
     const [channelList, setChannelList] = useState([])
     const [currentWatchChannelId, setCurrentWatchChannelId] = useState(null)

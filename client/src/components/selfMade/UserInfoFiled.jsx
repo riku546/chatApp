@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 const UserInfoFiled = () => {
     const userInfo = useSelector(state => state.userInfo.value)
 
+    if(userInfo === null) return <></>
+
     return (
         <div className="p-2 bg-[#232428] flex items-center gap-2">
             <User></User>

@@ -86,25 +86,25 @@ erDiagram
 
     users ||--o{ invitations : "invited_to"
     servers ||--o{ invitations : "has_invitations"
-    
+
     users ||--o{ friend_requests : "sends"
     users ||--o{ friend_requests : "receives"
-    
+
     users ||--o{ messages_in_channel : "sends"
     channels ||--o{ messages_in_channel : "contains"
-    
+
     users ||--o{ belonger_in_channel : "belongs_to"
     channels ||--o{ belonger_in_channel : "has_members"
-    
+
     users ||--o{ friends : "has"
     users ||--o{ friends : "is_friend_of"
     dm ||--|| friends : "associated_with"
-    
+
     users ||--o{ belonger_in_server : "belongs_to"
     servers ||--o{ belonger_in_server : "has_members"
-    
+
     users ||--o{ messages_in_dm : "sends"
     dm ||--o{ messages_in_dm : "contains"
-    
+
     servers ||--o{ channels : "has"
 ```

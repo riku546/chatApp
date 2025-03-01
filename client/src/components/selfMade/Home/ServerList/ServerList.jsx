@@ -38,21 +38,22 @@ const ServerList = () => {
             {/* Server Icons */}
             <ScrollArea className="flex-1 w-full ">
                 <div className="flex flex-col gap-2 items-center">
-                    {serverList.map((server, i) => (
-                        <Link
-                            href={`/channel`}
-                            key={server.id}
-                            onClick={() =>
-                                dispatch(setCurrentWatchServerId(server.id))
-                            }
-                            className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
-                            <Avatar>
-                                <AvatarFallback className="text-xs">
-                                    {server.name.substring(0, 3)}
-                                </AvatarFallback>
-                            </Avatar>
-                        </Link>
-                    ))}
+                    {serverList &&
+                        serverList.map((server, i) => (
+                            <Link
+                                href={`/channel`}
+                                key={server.id}
+                                onClick={() =>
+                                    dispatch(setCurrentWatchServerId(server.id))
+                                }
+                                className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
+                                <Avatar>
+                                    <AvatarFallback className="text-xs">
+                                        {server.name.substring(0, 3)}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </Link>
+                        ))}
                 </div>
             </ScrollArea>
 
