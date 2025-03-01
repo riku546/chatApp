@@ -7,30 +7,14 @@ import Dm from '@/components/selfMade/Dm/Dm'
 import { useParams } from 'next/navigation'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import useInitialProcess from '@/hooks/useInitialProcess'
+import useDm from '@/hooks/page/useDm'
 
 export default function Page() {
     useInitialProcess()
 
-    const [messages, setMessages] = useState([])
-
-    //dmのidをurlパラメータから取得して、reduxに保存
     const dmId = useParams().id
 
-    const dispatch = useDispatch()
-    dispatch(setCurrentWatchDmId(dmId))
-
-    const fetchDmMessage = async id => {
-        try {
-            const res = await axios.get(`api/dm/${id}/message`)
-            setMessages(res.data.data)
-        } catch (error) {
-            throw error
-        }
-    }
-
-    useEffect(() => {
-        fetchDmMessage(dmId)
-    }, [])
+    const { messages, setMessages, fetchDmMessage } = useDm(dmId)
 
     return (
         <Dm
