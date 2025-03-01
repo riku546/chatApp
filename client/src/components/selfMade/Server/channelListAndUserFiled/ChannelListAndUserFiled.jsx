@@ -55,7 +55,7 @@ const ChannelList = ({
                 </div>
                 {channelList.map(channel => (
                     <Link
-                        href={`/server/channel`}
+                        href={`/channel`}
                         key={channel.id}
                         onClick={() => {
                             setCurrentWatchChannelId(channel.id)

@@ -1,67 +1,66 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Repository\Channel\ChannelRepositoryContext;
+use App\Repository\Channel\Concrete\ChannelRepositorySql;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ChannelController extends Controller
 {
 
-    //特定のサーバー内のチャンネルを取得
     public function list_channel_in_server(int $server_id)
     {
         try {
-            $channels = DB::select('select id , name  from channels where server_id = ? order by created_at', [$server_id]);
+            $channel_repository         = new ChannelRepositorySql();
+            $channel_repository_context = new ChannelRepositoryContext($channel_repository);
 
-            return response()->json(['data' => $channels, 'message' => 'Channels fetched successfully']);
+            $channels = $channel_repository_context->list_channel_in_server($server_id);
+
+            return response()->json(['data' => $channels, 'message' => 'Channels fetched successfully', 'status' => 'success']);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'failed to get channels']);
+            return response()->json(['message' => 'failed to get channels', 'status' => 'error']);
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function create_channel(Request $request)
     {
         try {
-            DB::insert('insert into channels (name, server_id ) values (? , ?)', [
-                $request->name,
-                $request->server_id,
-            ]);
-            return response()->json(['message' => 'Channel created successfully']);
+            $channel_repository         = new ChannelRepositorySql();
+            $channel_repository_context = new ChannelRepositoryContext($channel_repository);
+
+            $channel_repository_context->create_channel($request->name, $request->server_id);
+
+            return response()->json(['message' => 'Channel created successfully', 'status' => 'success']);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'failed to create channel']);
+            return response()->json(['message' => 'failed to create channel', 'status' => 'error']);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update_channel(Request $request, int $id)
     {
         try {
-            DB::select('update channels set name = ? where id = ?', [
-                $request->name,
-                $id,
-            ]);
-            return response()->json(['message' => 'Channel updated successfully']);
+            $channel_repository         = new ChannelRepositorySql();
+            $channel_repository_context = new ChannelRepositoryContext($channel_repository);
+
+            $channel_repository_context->update_channel($request->name, $id);
+
+            return response()->json(['message' => 'Channel updated successfully', 'status' => 'success']);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'failed to update channel']);
+            return response()->json(['message' => 'failed to update channel', 'status' => 'error']);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function delete_channel(int $id)
     {
         try {
-            DB::delete('delete from channels where id = ?', [$id]);
-            return response()->json(['message' => 'Channel deleted successfully']);
+            $channel_repository         = new ChannelRepositorySql();
+            $channel_repository_context = new ChannelRepositoryContext($channel_repository);
+
+            $channel_repository_context->delete_channel($id);
+
+            return response()->json(['message' => 'Channel deleted successfully', 'status' => 'success']);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'failed to delete channel']);
+            return response()->json(['message' => 'failed to delete channel', 'status' => 'error']);
         }
     }
-
 }
