@@ -6,6 +6,7 @@ use App\Repository\MessageInChannel\Concrete\MessageInChannelRepositorySql;
 use App\Repository\MessageInChannel\MessageInChannelRepositoryContext;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MessageInChannelController extends Controller
 {
@@ -20,8 +21,11 @@ class MessageInChannelController extends Controller
 
             $messages = $messageRepositoryContext->list_messages($channel_id);
 
+            Log::debug($messages);
+
             return response()->json(["data" => $messages, "message" => "Messages listed successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to list messages", "status" => "error"]);
         }
     }
@@ -44,6 +48,7 @@ class MessageInChannelController extends Controller
 
             return response()->json(["message" => "Message sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+
             return response()->json(["message" => "failed to send message", "status" => "error"]);
         }
     }

@@ -1,9 +1,9 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar } from '@/components/ui/avatar'
 
 import { Input } from '@/components/ui/input'
-import { Ellipsis, ImageIcon, User } from 'lucide-react'
+import { Ellipsis, User } from 'lucide-react'
 
 import {
     useAutoScroll,
@@ -19,15 +19,16 @@ import {
 import { useState } from 'react'
 
 export default function MessageContent({
-    messages, // サーバーからfetchしたメッセージ
+    messages, // apサーバーからfetchしたメッセージ
     setMessages,
     messageType, // dm or channel
-    id /*dm_id or サーバーのチャンネルid */,
+    id /*dm_id or チャンネルid */,
+    useMessageCustomHook,
 }) {
     const userId = useFetchUserId()
     const scrollRef = useAutoScroll(messages)
     usePusher(messageType, id, setMessages)
-    const { messageInputRef, handleEnterKey } = useSendMessage(id)
+    const { messageInputRef, handleEnterKey } = useMessageCustomHook(id)
 
     return (
         <div className="flex flex-col h-screen bg-[#313338] text-gray-100">
@@ -70,6 +71,7 @@ const InputArea = ({ messageInputRef, handleEnterKey }) => {
         </div>
     )
 }
+
 function Message({ message, userId }) {
     const [isEditing, setIsEditing] = useState(false)
 
@@ -100,7 +102,7 @@ function Message({ message, userId }) {
                 </div>
                 <div>
                     {/* message.idはメッセージを投稿したユーザーのid  */}
-                    {message.id === userId && <MessageOperations />}
+                    {message.user_id === userId && <MessageOperations />}
                 </div>
             </div>
         </div>

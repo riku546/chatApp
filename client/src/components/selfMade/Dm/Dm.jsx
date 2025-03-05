@@ -2,6 +2,7 @@ import React from 'react'
 import DmListAndUserFiled from './DmListAndUserFiled/DmListAndUserFiled'
 import MessageContent from '../MessageContent'
 import ServerList from './ServerList/ServerList'
+import { useSendMessageInDm } from '@/hooks/components/MessageContent'
 
 const Dm = ({ fetchDmMessage, messages, setMessages, dmId }) => {
     return (
@@ -14,6 +15,7 @@ const Dm = ({ fetchDmMessage, messages, setMessages, dmId }) => {
                     setMessages={setMessages}
                     messageType={'dm'}
                     id={dmId}
+                    useMessageCustomHook={useSendMessageInDm}
                 />
             </div>
         </div>

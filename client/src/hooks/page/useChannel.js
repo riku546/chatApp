@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from 'react'
 
 import axios from '@/lib/axios'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
 
 const useChannel = () => {
     const [messages, setMessages] = useState([])
     const [channelList, setChannelList] = useState([])
-    const [currentWatchChannelId, setCurrentWatchChannelId] = useState(null)
 
     const serverId = useSelector(state => state.currentWatchServerId.value)
+
+    const dispatch = useDispatch()
 
     const fetchChannelList = async () => {
         try {
@@ -43,7 +45,7 @@ const useChannel = () => {
         const firstChannelId = channels[0].id
         await fetchChannelMessage(firstChannelId)
 
-        setCurrentWatchChannelId(firstChannelId)
+        dispatch(setCurrentWatchChannelId(firstChannelId))
     }
 
     useEffect(() => {
@@ -55,7 +57,6 @@ const useChannel = () => {
         setMessages,
         channelList,
         setChannelList,
-        currentWatchChannelId,
     }
 }
 

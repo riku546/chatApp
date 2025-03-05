@@ -4,7 +4,7 @@ namespace App\Repository\Channel\Concrete;
 use App\Models\Channels;
 use App\Repository\Channel\ChannelRepositoryInterface;
 
-class ChannelRepositorySql implements ChannelRepositoryInterface
+class ChannelRepositoryOrm implements ChannelRepositoryInterface
 {
     public function list_channel_in_server(int $server_id)
     {

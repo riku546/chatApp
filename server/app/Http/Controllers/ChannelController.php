@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Repository\Channel\ChannelRepositoryContext;
+use App\Repository\Channel\Concrete\ChannelRepositoryOrm;
 use App\Repository\Channel\Concrete\ChannelRepositorySql;
 use Illuminate\Http\Request;
 
@@ -25,12 +26,12 @@ class ChannelController extends Controller
     public function create_channel(Request $request)
     {
         try {
-            $channel_repository         = new ChannelRepositorySql();
+            $channel_repository         = new ChannelRepositoryOrm();
             $channel_repository_context = new ChannelRepositoryContext($channel_repository);
 
-            $channel_repository_context->create_channel($request->name, $request->server_id);
+            $new_channel = $channel_repository_context->create_channel($request->name, $request->server_id);
 
-            return response()->json(['message' => 'Channel created successfully', 'status' => 'success']);
+            return response()->json(['data' => $new_channel, 'message' => 'Channel created successfully', 'status' => 'success']);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'failed to create channel', 'status' => 'error']);
         }

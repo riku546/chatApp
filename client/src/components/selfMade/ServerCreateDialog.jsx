@@ -22,7 +22,7 @@ const ServerCreateDialog = () => {
 
     const dispatch = useDispatch()
 
-    const handleCreateServer = async () => {
+    const createServerFacade = async () => {
         const newServerName = inputRef.current.value
 
         const newServerId = await createServer(newServerName)
@@ -88,7 +88,7 @@ const ServerCreateDialog = () => {
                 <DialogFooter>
                     <DialogClose>
                         <Button
-                            onClick={() => handleCreateServer()}
+                            onClick={() => createServerFacade()}
                             type="submit"
                             className="bg-[#5865f2]">
                             作成

@@ -2,22 +2,18 @@ import React from 'react'
 import ServerList from './serverList/ServerList'
 import MessageContent from '../MessageContent'
 import ChannelListAndUserFiled from './channelListAndUserFiled/ChannelListAndUserFiled'
+import { useSendMessageInChannel } from '@/hooks/components/MessageContent'
+import { useSelector } from 'react-redux'
 
-const Server = ({
-    messages,
-    setMessages,
-    channelId,
-    channelList,
-    currentWatchChannelId,
-    setChannelList,
-}) => {
+const Server = ({ messages, setMessages, channelList, setChannelList }) => {
+    const channelId = useSelector(state => state.currentWatchChannelId.value)
+
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
 
             <ChannelListAndUserFiled
                 channelList={channelList}
-                currentWatchChannelId={currentWatchChannelId}
                 setChannelList={setChannelList}
             />
 
@@ -26,6 +22,7 @@ const Server = ({
                     messages={messages}
                     setMessages={setMessages}
                     messageType={'channel'}
+                    useMessageCustomHook={useSendMessageInChannel}
                     id={channelId}
                 />
             </div>

@@ -27,7 +27,7 @@ const ServerList = () => {
                     {serverList &&
                         serverList.map((server, i) => (
                             <Link
-                                href={`/channel`}
+                                href={`/server/${server.id}/channel`}
                                 key={server.id}
                                 onClick={() =>
                                     dispatch(setCurrentWatchServerId(server.id))

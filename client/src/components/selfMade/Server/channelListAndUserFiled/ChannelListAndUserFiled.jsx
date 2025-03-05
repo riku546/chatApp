@@ -1,7 +1,7 @@
 import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Plus } from 'lucide-react'
+import { Plus, Settings } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import UserInfoFiled from '../../UserInfoFiled'
@@ -17,11 +17,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { DialogClose } from '@radix-ui/react-dialog'
 import axios from '@/lib/axios'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function channelListAndUserFiled({
     channelList,
-    currentWatchChannelId,
     setChannelList,
 }) {
     return (
@@ -29,7 +28,6 @@ export default function channelListAndUserFiled({
             <div className="w-60 bg-[#2b2d31] flex flex-col">
                 <ChannelList
                     channelList={channelList}
-                    currentWatchChannelId={currentWatchChannelId}
                     setChannelList={setChannelList}
                 />
                 <UserInfoFiled />
@@ -38,11 +36,15 @@ export default function channelListAndUserFiled({
     )
 }
 
-const ChannelList = ({
-    channelList,
-    currentWatchChannelId,
-    setChannelList,
-}) => {
+const ChannelList = ({ channelList, setChannelList }) => {
+    const serverId = useSelector(state => state.currentWatchServerId.value)
+
+    const currentWatchChannelId = useSelector(
+        state => state.currentWatchChannelId.value,
+    )
+
+    const dispatch = useDispatch()
+
     return (
         <ScrollArea className="flex-1">
             <div className="p-2">
@@ -50,29 +52,32 @@ const ChannelList = ({
                     <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                         チャンネル
                     </div>
-                    <ChannelCreateDialog
-                        setChannelList={setChannelList}></ChannelCreateDialog>
+                    <ChannelCreateDialog setChannelList={setChannelList} />
                 </div>
                 {channelList.map(channel => (
-                    <Link
-                        href={`/channel`}
-                        key={channel.id}
-                        onClick={() => {
-                            setCurrentWatchChannelId(channel.id)
-                            fetchChannelMessage(channel.id)
+                    <div
+                        className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
+                        style={{
+                            backgroundColor:
+                                currentWatchChannelId === channel.id
+                                    ? '#36393f'
+                                    : '',
                         }}>
-                        <Button
-                            variant="ghost"
-                            className={'w-full justify-start gap-2 h-11 '}
-                            style={{
-                                backgroundColor:
-                                    currentWatchChannelId === channel.id
-                                        ? '#36393f'
-                                        : '',
-                            }}>
-                            <span className="text-sm">{channel.name}</span>
-                        </Button>
-                    </Link>
+                        <Link
+                            href={`/server/${serverId}/channel`}
+                            key={channel.id}
+                            onClick={() =>
+                                dispatch(setCurrentWatchChannelId(channel.id))
+                            }>
+                            <span className="text-sm break-all">
+                                {channel.name}
+                            </span>
+                        </Link>
+                        <Link
+                            href={`/server/${serverId}/channel/${channel.id}/setting`}>
+                            <Settings size={16} />
+                        </Link>
+                    </div>
                 ))}
             </div>
         </ScrollArea>
@@ -86,12 +91,14 @@ const ChannelCreateDialog = ({ setChannelList }) => {
 
     const handleCreateChannel = async () => {
         try {
-            await axios.post('api/channel/create', {
+            const res = await axios.post('api/channel/create', {
                 name: inputRef.current.value,
                 server_id: serverId,
             })
 
-            setChannelList(prev => [...prev, {}])
+            const newChannel = res.data.data
+
+            setChannelList(prev => [...prev, newChannel])
         } catch (error) {
             throw error
         }

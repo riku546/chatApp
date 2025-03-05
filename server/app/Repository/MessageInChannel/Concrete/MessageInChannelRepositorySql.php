@@ -10,7 +10,7 @@ class MessageInChannelRepositorySql implements MessageInChannelRepositoryInterfa
     public function list_messages($channel_id): array
     {
         try {
-            $messages = DB::select('select message, created_at, user_id from messages_in_channel where channel_id = ? order by created_at', [$channel_id]);
+            $messages = DB::select('select m.message as content, m.created_at, u.name from messages_in_channel as m inner join users as u on m.user_id = u.id  where channel_id = ? order by created_at', [$channel_id]);
 
             return $messages;
         } catch (\Throwable $th) {

@@ -33,19 +33,44 @@ export const useAutoScroll = messages => {
     return scrollRef
 }
 
-export const useSendMessage = id => {
+export const useSendMessageInDm = dmId => {
     const messageInputRef = useRef(null)
 
     const sendMessage = async () => {
         try {
             await axios.post('/api/dm/message/send', {
-                dm_id: id,
-                content: messageInputRef.current.value,
+                dm_id: dmId,
+                message: messageInputRef.current.value,
             })
 
             messageInputRef.current.value = ''
         } catch (error) {
-            console.error(error)
+            throw error
+        }
+    }
+
+    const handleEnterKey = event => {
+        if (event.key === 'Enter') {
+            sendMessage()
+        }
+    }
+
+    return { messageInputRef, handleEnterKey, sendMessage }
+}
+
+export const useSendMessageInChannel = channelId => {
+    const messageInputRef = useRef(null)
+
+    const sendMessage = async () => {
+        try {
+            await axios.post('/api/channel/message/send', {
+                channel_id: channelId,
+                message: messageInputRef.current.value,
+            })
+
+            messageInputRef.current.value = ''
+        } catch (error) {
+            throw error
         }
     }
 

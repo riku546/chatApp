@@ -30,14 +30,14 @@ class MessageInDmController extends Controller
 
         try {
             //websocketsを使ってメッセージを送信
-            event(new DmEvent($request->content, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->dm_id));
+            event(new DmEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->dm_id));
 
             //メッセージをDBに保存
             $dm_repository = new MessageInDmRepositorySql();
 
             $dm_repository_context = new MessageInDmRepositoryContext($dm_repository);
 
-            $dm_repository_context->send_message($request->content, $request->dm_id, $formatted_timestamp);
+            $dm_repository_context->send_message($request->message, $request->dm_id, $formatted_timestamp);
 
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
