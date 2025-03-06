@@ -8,7 +8,6 @@ import { Ellipsis, User } from 'lucide-react'
 import {
     useAutoScroll,
     useFetchUserId,
-    useSendMessage,
 } from '@/hooks/components/MessageContent.jsx'
 import { usePusher } from '@/hooks/usePusher.js'
 import {
@@ -16,7 +15,9 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from '@radix-ui/react-hover-card'
-import { useState } from 'react'
+import { use, useState } from 'react'
+import axios from '@/lib/axios'
+import { useSelector } from 'react-redux'
 
 export default function MessageContent({
     messages, // apサーバーからfetchしたメッセージ
@@ -24,6 +25,7 @@ export default function MessageContent({
     messageType, // dm or channel
     id /*dm_id or チャンネルid */,
     useMessageCustomHook,
+    useOperationMessageCustomHook,
 }) {
     const userId = useFetchUserId()
     const scrollRef = useAutoScroll(messages)
@@ -40,6 +42,9 @@ export default function MessageContent({
                             key={message.created_at}
                             message={message}
                             userId={userId}
+                            useOperationMessageCustomHook={
+                                useOperationMessageCustomHook
+                            }
                         />
                     ))}
 
@@ -72,8 +77,30 @@ const InputArea = ({ messageInputRef, handleEnterKey }) => {
     )
 }
 
-function Message({ message, userId }) {
+function Message({ message, userId, useOperationMessageCustomHook }) {
     const [isEditing, setIsEditing] = useState(false)
+    const [messageContent, setMessageContent] = useState(message.content)
+
+    const handleMessageArea = () => {
+        if (isEditing) {
+            //メッセージの編集キャンセル時に必要な前回のメッセージを保存
+            localStorage.setItem('previousMessage', message.content)
+
+            return (
+                <EditingFiled
+                    message={messageContent}
+                    created_at={message.created_at}
+                    setMessageContent={setMessageContent}
+                    setIsEditing={setIsEditing}
+                    useOperationMessageCustomHook={
+                        useOperationMessageCustomHook
+                    }
+                />
+            )
+        } else {
+            return messageContent
+        }
+    }
 
     //メッセージの作成日時から秒を削除する
     //引数 2022-01-01 10:00:00
@@ -97,44 +124,75 @@ function Message({ message, userId }) {
                         </span>
                     </div>
                     <div className="w-4/5  mt-1 text-gray-100 whitespace-pre-line  break-words">
-                        {message.content}
+                        {handleMessageArea()}
                     </div>
                 </div>
                 <div>
                     {/* message.idはメッセージを投稿したユーザーのid  */}
-                    {message.user_id === userId && <MessageOperations />}
+                    {message.user_id === userId && (
+                        <MessageOperations
+                            setIsEditing={setIsEditing}
+                            useOperationMessageCustomHook={
+                                useOperationMessageCustomHook
+                            }
+                            created_at={message.created_at}
+                        />
+                    )}
                 </div>
             </div>
         </div>
     )
 }
 
-const EditingFiled = ({ message }) => {
+const EditingFiled = ({
+    message,
+    created_at,
+    setMessageContent,
+    setIsEditing,
+    useOperationMessageCustomHook,
+}) => {
+    const { handleEditMessage } = useOperationMessageCustomHook()
+
     return (
-        <div>
+        <div className="w-full">
             <input
-                className="mt-1 text-gray-100 border-none bg-gray-700 p-2 rounded whitespace-pre-line  break-words"
+                className="w-full mt-1 text-gray-100 border-none bg-[#383a40] p-2 rounded whitespace-pre-line  break-words"
                 type="text"
-                value={message.content}
+                value={message}
+                onChange={e => setMessageContent(e.target.value)}
             />
-            <div className="mt-1 text-gray-100 bg-gray-700 p-2 rounded whitespace-pre-line  break-words">
-                {message.content}
-            </div>
+
             <div className="flex items-center space-x-3 mt-2">
-                <p className="text-gray-400 text-xs">
-                    Escキーで
-                    <span className="text-sky-500">キャンセル</span>
+                <p
+                    onClick={() => {
+                        setMessageContent(
+                            localStorage.getItem('previousMessage'),
+                        )
+                        setIsEditing(false)
+                    }}
+                    className="text-gray-400 text-xs hover:cursor-pointer">
+                    キャンセル
                 </p>
-                <p className="text-gray-400 text-xs">
-                    Enterキーで
-                    <span className="text-sky-500">保存</span>
+                <p
+                    onClick={() => {
+                        setIsEditing(false)
+                        handleEditMessage(message, created_at)
+                    }}
+                    className="text-xs text-sky-500 hover:cursor-pointer ">
+                    保存
                 </p>
             </div>
         </div>
     )
 }
 
-const MessageOperations = () => {
+const MessageOperations = ({
+    setIsEditing,
+    useOperationMessageCustomHook,
+    created_at,
+}) => {
+    const { handleDeleteMessage } = useOperationMessageCustomHook()
+
     return (
         <HoverCard>
             <HoverCardTrigger>
@@ -142,10 +200,14 @@ const MessageOperations = () => {
             </HoverCardTrigger>
             <HoverCardContent>
                 <div className="flex flex-col space-y-4 p-2 bg-[#383A40] rounded-md">
-                    <div className="flex items-center  hover:cursor-pointer">
+                    <div
+                        onClick={() => setIsEditing(true)}
+                        className="flex items-center  hover:cursor-pointer">
                         <span>メッセージを編集</span>
                     </div>
-                    <div className="flex items-center ">
+                    <div
+                        onClick={() => handleDeleteMessage(created_at)}
+                        className="flex items-center">
                         <span className="text-red-600 hover:cursor-pointer">
                             メッセージを削除
                         </span>

@@ -53,7 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dm/{dm_id}/message/', [MessageInDmController::class, 'show_message_specific_dm']);
     Route::post('/dm/message/send', [MessageInDmController::class, 'send_message']);
     Route::put('/dm/message/edit', [MessageInDmController::class, 'edit_message']);
-    Route::delete('/dm/message/delete', [MessageInDmController::class, 'delete_message']);
+    Route::delete('/dm/{dm_id}/message/delete/{created_at}', [MessageInDmController::class, 'delete_message']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -81,5 +81,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/channel/{channel_id}/messages', [MessageInChannelController::class, 'list_messages']);
     Route::post('/channel/message/send', [MessageInChannelController::class, 'send_message']);
     Route::put('/channel/message/edit', [MessageInChannelController::class, 'edit_message']);
-    Route::delete('/channel/message/{channel_id}/delete/{created_at}', [MessageInChannelController::class, 'delete_message']);
+    Route::delete('/channel/{channel_id}/message/delete/{created_at}', [MessageInChannelController::class, 'delete_message']);
 });

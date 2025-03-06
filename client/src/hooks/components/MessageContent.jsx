@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from '@/lib/axios.js'
 import { useRef } from 'react'
+import { useSelector } from 'react-redux'
 
 export const useFetchUserId = () => {
     const [userId, setUserId] = useState(null)
@@ -81,4 +82,58 @@ export const useSendMessageInChannel = channelId => {
     }
 
     return { messageInputRef, handleEnterKey, sendMessage }
+}
+
+export const useOperationMessageInDm = () => {
+    const dmId = useSelector(state => state.currentWatchDmId.value)
+
+    const handleEditMessage = async (newMessage, created_at) => {
+        try {
+            await axios.put(`api/dm/message/edit`, {
+                dm_id: dmId,
+                content: newMessage,
+                created_at: created_at,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const handleDeleteMessage = async created_at => {
+        try {
+            await axios.delete(`api/dm/${dmId}/message/delete/${created_at}`)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    return { handleEditMessage, handleDeleteMessage }
+}
+
+export const useOperationMessageInChannel = () => {
+    const channelId = useSelector(state => state.currentWatchChannelId.value)
+
+    const handleEditMessage = async (newMessage, created_at) => {
+        try {
+            await axios.put(`api/channel/message/edit`, {
+                channel_id: channelId,
+                message: newMessage,
+                created_at: created_at,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const handleDeleteMessage = async created_at => {
+        try {
+            await axios.delete(
+                `api/channel/${channelId}/message/delete/${created_at}`,
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    return { handleEditMessage, handleDeleteMessage }
 }

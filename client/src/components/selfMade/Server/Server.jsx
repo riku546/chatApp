@@ -2,7 +2,10 @@ import React from 'react'
 import ServerList from './serverList/ServerList'
 import MessageContent from '../MessageContent'
 import ChannelListAndUserFiled from './channelListAndUserFiled/ChannelListAndUserFiled'
-import { useSendMessageInChannel } from '@/hooks/components/MessageContent'
+import {
+    useOperationMessageInChannel,
+    useSendMessageInChannel,
+} from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
 import useChannel from '@/hooks/page/useChannel'
 
@@ -22,6 +25,7 @@ const Server = ({ messages, setMessages }) => {
                     messageType={'channel'}
                     useMessageCustomHook={useSendMessageInChannel}
                     id={channelId}
+                    useOperationMessageCustomHook={useOperationMessageInChannel}
                 />
             </div>
         </div>
