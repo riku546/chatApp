@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input'
 import { DialogClose } from '@radix-ui/react-dialog'
 import axios from '@/lib/axios'
 import { useDispatch, useSelector } from 'react-redux'
+import { addChannelToChannelList } from '@/app/store/slice/channelList'
 
 export default function channelListAndUserFiled({
     channelList,
@@ -36,12 +37,14 @@ export default function channelListAndUserFiled({
     )
 }
 
-const ChannelList = ({ channelList, setChannelList }) => {
+const ChannelList = () => {
     const serverId = useSelector(state => state.currentWatchServerId.value)
 
     const currentWatchChannelId = useSelector(
         state => state.currentWatchChannelId.value,
     )
+
+    const channelList = useSelector(state => state.channelList.value)
 
     const dispatch = useDispatch()
 
@@ -52,42 +55,47 @@ const ChannelList = ({ channelList, setChannelList }) => {
                     <div className="text-xs font-semibold text-gray-400 px-2 py-1">
                         チャンネル
                     </div>
-                    <ChannelCreateDialog setChannelList={setChannelList} />
+                    <ChannelCreateDialog />
                 </div>
-                {channelList.map(channel => (
-                    <Link
-                        href={`/server/${serverId}/channel/${channel.id}`}
-                        key={channel.id}
-                        onClick={() => {
-                            dispatch(setCurrentWatchChannelId(channel.id))
-                        }}
-                        className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
-                        style={{
-                            backgroundColor:
-                                currentWatchChannelId === channel.id
-                                    ? '#36393f'
-                                    : '',
-                        }}>
-                        <div key={channel.id}>
-                            <span className="text-sm break-all">
-                                {channel.name}
-                            </span>
-                        </div>
+                {channelList &&
+                    channelList.map(channel => (
                         <Link
-                            href={`/server/${serverId}/channel/${channel.id}/setting`}>
-                            <Settings size={16} />
+                            href={`/server/${serverId}/channel/${channel.id}`}
+                            key={channel.id}
+                            onClick={() => {
+                                dispatch(setCurrentWatchChannelId(channel.id))
+                            }}
+                            className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
+                            style={{
+                                backgroundColor:
+                                    currentWatchChannelId === channel.id
+                                        ? '#36393f'
+                                        : '',
+                            }}>
+                            <div key={channel.id}>
+                                <span className="text-sm break-all">
+                                    {channel.name}
+                                </span>
+                            </div>
+                            <div>
+                                <Link
+                                    href={`/server/${serverId}/channel/${channel.id}/setting`}>
+                                    <Settings size={16} />
+                                </Link>
+                            </div>
                         </Link>
-                    </Link>
-                ))}
+                    ))}
             </div>
         </ScrollArea>
     )
 }
 
-const ChannelCreateDialog = ({ setChannelList }) => {
+const ChannelCreateDialog = () => {
     const inputRef = useRef(null)
 
     const serverId = useSelector(state => state.currentWatchServerId.value)
+
+    const dispatch = useDispatch()
 
     const handleCreateChannel = async () => {
         try {
@@ -98,7 +106,7 @@ const ChannelCreateDialog = ({ setChannelList }) => {
 
             const newChannel = res.data.data
 
-            setChannelList(prev => [...prev, newChannel])
+            dispatch(addChannelToChannelList(newChannel))
         } catch (error) {
             throw error
         }

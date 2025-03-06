@@ -6,17 +6,14 @@ import { useSendMessageInChannel } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
 import useChannel from '@/hooks/page/useChannel'
 
-const Server = ({ messages, setMessages, channelList, setChannelList }) => {
+const Server = ({ messages, setMessages }) => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
 
-            <ChannelListAndUserFiled
-                channelList={channelList}
-                setChannelList={setChannelList}
-            />
+            <ChannelListAndUserFiled />
 
             <div className="flex-1 flex flex-col">
                 <MessageContent

@@ -1,20 +1,21 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import axios from '@/lib/axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
+import { useDispatch } from 'react-redux'
+import { setChannelList } from '@/app/store/slice/channelList'
 
 const useChannel = (serverId, channelId) => {
     const [messages, setMessages] = useState([])
-    const [channelList, setChannelList] = useState([])
+
+    const dispatch = useDispatch()
 
     const fetchChannelList = async () => {
         try {
             const res = await axios.get(`api/server/${serverId}/channels`)
 
-            setChannelList(res.data.data)
+            dispatch(setChannelList(res.data.data))
 
             return res.data.data
         } catch (error) {
@@ -44,8 +45,6 @@ const useChannel = (serverId, channelId) => {
     return {
         messages,
         setMessages,
-        channelList,
-        setChannelList,
     }
 }
 

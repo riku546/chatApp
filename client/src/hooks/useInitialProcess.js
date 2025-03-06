@@ -13,7 +13,7 @@ const useInitialProcess = () => {
     const fetchServerList = async () => {
         try {
             const serverList = (await axios.get('/api/users-servers')).data.data
-            console.log(serverList)
+
             dispatch(setServerList(serverList))
         } catch (error) {
             throw error
@@ -23,6 +23,7 @@ const useInitialProcess = () => {
     const fetchUserInfo = async () => {
         try {
             const userInfo = (await axios.get('/api/user')).data
+
             dispatch(setUserInfo(userInfo))
         } catch (error) {
             throw error
@@ -32,6 +33,7 @@ const useInitialProcess = () => {
     const fetchDmList = async () => {
         try {
             const dmList = (await axios.get('/api/dm-list')).data.data
+
             dispatch(setDmList(dmList))
         } catch (error) {
             throw error

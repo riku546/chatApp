@@ -14,12 +14,12 @@ const page = () => {
     const dispatch = useDispatch()
 
     const channelId = useParams().channelId
-    dispatch(setCurrentWatchChannelId(channelId))
+    dispatch(setCurrentWatchChannelId(Number(channelId)))
 
     const serverId = useParams().serverId
     dispatch(setCurrentWatchServerId(serverId))
 
-    const { messages, setMessages, channelList, setChannelList } = useChannel(
+    const { messages, setMessages } = useChannel(
         serverId,
         channelId,
     )
@@ -28,8 +28,6 @@ const page = () => {
         <Server
             messages={messages}
             setMessages={setMessages}
-            channelList={channelList}
-            setChannelList={setChannelList}
         />
     )
 }
