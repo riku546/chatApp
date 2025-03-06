@@ -29,15 +29,15 @@ const ServerList = () => {
                     {serverList &&
                         serverList.map((server, i) => (
                             <Link
-                                href={`/server/${server.id}/channel`}
-                                key={server.id}
+                                href={`/server/${server.server_id}/channel/${server.channel_id}`}
+                                key={server.server_id}
                                 onClick={() =>
-                                    dispatch(setCurrentWatchServerId(server.id))
+                                    dispatch(setCurrentWatchServerId(server.server_id))
                                 }
                                 className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
                                 <Avatar>
                                     <AvatarFallback className="text-xs">
-                                        {server.name.substring(0, 3)}
+                                        {server.server_name.substring(0, 3)}
                                     </AvatarFallback>
                                 </Avatar>
                             </Link>
@@ -45,7 +45,7 @@ const ServerList = () => {
                 </div>
             </ScrollArea>
 
-            <ServerCreateDialog serverList={serverList} />
+            <ServerCreateDialog />
 
             <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
                 <Compass />

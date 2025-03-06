@@ -13,6 +13,7 @@ const useInitialProcess = () => {
     const fetchServerList = async () => {
         try {
             const serverList = (await axios.get('/api/users-servers')).data.data
+            console.log(serverList)
             dispatch(setServerList(serverList))
         } catch (error) {
             throw error

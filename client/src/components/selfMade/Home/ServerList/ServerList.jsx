@@ -2,24 +2,10 @@
 
 import { MessageCircle } from 'lucide-react'
 import Link from 'next/link'
-import React, { useEffect, useRef, useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Compass, Plus } from 'lucide-react'
-import axios from '@/lib/axios'
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components//ui/button'
-import { Input } from '@/components/ui/input'
-import { DialogClose } from '@radix-ui/react-dialog'
+import { Compass } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addServerToServerList } from '@/app/store/slice/serverList'
 import ServerCreateDialog from '../../ServerCreateDialog'
 import { setCurrentWatchServerId } from '@/app/store/slice/currentWatchServerId'
 
@@ -41,15 +27,19 @@ const ServerList = () => {
                     {serverList &&
                         serverList.map((server, i) => (
                             <Link
-                                href={`/server/${server.id}/channel`}
-                                key={server.id}
+                                href={`/server/${server.server_id}/channel/${server.channel_id}`}
+                                key={server.server_id}
                                 onClick={() =>
-                                    dispatch(setCurrentWatchServerId(server.id))
+                                    dispatch(
+                                        setCurrentWatchServerId(
+                                            server.server_id,
+                                        ),
+                                    )
                                 }
                                 className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
                                 <Avatar>
                                     <AvatarFallback className="text-xs">
-                                        {server.name.substring(0, 3)}
+                                        {server.server_name.substring(0, 3)}
                                     </AvatarFallback>
                                 </Avatar>
                             </Link>
@@ -57,7 +47,7 @@ const ServerList = () => {
                 </div>
             </ScrollArea>
 
-            <ServerCreateDialog serverList={serverList} />
+            <ServerCreateDialog />
 
             <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
                 <Compass />

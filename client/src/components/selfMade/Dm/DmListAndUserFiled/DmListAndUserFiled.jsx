@@ -7,18 +7,18 @@ import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import UserInfoFiled from '../../UserInfoFiled'
 import Link from 'next/link'
 
-export default function DmListAndUserFiled({ fetchDmMessage }) {
+export default function DmListAndUserFiled() {
     return (
         <div className="flex">
             <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList fetchDmMessage={fetchDmMessage} />
+                <DmList />
                 <UserInfoFiled />
             </div>
         </div>
     )
 }
 
-const DmList = ({ fetchDmMessage }) => {
+const DmList = () => {
     const dispatch = useDispatch()
 
     const currentWatchDmId = useSelector(state => state.currentWatchDmId.value)

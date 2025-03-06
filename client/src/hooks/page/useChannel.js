@@ -6,13 +6,9 @@ import axios from '@/lib/axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
 
-const useChannel = () => {
+const useChannel = (serverId, channelId) => {
     const [messages, setMessages] = useState([])
     const [channelList, setChannelList] = useState([])
-
-    const serverId = useSelector(state => state.currentWatchServerId.value)
-
-    const dispatch = useDispatch()
 
     const fetchChannelList = async () => {
         try {
@@ -29,7 +25,6 @@ const useChannel = () => {
     const fetchChannelMessage = async channelId => {
         try {
             const res = await axios.get(`api/channel/${channelId}/messages`)
-
             setMessages(res.data.data)
         } catch (error) {
             throw error
@@ -37,15 +32,9 @@ const useChannel = () => {
     }
 
     const initializeChannelPage = async () => {
-        const channels = await fetchChannelList()
+        await fetchChannelList()
 
-        //サーバを開いたときに、最初に最初に作られたチャンネルが表示されるようにするため
-        // 最初のチャンネルのIDを取得する
-        //*** api側で、チャンネルが作られた順番で返すようにしている
-        const firstChannelId = channels[0].id
-        await fetchChannelMessage(firstChannelId)
-
-        dispatch(setCurrentWatchChannelId(firstChannelId))
+        await fetchChannelMessage(channelId)
     }
 
     useEffect(() => {

@@ -21,7 +21,7 @@ class ServerRepositorySql implements ServerRepositoryInterface
     public function list_users_servers()
     {
         try {
-            $server_list = DB::select('select s.id , s.name from servers as s inner join belonger_in_server as bs on s.id = bs.server_id where bs.user_id = ?', [auth()->id()]);
+            $server_list = DB::select('select s.id as server_id , s.name as server_name ,  (select min(c.id) from channels c where c.server_id = s.id) as channel_id from servers as s inner join belonger_in_server as bs on s.id = bs.server_id  where bs.user_id = ?', [auth()->id()]);
 
             return $server_list;
         } catch (\Throwable $th) {

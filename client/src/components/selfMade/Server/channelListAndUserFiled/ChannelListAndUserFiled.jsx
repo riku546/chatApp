@@ -55,7 +55,12 @@ const ChannelList = ({ channelList, setChannelList }) => {
                     <ChannelCreateDialog setChannelList={setChannelList} />
                 </div>
                 {channelList.map(channel => (
-                    <div
+                    <Link
+                        href={`/server/${serverId}/channel/${channel.id}`}
+                        key={channel.id}
+                        onClick={() => {
+                            dispatch(setCurrentWatchChannelId(channel.id))
+                        }}
                         className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
                         style={{
                             backgroundColor:
@@ -63,21 +68,16 @@ const ChannelList = ({ channelList, setChannelList }) => {
                                     ? '#36393f'
                                     : '',
                         }}>
-                        <Link
-                            href={`/server/${serverId}/channel`}
-                            key={channel.id}
-                            onClick={() =>
-                                dispatch(setCurrentWatchChannelId(channel.id))
-                            }>
+                        <div key={channel.id}>
                             <span className="text-sm break-all">
                                 {channel.name}
                             </span>
-                        </Link>
+                        </div>
                         <Link
                             href={`/server/${serverId}/channel/${channel.id}/setting`}>
                             <Settings size={16} />
                         </Link>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </ScrollArea>
