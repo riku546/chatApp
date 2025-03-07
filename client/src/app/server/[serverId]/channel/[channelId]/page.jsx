@@ -1,7 +1,7 @@
 'use client'
 
 import Server from '@/components/selfMade/Server/Server'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import useInitialProcess from '@/hooks/useInitialProcess'
 import useChannel from '@/hooks/page/useChannel'
 import { useParams } from 'next/navigation'
@@ -19,17 +19,9 @@ const page = () => {
     const serverId = useParams().serverId
     dispatch(setCurrentWatchServerId(serverId))
 
-    const { messages, setMessages } = useChannel(
-        serverId,
-        channelId,
-    )
+    useChannel(serverId, channelId)
 
-    return (
-        <Server
-            messages={messages}
-            setMessages={setMessages}
-        />
-    )
+    return <Server />
 }
 
 export default page

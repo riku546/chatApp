@@ -9,7 +9,7 @@ import {
 import { useSelector } from 'react-redux'
 import useChannel from '@/hooks/page/useChannel'
 
-const Server = ({ messages, setMessages }) => {
+const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
 
     return (
@@ -20,8 +20,6 @@ const Server = ({ messages, setMessages }) => {
 
             <div className="flex-1 flex flex-col">
                 <MessageContent
-                    messages={messages}
-                    setMessages={setMessages}
                     messageType={'channel'}
                     useMessageCustomHook={useSendMessageInChannel}
                     id={channelId}

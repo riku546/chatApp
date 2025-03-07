@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react'
 import axios from '@/lib/axios'
 import { useDispatch } from 'react-redux'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
+import { setMessage } from '@/app/store/slice/message'
 
 export default function useDm(dmId) {
-    const [messages, setMessages] = useState([])
-
     // DMのIDをReduxに保存
     const dispatch = useDispatch()
     dispatch(setCurrentWatchDmId(dmId))
@@ -14,7 +13,8 @@ export default function useDm(dmId) {
     const fetchDmMessage = async id => {
         try {
             const res = await axios.get(`api/dm/${id}/message`)
-            setMessages(res.data.data)
+
+            dispatch(setMessage(res.data.data))
         } catch (error) {
             throw error
         }
@@ -24,10 +24,4 @@ export default function useDm(dmId) {
     useEffect(() => {
         fetchDmMessage(dmId)
     }, [])
-
-    return {
-        messages,
-        setMessages,
-        fetchDmMessage,
-    }
 }

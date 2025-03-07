@@ -14,14 +14,7 @@ export default function Page() {
 
     const dmId = useParams().id
 
-    const { messages, setMessages, fetchDmMessage } = useDm(dmId)
+    useDm(dmId)
 
-    return (
-        <Dm
-            fetchDmMessage={fetchDmMessage}
-            messages={messages}
-            setMessages={setMessages}
-            dmId={dmId}
-        />
-    )
+    return <Dm />
 }

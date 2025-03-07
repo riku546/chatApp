@@ -6,16 +6,16 @@ import {
     useOperationMessageInDm,
     useSendMessageInDm,
 } from '@/hooks/components/MessageContent'
+import { useSelector } from 'react-redux'
 
-const Dm = ({ fetchDmMessage, messages, setMessages, dmId }) => {
+const Dm = () => {
+    const dmId = useSelector(state => state.currentWatchDmId.value)
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
-            <DmListAndUserFiled fetchDmMessage={fetchDmMessage} />
+            <DmListAndUserFiled />
             <div className="flex-1">
                 <MessageContent
-                    messages={messages}
-                    setMessages={setMessages}
                     messageType={'dm'}
                     id={dmId}
                     useMessageCustomHook={useSendMessageInDm}

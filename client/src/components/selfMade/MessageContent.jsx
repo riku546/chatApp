@@ -15,21 +15,30 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from '@radix-ui/react-hover-card'
-import { use, useState } from 'react'
-import axios from '@/lib/axios'
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog'
+import { useState } from 'react'
+import { DialogClose } from '@radix-ui/react-dialog'
+import { Button } from '../ui/button'
 import { useSelector } from 'react-redux'
 
 export default function MessageContent({
-    messages, // apサーバーからfetchしたメッセージ
-    setMessages,
     messageType, // dm or channel
     id /*dm_id or チャンネルid */,
     useMessageCustomHook,
     useOperationMessageCustomHook,
 }) {
+    const messages = useSelector(state => state.message.value)
+
     const userId = useFetchUserId()
     const scrollRef = useAutoScroll(messages)
-    usePusher(messageType, id, setMessages)
+    usePusher(messageType, id)
     const { messageInputRef, handleEnterKey } = useMessageCustomHook(id)
 
     return (
@@ -37,16 +46,17 @@ export default function MessageContent({
             {/* Messages Container */}
             <div className="flex-1 overflow-y-auto py-4 px-6 space-y-6">
                 <div className="space-y-8">
-                    {messages.map(message => (
-                        <Message
-                            key={message.created_at}
-                            message={message}
-                            userId={userId}
-                            useOperationMessageCustomHook={
-                                useOperationMessageCustomHook
-                            }
-                        />
-                    ))}
+                    {messages &&
+                        messages.map(message => (
+                            <Message
+                                key={message.created_at}
+                                message={message}
+                                userId={userId}
+                                useOperationMessageCustomHook={
+                                    useOperationMessageCustomHook
+                                }
+                            />
+                        ))}
 
                     <div ref={scrollRef}></div>
                 </div>
@@ -166,6 +176,7 @@ const EditingFiled = ({
                 <p
                     onClick={() => {
                         setMessageContent(
+                            //編集前のメッセージを取得
                             localStorage.getItem('previousMessage'),
                         )
                         setIsEditing(false)
@@ -191,8 +202,6 @@ const MessageOperations = ({
     useOperationMessageCustomHook,
     created_at,
 }) => {
-    const { handleDeleteMessage } = useOperationMessageCustomHook()
-
     return (
         <HoverCard>
             <HoverCardTrigger>
@@ -205,15 +214,45 @@ const MessageOperations = ({
                         className="flex items-center  hover:cursor-pointer">
                         <span>メッセージを編集</span>
                     </div>
-                    <div
-                        onClick={() => handleDeleteMessage(created_at)}
-                        className="flex items-center">
-                        <span className="text-red-600 hover:cursor-pointer">
-                            メッセージを削除
-                        </span>
-                    </div>
+                    <MessageDeleteDialog
+                        useOperationMessageCustomHook={
+                            useOperationMessageCustomHook
+                        }
+                        created_at={created_at}
+                    />
                 </div>
             </HoverCardContent>
         </HoverCard>
+    )
+}
+
+const MessageDeleteDialog = ({ useOperationMessageCustomHook, created_at }) => {
+    const { handleDeleteMessage } = useOperationMessageCustomHook()
+
+    return (
+        <Dialog>
+            <DialogTrigger>
+                <div className="flex items-center">
+                    <span className="text-red-600 hover:cursor-pointer">
+                        メッセージを削除
+                    </span>
+                </div>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>メッセージを削除しますか？</DialogTitle>
+                </DialogHeader>
+                <DialogFooter>
+                    <DialogClose>
+                        <Button
+                            onClick={() => handleDeleteMessage(created_at)}
+                            type="submit"
+                            className="bg-red-600 hover:bg-red-700 hover:cursor-pointer">
+                            削除
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     )
 }

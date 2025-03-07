@@ -6,6 +6,7 @@ import dmListReducer from './slice/dmList'
 import currentWatchChannelIdReducer from './slice/currentWatchChannelId'
 import currentWatchServerIdReducer from './slice/currentWatchServerId'
 import channelListReducer from './slice/channelList'
+import messageReducer from './slice/message'
 
 const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
         serverList: serverListSliceReducer,
         dmList: dmListReducer,
         channelList: channelListReducer,
+        message: messageReducer,
     },
 })
 

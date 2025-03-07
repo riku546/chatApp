@@ -5,10 +5,9 @@ import { useEffect, useState } from 'react'
 import axios from '@/lib/axios'
 import { useDispatch } from 'react-redux'
 import { setChannelList } from '@/app/store/slice/channelList'
+import { setMessage } from '@/app/store/slice/message'
 
 const useChannel = (serverId, channelId) => {
-    const [messages, setMessages] = useState([])
-
     const dispatch = useDispatch()
 
     const fetchChannelList = async () => {
@@ -26,7 +25,8 @@ const useChannel = (serverId, channelId) => {
     const fetchChannelMessage = async channelId => {
         try {
             const res = await axios.get(`api/channel/${channelId}/messages`)
-            setMessages(res.data.data)
+
+            dispatch(setMessage(res.data.data))
         } catch (error) {
             throw error
         }
@@ -41,11 +41,6 @@ const useChannel = (serverId, channelId) => {
     useEffect(() => {
         initializeChannelPage()
     }, [])
-
-    return {
-        messages,
-        setMessages,
-    }
 }
 
 export default useChannel
