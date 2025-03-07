@@ -37,13 +37,13 @@ class ChannelController extends Controller
         }
     }
 
-    public function update_channel(Request $request, int $id)
+    public function update_channel(Request $request)
     {
         try {
             $channel_repository         = new ChannelRepositorySql();
             $channel_repository_context = new ChannelRepositoryContext($channel_repository);
 
-            $channel_repository_context->update_channel($request->name, $id);
+            $channel_repository_context->update_channel($request->name, $request->id);
 
             return response()->json(['message' => 'Channel updated successfully', 'status' => 'success']);
         } catch (\Throwable $th) {

@@ -73,7 +73,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/server/{server_id}/channels', [ChannelController::class, 'list_channel_in_server']);
     Route::post('/channel/create', [ChannelController::class, 'create_channel']);
-    Route::put('/channel/update/{id}', [ChannelController::class, 'update_channel']);
+    Route::put('/channel/update', [ChannelController::class, 'update_channel']);
     Route::delete('/channel/delete/{id}', [ChannelController::class, 'delete_channel']);
 });
 
