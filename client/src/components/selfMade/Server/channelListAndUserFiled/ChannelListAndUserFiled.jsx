@@ -39,6 +39,10 @@ export default function channelListAndUserFiled({
 
 const ChannelList = () => {
     const serverId = useSelector(state => state.currentWatchServerId.value)
+    const serverList = useSelector(state => state.serverList.value)
+    const serverName = serverList.find(
+        server => server.server_id == serverId,
+    ).server_name
 
     const currentWatchChannelId = useSelector(
         state => state.currentWatchChannelId.value,
@@ -50,41 +54,49 @@ const ChannelList = () => {
 
     return (
         <ScrollArea className="flex-1">
-            <div className="p-2">
-                <div className="flex justify-between items-center ">
-                    <div className="text-xs font-semibold text-gray-400 px-2 py-1">
-                        チャンネル
-                    </div>
-                    <ChannelCreateDialog />
+            <div className="space-y-3">
+                <div className="flex items-center justify-between shadow-md px-4 py-2">
+                    <p className="text-3xl font-sans ">{serverName}</p>
+                    <Settings className="hover:cursor-pointer" size={20} />
                 </div>
-                {channelList &&
-                    channelList.map(channel => (
-                        <Link
-                            href={`/server/${serverId}/channel/${channel.id}`}
-                            key={channel.id}
-                            onClick={() => {
-                                dispatch(setCurrentWatchChannelId(channel.id))
-                            }}
-                            className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
-                            style={{
-                                backgroundColor:
-                                    currentWatchChannelId === channel.id
-                                        ? '#36393f'
-                                        : '',
-                            }}>
-                            <div key={channel.id}>
-                                <span className="text-sm break-all">
-                                    {channel.name}
-                                </span>
-                            </div>
-                            <div>
-                                <Link
-                                    href={`/server/${serverId}/channel/${channel.id}/setting`}>
-                                    <Settings size={16} />
-                                </Link>
-                            </div>
-                        </Link>
-                    ))}
+                <div className="p-2 space-y-3">
+                    <div className="flex justify-between items-center ">
+                        <div className="text-xs font-semibold text-gray-400 px-2 py-1">
+                            チャンネル
+                        </div>
+                        <ChannelCreateDialog />
+                    </div>
+                    {channelList &&
+                        channelList.map(channel => (
+                            <Link
+                                href={`/server/${serverId}/channel/${channel.id}`}
+                                key={channel.id}
+                                onClick={() => {
+                                    dispatch(
+                                        setCurrentWatchChannelId(channel.id),
+                                    )
+                                }}
+                                className="flex justify-between items-center p-3 rounded hover:cursor-pointer"
+                                style={{
+                                    backgroundColor:
+                                        currentWatchChannelId === channel.id
+                                            ? '#36393f'
+                                            : '',
+                                }}>
+                                <div key={channel.id}>
+                                    <span className="text-sm break-all">
+                                        {channel.name}
+                                    </span>
+                                </div>
+                                <div>
+                                    <Link
+                                        href={`/server/${serverId}/channel/${channel.id}/setting`}>
+                                        <Settings size={16} />
+                                    </Link>
+                                </div>
+                            </Link>
+                        ))}
+                </div>
             </div>
         </ScrollArea>
     )
