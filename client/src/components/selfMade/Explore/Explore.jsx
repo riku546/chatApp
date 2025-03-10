@@ -5,7 +5,7 @@ import ServerIntroductions from './ServerIntroductions/ServerIntroductions'
 
 const Explore = () => {
     return (
-        <div className="flex bg-[#313338] text-gray-100">
+        <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
             <NavBar />
             <div className="flex-1">

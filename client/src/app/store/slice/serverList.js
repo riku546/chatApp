@@ -14,8 +14,9 @@ const serverListSlice = createSlice({
             state.value = [
                 ...state.value,
                 {
-                    id: action.payload.newServerId,
-                    name: action.payload.newServerName,
+                    server_id: action.payload.server_id,
+                    server_name: action.payload.server_name,
+                    channel_id: action.payload.channel_id,
                 },
             ]
         },

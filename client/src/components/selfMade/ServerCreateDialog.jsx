@@ -3,7 +3,7 @@
 import { addServerToServerList } from '@/app/store/slice/serverList'
 import axios from '@/lib/axios'
 import { useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     Dialog,
     DialogContent,
@@ -27,17 +27,18 @@ const ServerCreateDialog = () => {
 
         const newServerId = await createServer(newServerName)
 
+        await joinServer(newServerId)
+
+        const newChannelId = await createChannel(newServerId)
+
         //reduxで管理しているサーバーリストに新しいサーバーを追加
         dispatch(
             addServerToServerList({
-                newServerName: newServerName,
-                newServerId: newServerId,
+                server_name: newServerName,
+                server_id: newServerId,
+                channel_id: newChannelId,
             }),
         )
-
-        await joinServer(newServerId)
-
-        await createChannel(newServerId)
     }
 
     const createServer = async serverName => {
@@ -56,10 +57,14 @@ const ServerCreateDialog = () => {
 
     const createChannel = async newServerId => {
         try {
-            await axios.post('api/channel/create', {
+            const res = await axios.post('api/channel/create', {
                 name: '一般',
                 server_id: newServerId,
             })
+
+            const channelId = res.data.data.id
+
+            return channelId
         } catch (error) {
             throw error
         }
