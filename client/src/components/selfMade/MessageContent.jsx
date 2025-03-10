@@ -23,6 +23,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
 import { useState } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/button'
@@ -44,7 +54,7 @@ export default function MessageContent({
     return (
         <div className="flex flex-col h-screen bg-[#313338] text-gray-100">
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto py-4 px-6 space-y-6">
+            <div className="flex-1 overflow-y-auto py-4 px-12 space-y-6">
                 <div className="space-y-8">
                     {messages &&
                         messages.map(message => (
@@ -203,17 +213,19 @@ const MessageOperations = ({
     created_at,
 }) => {
     return (
-        <HoverCard>
-            <HoverCardTrigger>
+        <DropdownMenu>
+            <DropdownMenuTrigger>
                 <Ellipsis className="hover:cursor-pointer" size={20} />
-            </HoverCardTrigger>
-            <HoverCardContent>
-                <div className="flex flex-col space-y-4 p-2 bg-[#383A40] rounded-md">
-                    <div
-                        onClick={() => setIsEditing(true)}
-                        className="flex items-center  hover:cursor-pointer">
-                        <span>メッセージを編集</span>
-                    </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+                align="end"
+                className="bg-[#111214] border border-gray-600">
+                <DropdownMenuItem
+                    className="hover:cursor-pointer"
+                    onClick={() => setIsEditing(true)}>
+                    メッセージを編集
+                </DropdownMenuItem>
+                <div className="px-2 py-1.5">
                     <MessageDeleteDialog
                         useOperationMessageCustomHook={
                             useOperationMessageCustomHook
@@ -221,8 +233,8 @@ const MessageOperations = ({
                         created_at={created_at}
                     />
                 </div>
-            </HoverCardContent>
-        </HoverCard>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
 
@@ -231,12 +243,10 @@ const MessageDeleteDialog = ({ useOperationMessageCustomHook, created_at }) => {
 
     return (
         <Dialog>
-            <DialogTrigger>
-                <div className="flex items-center">
-                    <span className="text-red-600 hover:cursor-pointer">
-                        メッセージを削除
-                    </span>
-                </div>
+            <DialogTrigger className="w-full flex items-center justify-center">
+                <span className="text-sm text-red-600 hover:cursor-pointer">
+                    メッセージを削除
+                </span>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
