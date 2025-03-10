@@ -1,3 +1,5 @@
+'use client'
+
 import { Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'

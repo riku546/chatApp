@@ -1,9 +1,8 @@
+import Explore from '@/components/selfMade/Explore/Explore'
 import React from 'react'
 
 const page = () => {
-  return (
-    <div>page</div>
-  )
+    return <Explore />
 }
 
 export default page
