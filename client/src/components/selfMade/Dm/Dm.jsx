@@ -1,7 +1,7 @@
 import React from 'react'
 import DmListAndUserFiled from './DmListAndUserFiled/DmListAndUserFiled'
 import MessageContent from '../MessageContent'
-import ServerList from './ServerList/ServerList'
+import ServerList from '../ServerList'
 import {
     useOperationMessageInDm,
     useSendMessageInDm,

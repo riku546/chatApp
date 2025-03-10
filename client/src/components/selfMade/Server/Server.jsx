@@ -1,5 +1,5 @@
 import React from 'react'
-import ServerList from './serverList/ServerList'
+import ServerList from '../ServerList'
 import MessageContent from '../MessageContent'
 import ChannelListAndUserFiled from './channelListAndUserFiled/ChannelListAndUserFiled'
 import {
@@ -7,7 +7,6 @@ import {
     useSendMessageInChannel,
 } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
-import useChannel from '@/hooks/page/useChannel'
 
 const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)

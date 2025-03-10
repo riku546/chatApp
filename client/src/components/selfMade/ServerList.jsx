@@ -1,14 +1,12 @@
-'use client'
-
 import { MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Compass } from 'lucide-react'
+import { Compass, Plus } from 'lucide-react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import ServerCreateDialog from '../../ServerCreateDialog'
+import ServerCreateDialog from './ServerCreateDialog'
 import { setCurrentWatchServerId } from '@/app/store/slice/currentWatchServerId'
 
 const ServerList = () => {
@@ -32,7 +30,11 @@ const ServerList = () => {
                                 href={`/server/${server.server_id}/channel/${server.channel_id}`}
                                 key={server.server_id}
                                 onClick={() =>
-                                    dispatch(setCurrentWatchServerId(server.server_id))
+                                    dispatch(
+                                        setCurrentWatchServerId(
+                                            server.server_id,
+                                        ),
+                                    )
                                 }
                                 className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
                                 <Avatar>
@@ -47,9 +49,11 @@ const ServerList = () => {
 
             <ServerCreateDialog />
 
-            <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
-                <Compass />
-            </div>
+            <Link href={'/server/explore'}>
+                <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
+                    <Compass />
+                </div>
+            </Link>
         </div>
     )
 }
