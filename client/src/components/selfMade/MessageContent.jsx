@@ -10,11 +10,7 @@ import {
     useFetchUserId,
 } from '@/hooks/components/MessageContent.jsx'
 import { usePusher } from '@/hooks/usePusher.js'
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from '@radix-ui/react-hover-card'
+
 import {
     Dialog,
     DialogContent,
