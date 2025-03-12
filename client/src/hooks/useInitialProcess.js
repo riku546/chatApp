@@ -45,13 +45,13 @@ const useInitialProcess = () => {
     const dmList = useSelector(state => state.dmList.value)
 
     useEffect(() => {
-        const isNotServerListFetched = serverList === null
+        const isNotServerListFetched = serverList.length === 0
         if (isNotServerListFetched) fetchServerList()
 
         const isNotUserInfoFetched = userInfo === null
         if (isNotUserInfoFetched) fetchUserInfo()
 
-        const isNotDmListFetched = dmList === null
+        const isNotDmListFetched = dmList.length === 0
         if (isNotDmListFetched) fetchDmList()
     }, [])
 }

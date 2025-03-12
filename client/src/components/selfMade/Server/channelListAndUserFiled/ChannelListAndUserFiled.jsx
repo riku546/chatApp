@@ -40,6 +40,7 @@ export default function channelListAndUserFiled({
 const ChannelList = () => {
     const serverId = useSelector(state => state.currentWatchServerId.value)
     const serverList = useSelector(state => state.serverList.value)
+
     const serverName = serverList.find(
         server => server.server_id == serverId,
     ).server_name
@@ -57,7 +58,9 @@ const ChannelList = () => {
             <div className="space-y-3">
                 <div className="flex items-center justify-between shadow-md px-4 py-2">
                     <p className="text-3xl font-sans ">{serverName}</p>
-                    <Settings className="hover:cursor-pointer" size={20} />
+                    <Link href={`/server/${serverId}/setting`}>
+                        <Settings className="hover:cursor-pointer" size={20} />
+                    </Link>
                 </div>
                 <div className="p-2 space-y-3">
                     <div className="flex justify-between items-center ">

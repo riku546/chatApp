@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/users-servers', [ServerController::class, 'list_users_servers']);
     Route::post('/server/create', [ServerController::class, 'create_server']);
     Route::get('/server/{id}', [ServerController::class, 'show_detail_info']);
-    Route::put('/server/update/{id}', [ServerController::class, 'update_server']);
+    Route::put('/server/update', [ServerController::class, 'update_server']);
     Route::delete('/server/delete/{id}', [ServerController::class, 'delete_server']);
 });
 

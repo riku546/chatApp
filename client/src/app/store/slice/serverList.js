@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const serverListSlice = createSlice({
     name: 'serverListSlice',
     initialState: {
-        value: null,
+        value: [],
     },
     reducers: {
         setServerList: (state, action) => {
