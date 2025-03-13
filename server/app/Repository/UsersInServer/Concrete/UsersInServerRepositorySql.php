@@ -9,7 +9,7 @@ class UsersInServerRepositorySql implements UsersInServerRepositoryInterface
     public function list_belongers_in_server(int $server_id): array
     {
         try {
-            $belongers = DB::select('select u.name from users u inner join belonger_in_server bs on u.id = bs.user_id where bs.server_id = ?', [$server_id]);
+            $belongers = DB::select('select u.name , u.id from users u inner join belonger_in_server bs on u.id = bs.user_id where bs.server_id = ?', [$server_id]);
 
             return $belongers;
         } catch (\Throwable $th) {

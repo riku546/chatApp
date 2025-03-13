@@ -1,11 +1,25 @@
+import axios from '@/lib/axios'
 import { User } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const UserList = () => {
-    const [userList, setUserList] = useState([
-        { name: 'user1', id: 1 },
-        { name: 'user2', id: 2 },
-    ])
+    const [userList, setUserList] = useState([])
+    const server_id = useSelector(state => state.currentWatchServerId.value)
+
+    const fetchUserList = async () => {
+        try {
+            const res = await axios.get(`api/server/${server_id}/belongers`)
+
+            setUserList(res.data.data)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    useEffect(() => {
+        fetchUserList()
+    }, [])
 
     return (
         <div className="flex flex-col  w-60 bg-[#2b2d31] p-4 ">
