@@ -31,6 +31,7 @@ import { useState } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/button'
 import { useSelector } from 'react-redux'
+import UserDropMenu from './UserDropMenu'
 
 export default function MessageContent({
     messageType, // dm or channel
@@ -73,7 +74,7 @@ export default function MessageContent({
 
 const InputArea = ({ messageInputRef, handleEnterKey }) => {
     return (
-        <div className=" p-4 bg-[#313338] ">
+        <div className="p-4 bg-[#313338]">
             <Input
                 type="text"
                 ref={messageInputRef}
@@ -120,17 +121,22 @@ function Message({ message, userId, useOperationMessageCustomHook }) {
 
     return (
         <div className="w-full flex  items-center  gap-4 ">
-            <Avatar className="flex justify-center items-center">
-                <User />
-            </Avatar>
             <div className="w-full">
-                <div className="flex items-center gap-2">
-                    <span className="font-medium">{message.name}</span>
-                    <span className="text-xs text-gray-400">
+                <div className="flex items-center space-x-8 ">
+                    <div className="flex items-center ">
+                        <UserDropMenu
+                            userName={message.name}
+                            userId={message.user_id}
+                            //ユーザー名の右側にdropMenuを表示
+                            align={'start'}
+                            alignOffset={240}
+                        />
+                    </div>
+                    <p className="text-xs text-gray-400">
                         {formattedTimestamp(message.created_at)}
-                    </span>
+                    </p>
                 </div>
-                <div className="mt-1 text-gray-100 break-all">
+                <div className="p-3 mt-1 text-gray-100 break-all">
                     {handleMessageArea()}
                 </div>
             </div>

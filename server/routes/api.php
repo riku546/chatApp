@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
 });
 
 Route::get('/checkLogin', function () {
-    return response()->json(auth()->id() ? true : false);
+    return response()->json(auth()->check());
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
