@@ -32,9 +32,9 @@ const Home = () => {
 
             <DmListAndUserFiled />
 
-            <div className="flex-1 flex flex-col">
+            <div className=" flex-1 flex-col">
                 <HomeHeader changeDisplayType={changeDisplayType}></HomeHeader>
-                <div className="flex-1 p-4">
+                <div className=" p-4">
                     {handleDisplayType(displayType)}
                 </div>
             </div>

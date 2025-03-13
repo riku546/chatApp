@@ -17,14 +17,14 @@ const ServerList = () => {
     const dispatch = useDispatch()
 
     return (
-        <div className="w-[72px] bg-[#1e1f22] flex flex-col items-center gap-2 p-2">
+        <div className="w-[72px] h-full bg-[#1e1f22] flex flex-col items-center gap-2 p-2">
             <Link
                 className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer"
                 href={'/'}>
                 <MessageCircle />
             </Link>
             {/* Server Icons */}
-            <ScrollArea className="flex-1 w-full ">
+            <ScrollArea className="flex-1">
                 <div className="flex flex-col gap-2 items-center">
                     {serverList &&
                         serverList.map((server, i) => (
@@ -51,10 +51,10 @@ const ServerList = () => {
 
             <ServerCreateDialog />
 
-            <Link href={'/server/explore'}>
-                <div className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer">
-                    <Compass />
-                </div>
+            <Link
+                className="w-12 h-12 bg-[#5865f2] rounded-2xl flex items-center justify-center mb-2 hover:cursor-pointer"
+                href={'/server/explore'}>
+                <Compass />
             </Link>
         </div>
     )

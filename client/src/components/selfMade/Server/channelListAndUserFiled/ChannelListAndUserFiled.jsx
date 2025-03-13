@@ -40,10 +40,13 @@ export default function channelListAndUserFiled({
 const ChannelList = () => {
     const serverId = useSelector(state => state.currentWatchServerId.value)
     const serverList = useSelector(state => state.serverList.value)
+    let serverName = ''
 
-    const serverName = serverList.find(
-        server => server.server_id == serverId,
-    ).server_name
+    if (serverList.length >= 1) {
+        serverName = serverList.find(
+            server => server.server_id == serverId,
+        ).server_name
+    }
 
     const currentWatchChannelId = useSelector(
         state => state.currentWatchChannelId.value,

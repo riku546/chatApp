@@ -48,24 +48,22 @@ export default function MessageContent({
     const { messageInputRef, handleEnterKey } = useMessageCustomHook(id)
 
     return (
-        <div className="flex flex-col h-screen bg-[#313338] text-gray-100">
+        <div className=" flex flex-col h-screen bg-[#313338] text-gray-100">
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto py-4 px-12 space-y-6">
-                <div className="space-y-8">
-                    {messages &&
-                        messages.map(message => (
-                            <Message
-                                key={message.created_at}
-                                message={message}
-                                userId={userId}
-                                useOperationMessageCustomHook={
-                                    useOperationMessageCustomHook
-                                }
-                            />
-                        ))}
+            <div className="flex-1 p-4 overflow-y-auto  space-y-12">
+                {messages &&
+                    messages.map(message => (
+                        <Message
+                            key={message.created_at}
+                            message={message}
+                            userId={userId}
+                            useOperationMessageCustomHook={
+                                useOperationMessageCustomHook
+                            }
+                        />
+                    ))}
 
-                    <div ref={scrollRef}></div>
-                </div>
+                <div ref={scrollRef}></div>
             </div>
             <InputArea
                 messageInputRef={messageInputRef}
@@ -77,18 +75,14 @@ export default function MessageContent({
 
 const InputArea = ({ messageInputRef, handleEnterKey }) => {
     return (
-        <div className="p-4 bg-[#313338] border-t border-gray-700">
-            <div className="flex items-center gap-2">
-                <div className="flex-1 relative">
-                    <Input
-                        type="text"
-                        ref={messageInputRef}
-                        onKeyDown={handleEnterKey}
-                        placeholder="メッセージを送信"
-                        className="bg-[#383A40] border-none text-gray-100 placeholder:text-gray-400"
-                    />
-                </div>
-            </div>
+        <div className=" p-4 bg-[#313338] ">
+            <Input
+                type="text"
+                ref={messageInputRef}
+                onKeyDown={handleEnterKey}
+                placeholder="メッセージを送信"
+                className="bg-[#383A40] border-none text-gray-100 placeholder:text-gray-400"
+            />
         </div>
     )
 }
@@ -127,34 +121,32 @@ function Message({ message, userId, useOperationMessageCustomHook }) {
     }
 
     return (
-        <div className="flex  items-start gap-4 group">
+        <div className="w-full flex  items-center  gap-4 ">
             <Avatar className="flex justify-center items-center">
                 <User />
             </Avatar>
-            <div className="flex flex-1 justify-between items-center px-2 py-1">
-                <div className="w-9/12">
-                    <div className="flex items-center gap-2">
-                        <span className="font-medium">{message.name}</span>
-                        <span className="text-xs text-gray-400">
-                            {formattedTimestamp(message.created_at)}
-                        </span>
-                    </div>
-                    <div className="w-4/5  mt-1 text-gray-100 whitespace-pre-line  break-words">
-                        {handleMessageArea()}
-                    </div>
+            <div className="w-full">
+                <div className="flex items-center gap-2">
+                    <span className="font-medium">{message.name}</span>
+                    <span className="text-xs text-gray-400">
+                        {formattedTimestamp(message.created_at)}
+                    </span>
                 </div>
-                <div>
-                    {/* message.idはメッセージを投稿したユーザーのid  */}
-                    {message.user_id === userId && (
-                        <MessageOperations
-                            setIsEditing={setIsEditing}
-                            useOperationMessageCustomHook={
-                                useOperationMessageCustomHook
-                            }
-                            created_at={message.created_at}
-                        />
-                    )}
+                <div className="mt-1 text-gray-100 break-all">
+                    {handleMessageArea()}
                 </div>
+            </div>
+            <div>
+                {/* message.idはメッセージを投稿したユーザーのid  */}
+                {message.user_id === userId && (
+                    <MessageOperations
+                        setIsEditing={setIsEditing}
+                        useOperationMessageCustomHook={
+                            useOperationMessageCustomHook
+                        }
+                        created_at={message.created_at}
+                    />
+                )}
             </div>
         </div>
     )

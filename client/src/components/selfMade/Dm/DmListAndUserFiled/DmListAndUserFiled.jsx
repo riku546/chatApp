@@ -9,11 +9,9 @@ import Link from 'next/link'
 
 export default function DmListAndUserFiled() {
     return (
-        <div className="flex">
-            <div className="w-60 bg-[#2b2d31] flex flex-col">
+            <div className=" w-60 bg-[#2b2d31] flex flex-col">
                 <DmList />
                 <UserInfoFiled />
-            </div>
         </div>
     )
 }

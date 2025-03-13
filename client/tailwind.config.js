@@ -1,8 +1,19 @@
 import { withTV } from 'tailwind-variants/transformer'
 
 module.exports = {
-    content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    theme: {},
+    content: [
+        './src/**/*.{js,jsx,ts,tsx}',
+        './components/**/*.{js,ts,jsx,tsx,mdx}',
+        './app/**/*.{js,ts,jsx,tsx,mdx}',
+    ],
+    theme: {
+        extend: {
+            gridTemplateColumns: {
+                'dm-pc': '72px 240px auto',
+                'message-pc': '40px auto 20px',
+            },
+        },
+    },
     plugins: [require('@tailwindcss/forms')],
 }
 

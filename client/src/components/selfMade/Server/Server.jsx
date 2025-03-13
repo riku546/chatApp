@@ -7,6 +7,7 @@ import {
     useSendMessageInChannel,
 } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
+import UserList from './userList/UserList'
 
 const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
@@ -25,6 +26,8 @@ const Server = () => {
                     useOperationMessageCustomHook={useOperationMessageInChannel}
                 />
             </div>
+
+            <UserList></UserList>
         </div>
     )
 }

@@ -18,11 +18,9 @@ import UserInfoFiled from '../../UserInfoFiled'
 
 export default function DmListAndUserFiled() {
     return (
-        <div className="flex">
-            <div className="w-60 bg-[#2b2d31] flex flex-col">
-                <DmList />
-                <UserInfoFiled />
-            </div>
+        <div className="w-60 bg-[#2b2d31] flex flex-col">
+            <DmList />
+            <UserInfoFiled />
         </div>
     )
 }
