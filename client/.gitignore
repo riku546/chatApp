@@ -34,5 +34,8 @@ yarn-error.log*
 #pusher secret env
 pusher-env.js
 
+#r2 secret env
+r2-env.js
+
 # vercel
 .vercel

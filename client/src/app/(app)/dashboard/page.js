@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import useInitialProcess from '@/hooks/useInitialProcess'
 import { setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
+import { getIcon, putIcon } from '@/lib/userIcon'
 
 export default function Page() {
     useInitialProcess()
@@ -24,6 +25,14 @@ export default function Page() {
 
     const [avatar, setAvatar] = useState(null)
     const fileInputRef = useRef(null)
+
+    const handleSubmit = async event => {
+        event.preventDefault()
+
+        await updateUserInfo()
+
+        await putIcon(avatar, `user-${userInfo.id}-icon`)
+    }
 
     const handleAvatarClick = () => {
         fileInputRef.current?.click()
@@ -38,12 +47,6 @@ export default function Page() {
             }
             reader.readAsDataURL(file)
         }
-    }
-
-    const handleSubmit = async event => {
-        event.preventDefault()
-
-        await updateUserInfo()
     }
 
     const updateUserInfo = async () => {
@@ -91,6 +94,7 @@ export default function Page() {
                                     alt="Avatar"
                                     layout="fill"
                                     objectFit="cover"
+                                    className="rounded-full"
                                 />
                             ) : (
                                 <User width={48} height={48} />
@@ -106,8 +110,7 @@ export default function Page() {
                         <Button
                             type="button"
                             onClick={handleAvatarClick}
-                            className="mt-2"
-                            style={{ backgroundColor: '#554cc4' }}>
+                            className="mt-2 bg-[#554cc4]">
                             アバターを変更
                         </Button>
                     </div>
@@ -154,8 +157,7 @@ export default function Page() {
                     <Button
                         onClick={handleSubmit}
                         type="submit"
-                        className="w-full"
-                        style={{ backgroundColor: '#554cc4' }}>
+                        className="w-full bg-[#554cc4]">
                         プロフィールを更新
                     </Button>
                 </form>
@@ -163,5 +165,3 @@ export default function Page() {
         </div>
     )
 }
-
-const UserInfoForm = ({ userInfo, setUserInfo }) => <></>

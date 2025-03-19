@@ -46,7 +46,8 @@ const UserDataContent = ({ userName, userId }) => {
     const fetchUserData = async () => {
         try {
             const res = await axios.get(`/api/user`)
-            console.log(res)
+
+            setDescription(res.data.description)
         } catch (error) {
             throw error
         }

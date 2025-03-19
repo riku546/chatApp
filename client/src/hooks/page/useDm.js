@@ -1,8 +1,10 @@
+'use client'
+
 // src/hooks/useDm.js
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import axios from '@/lib/axios'
-import { useDispatch } from 'react-redux'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
+import { useDispatch } from 'react-redux'
 import { setMessage } from '@/app/store/slice/message'
 
 export default function useDm(dmId) {

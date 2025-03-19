@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import axios from '@/lib/axios'
-import { useDispatch } from 'react-redux'
 import { setChannelList } from '@/app/store/slice/channelList'
+import { useDispatch } from 'react-redux'
 import { setMessage } from '@/app/store/slice/message'
 
 const useChannel = (serverId, channelId) => {

@@ -1,13 +1,12 @@
 'use client'
 
-import { Avatar } from '@/components/ui/avatar'
-
 import { Input } from '@/components/ui/input'
-import { Ellipsis, User } from 'lucide-react'
+import { Ellipsis } from 'lucide-react'
 
 import {
     useAutoScroll,
     useFetchUserId,
+    useMessage,
 } from '@/hooks/components/MessageContent.jsx'
 import { usePusher } from '@/hooks/usePusher.js'
 
@@ -30,8 +29,8 @@ import {
 import { useState } from 'react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/button'
-import { useSelector } from 'react-redux'
 import UserDropMenu from './UserDropMenu'
+import { useSelector } from 'react-redux'
 
 export default function MessageContent({
     messageType, // dm or channel
