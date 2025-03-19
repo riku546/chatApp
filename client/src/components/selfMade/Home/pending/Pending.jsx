@@ -54,7 +54,7 @@ export default function Pending() {
     }, [])
 
     return (
-        <div>
+        <>
             <FriendRequestList
                 friendRequestType={'receive'}
                 friendRequests={receiveFriendRequests}
@@ -65,7 +65,7 @@ export default function Pending() {
                 friendRequests={sendFriendRequests}
                 updateFriendRequest={updateSendFriendRequest}
             />
-        </div>
+        </>
     )
 }
 

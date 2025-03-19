@@ -23,7 +23,7 @@ export default function ServerIntroductions() {
     }, [])
 
     return (
-        <div className="h-screen overflow-y-auto">
+        <div className="h-screen overflow-y-auto scrollbar">
             {/* Hero Section */}
             <div className=" px-4 py-16  bg-gradient-to-b from-indigo-950 via-indigo-900 to-gray-900 text-white">
                 <div className="flex flex-col items-center justify-center  ">

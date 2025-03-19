@@ -5,6 +5,7 @@ use App\Http\Controllers\FriendController;
 use App\Http\Controllers\MessageInChannelController;
 use App\Http\Controllers\MessageInDmController;
 use App\Http\Controllers\ServerController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersInServerController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function () {
-    return response()->json(auth()->user());
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', fn() => response()->json(auth()->user()));
+    Route::put('/user/update', [UserController::class, 'update_info']);
 });
 
 Route::get('/checkLogin', function () {
@@ -45,6 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dm-list', [DmController::class, 'list_dms']);
     Route::post('/dm/create', [DmController::class, 'create_dm']);
+    Route::get('/dm/{dm_id}/get-friend-info', [DmController::class, 'fetch_friend_info']);
 });
 
 //Dm内でのメッセージの表示、送信、編集、削除

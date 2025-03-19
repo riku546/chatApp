@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,7 +31,7 @@ export default function UserDropMenu({ userName, userId, align, alignOffset }) {
 }
 
 const UserDataContent = ({ userName, userId }) => {
-    let description = ''
+    const [description, setDescription] = useState('')
 
     const sendFriendRequest = async () => {
         try {
@@ -70,7 +70,7 @@ const UserDataContent = ({ userName, userId }) => {
                 <div className="w-full flex flex-col space-y-2">
                     <p className="break-all">{userName}</p>
                     <p>
-                        <span>ID : </span>
+                        <span>ID </span>
                         {userId}
                     </p>
                 </div>

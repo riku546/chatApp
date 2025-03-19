@@ -26,4 +26,15 @@ class DmRepositorySql implements DmRepositoryInterface
         }
     }
 
+    public function fetch_friend_info($dm_id)
+    {
+        try {
+            $friend_info = DB::select('select u.id , u.name , u.description from users as u inner join friends as f on u.id = f.friend_id where f.dm_id = ? and f.user_id = ?', [$dm_id, auth()->id()]);
+
+            return $friend_info;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 }

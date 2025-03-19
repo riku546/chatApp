@@ -22,4 +22,9 @@ class DmRepositoryContext implements DmRepositoryInterface
         $this->dm_repository_instance->create_dm($dm_id);
     }
 
+    public function fetch_friend_info($dm_id)
+    {
+        return $this->dm_repository_instance->fetch_friend_info($dm_id);
+    }
+
 }

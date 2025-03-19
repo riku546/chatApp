@@ -9,12 +9,19 @@ import { Label } from '@/components/ui/label'
 import { User } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import useInitialProcess from '@/hooks/useInitialProcess'
+import { setUserInfo } from '@/app/store/slice/userInfo'
+import axios from '@/lib/axios'
 
 export default function Page() {
+    useInitialProcess()
+
     const { logout } = useAuth()
 
-    const [username, setUsername] = useState('JohnDoe')
-    const [bio, setBio] = useState('I am a software developer.')
+    const userInfo = useSelector(state => state.userInfo.value)
+    const dispatch = useDispatch()
+
     const [avatar, setAvatar] = useState(null)
     const fileInputRef = useRef(null)
 
@@ -33,11 +40,24 @@ export default function Page() {
         }
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault()
-        // Here you would typically send the updated profile data to your backend
-        console.log('Profile updated:', { username, bio, avatar })
+
+        await updateUserInfo()
     }
+
+    const updateUserInfo = async () => {
+        try {
+            const res = await axios.put('api/user/update', {
+                name: userInfo.name,
+                description: userInfo.description,
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    if (userInfo === null) return <></>
 
     return (
         <div className="min-w-[500px]">
@@ -98,8 +118,15 @@ export default function Page() {
                         </Label>
                         <Input
                             id="username"
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            value={userInfo.name}
+                            onChange={e =>
+                                dispatch(
+                                    setUserInfo({
+                                        ...userInfo,
+                                        name: e.target.value,
+                                    }),
+                                )
+                            }
                             className="mt-1 bg-gray-700 text-gray-100"
                         />
                     </div>
@@ -110,14 +137,22 @@ export default function Page() {
                         </Label>
                         <Textarea
                             id="bio"
-                            value={bio}
-                            onChange={e => setBio(e.target.value)}
+                            value={userInfo.description}
+                            onChange={e =>
+                                dispatch(
+                                    setUserInfo({
+                                        ...userInfo,
+                                        description: e.target.value,
+                                    }),
+                                )
+                            }
                             className="mt-1 bg-gray-700 text-gray-100"
                             rows={4}
                         />
                     </div>
 
                     <Button
+                        onClick={handleSubmit}
                         type="submit"
                         className="w-full"
                         style={{ backgroundColor: '#554cc4' }}>
@@ -128,3 +163,5 @@ export default function Page() {
         </div>
     )
 }
+
+const UserInfoForm = ({ userInfo, setUserInfo }) => <></>

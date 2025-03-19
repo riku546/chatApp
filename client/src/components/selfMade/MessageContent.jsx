@@ -49,7 +49,7 @@ export default function MessageContent({
     return (
         <div className=" flex flex-col h-screen bg-[#313338] text-gray-100">
             {/* Messages Container */}
-            <div className="flex-1 p-4 overflow-y-auto  space-y-12">
+            <div className="flex-1 px-8 overflow-y-auto scrollbar space-y-12">
                 {messages &&
                     messages.map(message => (
                         <Message

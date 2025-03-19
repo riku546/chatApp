@@ -34,7 +34,7 @@ const Home = () => {
 
             <div className=" flex-1 flex-col">
                 <HomeHeader changeDisplayType={changeDisplayType}></HomeHeader>
-                <div className=" p-4">
+                <div className=" p-4 overflow-y-auto scrollbar">
                     {handleDisplayType(displayType)}
                 </div>
             </div>

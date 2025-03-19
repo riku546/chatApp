@@ -39,4 +39,19 @@ class DmController extends Controller
         }
     }
 
+    public function fetch_friend_info(string $dm_id)
+    {
+        try {
+            $dm_repository = new DmRepositorySql();
+
+            $dm_repository_context = new DmRepositoryContext($dm_repository);
+
+            $friend_info = $dm_repository_context->fetch_friend_info($dm_id);
+
+            return response()->json(["data" => $friend_info, "message" => "Friend info fetched successfully", "status" => "success"]);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "failed to fetch friend info", "status" => "error"]);
+        }
+    }
+
 }

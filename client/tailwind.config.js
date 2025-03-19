@@ -14,7 +14,31 @@ module.exports = {
             },
         },
     },
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [
+        require('@tailwindcss/forms'),
+
+        function ({ addUtilities }) {
+            addUtilities({
+                '.scrollbar': {
+                    '&::-webkit-scrollbar': {
+                        width: '12px',
+                        height: '12px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                        background: '#2b2d31',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#5865f2',
+                        borderRadius: '6px',
+                        border: '3px solid #2b2d31',
+                    },
+                    '&::-webkit-scrollbar-corner': {
+                        background: '#2b2d31',
+                    },
+                },
+            })
+        },
+    ],
 }
 
 /** @type {import('tailwindcss').Config} */

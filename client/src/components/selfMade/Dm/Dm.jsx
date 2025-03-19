@@ -7,6 +7,7 @@ import {
     useSendMessageInDm,
 } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
+import FriendDataSideBar from './FriendDataSideBar/FriendDataSideBar'
 
 const Dm = () => {
     const dmId = useSelector(state => state.currentWatchDmId.value)
@@ -22,6 +23,7 @@ const Dm = () => {
                     useOperationMessageCustomHook={useOperationMessageInDm}
                 />
             </div>
+            <FriendDataSideBar  />
         </div>
     )
 }
