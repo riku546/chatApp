@@ -1,6 +1,7 @@
 'use client'
 
 import { Settings, User } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
 
@@ -11,7 +12,18 @@ const UserInfoFiled = () => {
 
     return (
         <div className="p-2 bg-[#232428] flex items-center gap-2">
-            <User></User>
+            {userInfo.set_icon ? (
+                <Image
+                    width={24}
+                    height={24}
+                    src={userInfo.icon}
+                    alt="Avatar"
+                    objectFit="cover"
+                    className=""
+                />
+            ) : (
+                <User size={24} />
+            )}
             <div className="flex-1 text-sm">
                 <div className="font-medium">{userInfo.name}</div>
             </div>

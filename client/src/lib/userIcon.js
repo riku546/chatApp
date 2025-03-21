@@ -1,29 +1,41 @@
 import {
     S3Client,
-    ListBucketsCommand,
-    ListObjectsV2Command,
     GetObjectCommand,
     PutObjectCommand,
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import axios from 'axios'
 import {
     ACCESS_KEY_ID,
     ACCOUNT_ID,
     BUCKET_NAME,
     SECRET_ACCESS_KEY,
 } from '../../r2-env'
+import axios from './axios'
 
 const S3 = new S3Client({
     region: 'auto',
-    endpoint: `https://${ACCOUNT_ID}.r2.cloudflarestorage.com/chat-app`,
+    endpoint: `https://${ACCOUNT_ID}.r2.cloudflarestorage.com/${BUCKET_NAME}`,
     credentials: {
         accessKeyId: ACCESS_KEY_ID,
         secretAccessKey: SECRET_ACCESS_KEY,
     },
 })
 
-export const putIcon = async (iconBase64, key) => {
+export const handlePutIcon = async (iconBase64, key) => {
+    putIconToR2(iconBase64, key)
+
+    enableIcon()
+}
+
+const enableIcon = async () => {
+    try {
+        await axios.put('api/user/enable-icon')
+    } catch (error) {
+        throw error
+    }
+}
+
+const putIconToR2 = async (iconBase64, key) => {
     const url = await getSignedUrl(
         S3,
         new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key }),
@@ -31,17 +43,24 @@ export const putIcon = async (iconBase64, key) => {
     )
 
     try {
-        const res = await axios.put(url, iconBase64, {
+        await fetch(url, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/octet-stream',
             },
+            body: iconBase64,
         })
     } catch (error) {
         throw error
     }
 }
 
-export const getIcon = async key => {
+export const handleGetIcon = async key => {
+    const icon = getIconFromR2(key)
+    return icon
+}
+
+const getIconFromR2 = async key => {
     const url = await getSignedUrl(
         S3,
         new GetObjectCommand({ Bucket: BUCKET_NAME, Key: key }),
@@ -49,9 +68,14 @@ export const getIcon = async key => {
     )
 
     try {
-        const res = await axios.get(url)
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/octet-stream' },
+        })
 
-        return res.data
+        const icon = await res.text()
+
+        return icon
     } catch (error) {
         throw error
     }

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setServerList } from '../app/store/slice/serverList'
 import { setUserInfo } from '../app/store/slice/userInfo'
 import { setDmList } from '../app/store/slice/dmList'
+import { handleGetIcon } from '@/lib/userIcon'
 
 const useInitialProcess = () => {
     const dispatch = useDispatch()
@@ -23,6 +24,9 @@ const useInitialProcess = () => {
     const fetchUserInfo = async () => {
         try {
             const userInfo = (await axios.get('/api/user')).data
+
+            const icon = await handleGetIcon(`user-${userInfo.id}-icon`)
+            userInfo['icon'] = icon
 
             dispatch(setUserInfo(userInfo))
         } catch (error) {

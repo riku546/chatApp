@@ -16,4 +16,13 @@ class UserController extends Controller
             return response()->json(["message" => "failed to update user info", "status" => "error"]);
         }
     }
+
+    public function enable_icon()
+    {
+        try {
+            DB::select('update users set set_icon = ? where id = ?', [1, auth()->id()]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

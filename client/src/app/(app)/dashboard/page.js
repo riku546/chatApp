@@ -1,19 +1,18 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import Image from 'next/image'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { User } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import useInitialProcess from '@/hooks/useInitialProcess'
 import { setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
-import { getIcon, putIcon } from '@/lib/userIcon'
+import IconChange from '@/components/selfMade/IconChange'
+import { handlePutIcon } from '@/lib/userIcon'
 
 export default function Page() {
     useInitialProcess()
@@ -22,36 +21,23 @@ export default function Page() {
 
     const userInfo = useSelector(state => state.userInfo.value)
     const dispatch = useDispatch()
+    console.log(userInfo)
 
-    const [avatar, setAvatar] = useState(null)
-    const fileInputRef = useRef(null)
+    const [avatar, setAvatar] = useState(userInfo.icon)
 
     const handleSubmit = async event => {
         event.preventDefault()
 
         await updateUserInfo()
 
-        await putIcon(avatar, `user-${userInfo.id}-icon`)
-    }
-
-    const handleAvatarClick = () => {
-        fileInputRef.current?.click()
-    }
-
-    const handleFileChange = event => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setAvatar(reader.result)
-            }
-            reader.readAsDataURL(file)
+        if (avatar) {
+            await handlePutIcon(avatar, `user-${userInfo.id}-icon`)
         }
     }
 
     const updateUserInfo = async () => {
         try {
-            const res = await axios.put('api/user/update', {
+            await axios.put('api/user/update', {
                 name: userInfo.name,
                 description: userInfo.description,
             })
@@ -84,36 +70,7 @@ export default function Page() {
                     プロフィール
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="flex flex-col items-center">
-                        <div
-                            className="relative flex justify-center items-center w-32 h-32 rounded-full  cursor-pointer"
-                            onClick={handleAvatarClick}>
-                            {avatar ? (
-                                <Image
-                                    src={avatar}
-                                    alt="Avatar"
-                                    layout="fill"
-                                    objectFit="cover"
-                                    className="rounded-full"
-                                />
-                            ) : (
-                                <User width={48} height={48} />
-                            )}
-                        </div>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                            className="hidden"
-                            accept="image/*"
-                        />
-                        <Button
-                            type="button"
-                            onClick={handleAvatarClick}
-                            className="mt-2 bg-[#554cc4]">
-                            アバターを変更
-                        </Button>
-                    </div>
+                    <IconChange avatar={avatar} setAvatar={setAvatar} />
 
                     <div>
                         <Label htmlFor="username" className="text-gray-100">

@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', fn() => response()->json(auth()->user()));
     Route::put('/user/update', [UserController::class, 'update_info']);
+    Route::put('/user/enable-icon', [UserController::class, 'enable_icon']);
 });
 
 Route::get('/checkLogin', function () {
