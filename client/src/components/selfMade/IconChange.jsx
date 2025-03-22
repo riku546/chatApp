@@ -24,7 +24,7 @@ const IconChange = ({ avatar, setAvatar }) => {
     return (
         <div className="flex flex-col items-center">
             <div
-                className="relative flex justify-center items-center w-32 h-32 rounded-full  cursor-pointer"
+                className="relative flex justify-center items-center w-28 h-28 rounded-full  cursor-pointer"
                 onClick={handleAvatarClick}>
                 {avatar ? (
                     <Image

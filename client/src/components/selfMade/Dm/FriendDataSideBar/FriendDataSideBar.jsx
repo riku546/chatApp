@@ -1,5 +1,6 @@
 import axios from '@/lib/axios'
 import { User } from 'lucide-react'
+import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -22,9 +23,26 @@ const FriendDataSideBar = () => {
         fetchFriendInfo()
     }, [])
 
+    //アイコンの取得には時間がかかります(cloudflare r2をしようしているので)
+    const friendIconList = useSelector(state => state.friendIconList.value)
+    if (!friendIconList)
+        return (
+            <div className="flex flex-col  w-80 bg-[#282834] px-6 py-10 space-y-8"></div>
+        )
+
     return (
         <div className="flex flex-col  w-80 bg-[#282834] px-6 py-10 space-y-8">
-            <User size={50}></User>
+            {friendInfo.set_icon ? (
+                <Image
+                    width={50}
+                    height={50}
+                    src={friendIconList[friendInfo.id]}
+                    alt="Avatar"
+                    objectFit="cover"
+                />
+            ) : (
+                <User size={50}></User>
+            )}
             <div className="flex flex-col space-y-2">
                 <p>{friendInfo.name}</p>
 

@@ -7,9 +7,9 @@ class DmEvent extends AbstractChatEvent
 {
     public $dm_id;
 
-    public function __construct($content, $user_id, $user_name, $timestamp, $dm_id)
+    public function __construct($content, $user_id, $user_name, $timestamp, $dm_id, $set_icon)
     {
-        parent::__construct($content, $user_id, $user_name, $timestamp);
+        parent::__construct($content, $user_id, $user_name, $timestamp, $set_icon);
         $this->dm_id = $dm_id;
     }
 

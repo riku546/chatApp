@@ -11,6 +11,11 @@ import FriendDataSideBar from './FriendDataSideBar/FriendDataSideBar'
 
 const Dm = () => {
     const dmId = useSelector(state => state.currentWatchDmId.value)
+
+    const friendIconList = useSelector(state => state.friendIconList.value)
+
+    if(!friendIconList) return <p>ロード中...</p>
+
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
@@ -21,6 +26,7 @@ const Dm = () => {
                     id={dmId}
                     useMessageCustomHook={useSendMessageInDm}
                     useOperationMessageCustomHook={useOperationMessageInDm}
+                    userIconList={friendIconList}
                 />
             </div>
             <FriendDataSideBar  />

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Events\Chat\Concrete\ChannelEvent;
 use App\Repository\MessageInChannel\Concrete\MessageInChannelRepositorySql;
 use App\Repository\MessageInChannel\MessageInChannelRepositoryContext;
+use App\Repository\User\Concrete\UserRepositorySql;
+use App\Repository\User\UserRepositoryContext;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,12 +31,16 @@ class MessageInChannelController extends Controller
 
     public function send_message(Request $request)
     {
+        $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
         try {
-            $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
+            $user_repository         = new UserRepositorySql();
+            $user_repository_context = new UserRepositoryContext($user_repository);
+
+            $icon_status = $user_repository_context->show_icon_status(auth()->id());
 
             // Websocketsを使ってメッセージを送信
-            event(new ChannelEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->channel_id));
+            event(new ChannelEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->channel_id, $icon_status));
 
             $messageRepository = new MessageInChannelRepositorySql();
 

@@ -7,6 +7,7 @@ import { setServerList } from '../app/store/slice/serverList'
 import { setUserInfo } from '../app/store/slice/userInfo'
 import { setDmList } from '../app/store/slice/dmList'
 import { handleGetIcon } from '@/lib/userIcon'
+import { setFriendIconList } from '@/app/store/slice/friendIconList'
 
 const useInitialProcess = () => {
     const dispatch = useDispatch()
@@ -23,10 +24,12 @@ const useInitialProcess = () => {
 
     const fetchUserInfo = async () => {
         try {
-            const userInfo = (await axios.get('/api/user')).data
+            const userInfo = (await axios.get('/api/user/info')).data
 
-            const icon = await handleGetIcon(`user-${userInfo.id}-icon`)
-            userInfo['icon'] = icon
+            if (userInfo.set_icon) {
+                const icon = await handleGetIcon(`user-${userInfo.id}-icon`)
+                userInfo['icon'] = icon
+            }
 
             dispatch(setUserInfo(userInfo))
         } catch (error) {
@@ -44,9 +47,29 @@ const useInitialProcess = () => {
         }
     }
 
+    const fetchFriendIconLIst = async () => {
+        const friendIconList = {}
+
+        try {
+            const friendList = (await axios.get('api/all-friends')).data.data
+
+            for (const friend of friendList) {
+                if (friend.set_icon === 1) {
+                    const icon = await handleGetIcon(`user-${friend.id}-icon`)
+                    friendIconList[friend.id] = icon
+                }
+            }
+
+            dispatch(setFriendIconList(friendIconList))
+        } catch (error) {
+            throw error
+        }
+    }
+
     const serverList = useSelector(state => state.serverList.value)
     const userInfo = useSelector(state => state.userInfo.value)
     const dmList = useSelector(state => state.dmList.value)
+    const friendIconList = useSelector(state => state.friendIconList.value)
 
     useEffect(() => {
         const isNotServerListFetched = serverList.length === 0
@@ -57,6 +80,9 @@ const useInitialProcess = () => {
 
         const isNotDmListFetched = dmList.length === 0
         if (isNotDmListFetched) fetchDmList()
+
+        const isNotFriendIconListFetched = friendIconList === null
+        if (isNotFriendIconListFetched) fetchFriendIconLIst()
     }, [])
 }
 

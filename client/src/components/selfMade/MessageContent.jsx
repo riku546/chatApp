@@ -37,6 +37,7 @@ export default function MessageContent({
     id /*dm_id or チャンネルid */,
     useMessageCustomHook,
     useOperationMessageCustomHook,
+    userIconList,
 }) {
     const messages = useSelector(state => state.message.value)
 
@@ -58,6 +59,7 @@ export default function MessageContent({
                             useOperationMessageCustomHook={
                                 useOperationMessageCustomHook
                             }
+                            userIconList={userIconList}
                         />
                     ))}
 
@@ -85,7 +87,12 @@ const InputArea = ({ messageInputRef, handleEnterKey }) => {
     )
 }
 
-function Message({ message, userId, useOperationMessageCustomHook }) {
+function Message({
+    message,
+    userId,
+    useOperationMessageCustomHook,
+    userIconList,
+}) {
     const [isEditing, setIsEditing] = useState(false)
     const [messageContent, setMessageContent] = useState(message.content)
 
@@ -124,8 +131,10 @@ function Message({ message, userId, useOperationMessageCustomHook }) {
                 <div className="flex items-center space-x-8 ">
                     <div className="flex items-center ">
                         <UserDropMenu
-                            userName={message.name}
+                            userName={message.user_name}
                             userId={message.user_id}
+                            setIcon={message.set_icon}
+                            userIconList={userIconList}
                             //ユーザー名の右側にdropMenuを表示
                             align={'start'}
                             alignOffset={240}

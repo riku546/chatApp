@@ -9,7 +9,7 @@ class FriendRepositorySql implements FriendRepositoryInterface
     public function list_user_friends(): array
     {
         try {
-            $friends = DB::select('select u.id , u.name from users as u inner join friends as f on u.id = f.friend_id where f.user_id = ?', [auth()->id()]);
+            $friends = DB::select('select u.id , u.name , u.set_icon from users as u inner join friends as f on u.id = f.friend_id where f.user_id = ?', [auth()->id()]);
 
             return $friends;
         } catch (\Throwable $th) {

@@ -1,15 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Repository\User\Concrete\UserRepositorySql;
+use App\Repository\User\UserRepositoryContext;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function update_info(Request $request)
     {
         try {
-            DB::select('update users set name = ? , description = ? where id = ?', [$request->name, $request->description, auth()->id()]);
+            $user_repository         = new UserRepositorySql();
+            $user_repository_context = new UserRepositoryContext($user_repository);
+
+            $user_repository_context->update_info($request->name, $request->description, auth()->id());
 
             return response()->json(["message" => "User info updated successfully", "status" => "success"]);
         } catch (\Throwable $th) {
@@ -20,9 +24,28 @@ class UserController extends Controller
     public function enable_icon()
     {
         try {
-            DB::select('update users set set_icon = ? where id = ?', [1, auth()->id()]);
+            $user_repository         = new UserRepositorySql();
+            $user_repository_context = new UserRepositoryContext($user_repository);
+
+            $user_repository_context->enable_icon(auth()->id());
+
+            return response()->json(["message" => "Icon enabled successfully", "status" => "success"]);
         } catch (\Throwable $th) {
-            throw $th;
+            return response()->json(["message" => "failed to enable icon", "status" => "error"]);
+        }
+    }
+
+    public function show_specific_user_info(int $user_id)
+    {
+        try {
+            $user_repository         = new UserRepositorySql();
+            $user_repository_context = new UserRepositoryContext($user_repository);
+
+            $user_info = $user_repository_context->show_specific_user_info($user_id);
+
+            return response()->json(["data" => $user_info, "message" => "User info shown successfully", "status" => "success"]);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "failed to show user info", "status" => "error"]);
         }
     }
 }

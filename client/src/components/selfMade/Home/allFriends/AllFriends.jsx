@@ -1,26 +1,14 @@
 'use client'
 
-import axios from '@/lib/axios'
 import { Avatar } from '@radix-ui/react-avatar'
 import { User } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import Image from 'next/image'
+import { useSelector } from 'react-redux'
 
-const AllFriends = () => {
-    const [friendList, setFriendList] = useState([])
+const AllFriends = ({ friendList }) => {
+    const friendIconList = useSelector(state => state.friendIconList.value)
 
-    const fetchFriendList = async () => {
-        try {
-            const friends = (await axios.get('api/all-friends')).data.data
-            setFriendList(friends)
-        } catch (error) {
-            throw error
-        }
-    }
-
-    useEffect(() => {
-        fetchFriendList()
-    }, [])
+    if (!friendIconList) return <p>ロード中</p>
 
     return (
         <>
@@ -33,7 +21,17 @@ const AllFriends = () => {
                         key={friend.id}
                         className="flex items-center gap-3 p-2  border-t border-zinc-600 hover:bg-[#2b2d31] ">
                         <Avatar className="w-8 h-8 flex items-center justify-center">
-                            <User />
+                            {friend.set_icon ? (
+                                <Image
+                                    width={24}
+                                    height={24}
+                                    src={friendIconList[friend.id]}
+                                    alt="Avatar"
+                                    objectFit="cover"
+                                />
+                            ) : (
+                                <User size={24} />
+                            )}
                         </Avatar>
                         <div className="flex-1">
                             <div className="font-medium">{friend.name} </div>

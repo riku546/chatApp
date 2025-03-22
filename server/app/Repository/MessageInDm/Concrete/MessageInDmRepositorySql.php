@@ -10,7 +10,7 @@ class MessageInDmRepositorySql implements MessageInDmRepositoryInterface
     public function show_specific_dm(string $dm_id): array
     {
         try {
-            $messages = DB::select('select u.name , u.id as user_id , m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ? order by m.created_at', [$dm_id]);
+            $messages = DB::select('select u.name as user_name , u.id as user_id , u.set_icon , m.content , m.created_at , m.updated_at  from messages_in_dm as m inner join users as u on m.user_id = u.id where m.dm_id = ? order by m.created_at', [$dm_id]);
 
             return $messages;
         } catch (\Throwable $th) {
@@ -29,6 +29,7 @@ class MessageInDmRepositorySql implements MessageInDmRepositoryInterface
             throw $th;
         }
     }
+
     public function edit_message(string $dm_id, string $created_at, string $content): void
     {
         try {

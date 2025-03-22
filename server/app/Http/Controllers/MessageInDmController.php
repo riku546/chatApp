@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Events\Chat\Concrete\DmEvent;
 use App\Repository\MessageInDm\Concrete\MessageInDmRepositorySql;
 use App\Repository\MessageInDm\MessageInDmRepositoryContext;
+use App\Repository\User\Concrete\UserRepositorySql;
+use App\Repository\User\UserRepositoryContext;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,8 +31,13 @@ class MessageInDmController extends Controller
         $formatted_timestamp = Carbon::now()->format('Y-m-d H:i');
 
         try {
+            $user_repository         = new UserRepositorySql();
+            $user_repository_context = new UserRepositoryContext($user_repository);
+
+            $icon_status = $user_repository_context->show_icon_status(auth()->id());
+
             //websocketsを使ってメッセージを送信
-            event(new DmEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->dm_id));
+            event(new DmEvent($request->message, auth()->id(), auth()->user()->name, $formatted_timestamp, $request->dm_id, $icon_status));
 
             //メッセージをDBに保存
             $dm_repository = new MessageInDmRepositorySql();
@@ -41,6 +48,7 @@ class MessageInDmController extends Controller
 
             return response()->json(["message" => "DM sent successfully", "status" => "success"]);
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json(["message" => "failed to send dm", "status" => "error"]);
         }
     }
