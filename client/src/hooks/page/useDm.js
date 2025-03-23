@@ -1,7 +1,7 @@
 'use client'
 
 // src/hooks/useDm.js
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import axios from '@/lib/axios'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import { useDispatch } from 'react-redux'
@@ -11,6 +11,8 @@ export default function useDm(dmId) {
     // DMのIDをReduxに保存
     const dispatch = useDispatch()
     dispatch(setCurrentWatchDmId(dmId))
+
+    const initializedRef = useRef(false)
 
     const fetchDmMessage = async id => {
         try {
@@ -24,6 +26,9 @@ export default function useDm(dmId) {
 
     // DM内のメッセージを取得
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         fetchDmMessage(dmId)
     }, [])
 }

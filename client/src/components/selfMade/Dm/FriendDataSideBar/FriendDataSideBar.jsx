@@ -1,11 +1,13 @@
 import axios from '@/lib/axios'
 import { User } from 'lucide-react'
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 const FriendDataSideBar = () => {
     const [friendInfo, setFriendInfo] = React.useState({})
+
+    const initializedRef = useRef(false)
 
     const dmId = useSelector(state => state.currentWatchDmId.value)
 
@@ -20,6 +22,9 @@ const FriendDataSideBar = () => {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         fetchFriendInfo()
     }, [])
 

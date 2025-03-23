@@ -1,7 +1,7 @@
 'use client'
 
 import axios from '@/lib/axios'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setServerList } from '../app/store/slice/serverList'
 import { setUserInfo } from '../app/store/slice/userInfo'
@@ -16,6 +16,8 @@ const useInitialProcess = () => {
     const { handleGetUserIcon } = useUserIcon()
 
     const { handleGetServerIcon } = useServerIcon()
+
+    const initializedRef = useRef(false)
 
     const fetchServerList = async () => {
         try {
@@ -84,6 +86,9 @@ const useInitialProcess = () => {
     const friendIcons = useSelector(state => state.friendIcons.value)
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         const isNotServerListFetched = serverList.length === 0
         if (isNotServerListFetched) fetchServerList()
 

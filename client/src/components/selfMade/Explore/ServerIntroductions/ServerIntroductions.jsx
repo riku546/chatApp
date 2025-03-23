@@ -3,10 +3,12 @@
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import axios from '@/lib/axios'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function ServerIntroductions() {
     const [serverInfoList, setServerInfoList] = useState([])
+
+    const initializedRef = useRef(false)
 
     const fetchServerInfo = async () => {
         try {
@@ -19,6 +21,9 @@ export default function ServerIntroductions() {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         fetchServerInfo()
     }, [])
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import axios from '@/lib/axios'
 import { setChannelList } from '@/app/store/slice/channelList'
@@ -9,6 +9,8 @@ import { setMessage } from '@/app/store/slice/message'
 
 const useChannel = (serverId, channelId) => {
     const dispatch = useDispatch()
+
+    const initializedRef = useRef(false)
 
     const fetchChannelList = async () => {
         try {
@@ -39,6 +41,9 @@ const useChannel = (serverId, channelId) => {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         initializeChannelPage()
     }, [])
 }

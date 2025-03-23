@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AllFriends from './allFriends/AllFriends'
 import Pending from './pending/Pending'
 import AddFriend from './addFriend/AddFriend'
@@ -14,6 +14,8 @@ const Home = () => {
     const [displayType, setDisplayType] = useState('全員')
 
     const [friendList, setFriendList] = useState([])
+
+    const initializedRef = useRef(false)
 
     const changeDisplayType = type => {
         setDisplayType(type)
@@ -39,6 +41,9 @@ const Home = () => {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         fetchFriendList()
     }, [])
 

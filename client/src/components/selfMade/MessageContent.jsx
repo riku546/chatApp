@@ -41,7 +41,8 @@ export default function MessageContent({
 }) {
     const messages = useSelector(state => state.message.value)
 
-    const userId = useFetchUserId()
+    const userId = useSelector(state => state.userInfo.value).id
+    
     const scrollRef = useAutoScroll(messages)
     usePusher(messageType, id)
     const { messageInputRef, handleEnterKey } = useMessageCustomHook(id)

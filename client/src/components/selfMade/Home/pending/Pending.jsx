@@ -4,11 +4,14 @@ import { User, CircleCheck, CircleX } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import axios from '@/lib/axios'
 import { v4 as uuidv4 } from 'uuid'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Pending() {
     const [sendFriendRequests, setSendFriendRequests] = useState([])
     const [receiveFriendRequests, setReceiveFriendRequests] = useState([])
+
+    const initializedRef = useRef(false)
+
     const fetchSendFriendRequest = async () => {
         try {
             const friendRequests = (
@@ -49,6 +52,9 @@ export default function Pending() {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+
         fetchSendFriendRequest()
         fetchReceiveFriendRequest()
     }, [])

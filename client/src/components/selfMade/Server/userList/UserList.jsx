@@ -1,12 +1,14 @@
 import axios from '@/lib/axios'
 import { User } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import UserDropMenu from '../../UserDropMenu'
 
 const UserList = ({ serverUserIcons }) => {
     const [userList, setUserList] = useState([])
     const server_id = useSelector(state => state.currentWatchServerId.value)
+
+    const initializedRef = useRef(false)
 
     const fetchUserList = async () => {
         try {
@@ -19,6 +21,10 @@ const UserList = ({ serverUserIcons }) => {
     }
 
     useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
+        console.log('fetchUserList')
+
         fetchUserList()
     }, [])
 

@@ -7,15 +7,20 @@ import { deleteMessage } from '@/app/store/slice/message'
 export const useFetchUserId = () => {
     const [userId, setUserId] = useState(null)
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const res = await axios.get('/api/user/info')
-                setUserId(res.data.id)
-            } catch (error) {
-                console.error(error)
-            }
+    const initializedRef = useRef(false)
+
+    const fetchUserId = async () => {
+        try {
+            const res = await axios.get('/api/user/info')
+            setUserId(res.data.id)
+        } catch (error) {
+            console.error(error)
         }
+    }
+
+    useEffect(() => {
+        if (initializedRef.current) return
+        initializedRef.current = true
 
         fetchUserId()
     }, [])
