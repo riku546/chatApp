@@ -12,10 +12,12 @@ import useInitialProcess from '@/hooks/useInitialProcess'
 import { setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
 import IconChange from '@/components/selfMade/IconChange'
-import { handlePutIcon } from '@/lib/userIcon'
+import useUserIcon from '@/hooks/page/useUserIcon'
 
 export default function Page() {
     useInitialProcess()
+
+    const { handlePutUserIcon } = useUserIcon()
 
     const { logout } = useAuth()
 
@@ -32,11 +34,7 @@ export default function Page() {
         await updateUserInfo()
 
         if (icon) {
-            await handlePutIcon(
-                icon,
-                `user-${userInfo.id}-icon`,
-                'user/enable-icon',
-            )
+            await handlePutUserIcon(icon, userInfo.id)
         }
     }
 

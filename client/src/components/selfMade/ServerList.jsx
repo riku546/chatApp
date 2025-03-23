@@ -10,6 +10,7 @@ import { Compass, Plus } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import ServerCreateDialog from './ServerCreateDialog'
 import { setCurrentWatchServerId } from '@/app/store/slice/currentWatchServerId'
+import Image from 'next/image'
 
 const ServerList = () => {
     const serverList = useSelector(state => state.serverList.value)
@@ -39,11 +40,21 @@ const ServerList = () => {
                                     )
                                 }
                                 className="w-12 h-12 bg-[#2b2d31] rounded-full flex items-center justify-center hover:cursor-pointer">
-                                <Avatar>
-                                    <AvatarFallback className="text-xs">
-                                        {server.server_name.substring(0, 3)}
-                                    </AvatarFallback>
-                                </Avatar>
+                                {server.set_icon ? (
+                                    <Image
+                                        width={50}
+                                        height={50}
+                                        src={server.icon}
+                                        alt="Avatar"
+                                        objectFit="cover"
+                                        className="rounded-full"></Image>
+                                ) : (
+                                    <Avatar>
+                                        <AvatarFallback className="text-xs">
+                                            {server.server_name.substring(0, 3)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                )}
                             </Link>
                         ))}
                 </div>

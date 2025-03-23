@@ -2,12 +2,14 @@
 
 import { setServerUserIcons } from '@/app/store/slice/serverUserIcons'
 import axios from '@/lib/axios'
-import { handleGetIcon } from '@/lib/userIcon'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import useUserIcon from './useUserIcon'
 
-const useServer = serverId => {
+const useServerUserIcons = serverId => {
     const dispatch = useDispatch()
+
+    const { handleGetUserIcon } = useUserIcon()
 
     const fetchServerUserIcons = async () => {
         const serverUserIcons = {}
@@ -17,9 +19,8 @@ const useServer = serverId => {
                 await axios.get(`api/server/${serverId}/belongers`)
             ).data.data
 
-
             for (const user of userInServer) {
-                const icon = await handleGetIcon(`user-${user.id}-icon`)
+                const icon = await handleGetUserIcon(user.id)
 
                 serverUserIcons[user.id] = icon
             }
@@ -35,4 +36,4 @@ const useServer = serverId => {
     }, [])
 }
 
-export default useServer
+export default useServerUserIcons

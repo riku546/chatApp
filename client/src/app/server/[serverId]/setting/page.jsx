@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dialog'
 import useInitialProcess from '@/hooks/useInitialProcess'
 import IconChange from '@/components/selfMade/IconChange'
-import { handlePutIcon } from '@/lib/userIcon'
+import useServerIcon from '@/hooks/page/useServerIcon'
 
 export default function page() {
     useInitialProcess()
@@ -30,11 +30,11 @@ export default function page() {
 
     const serverList = useSelector(state => state.serverList.value)
 
-    const currentServerName = serverList.filter(
+    const currentServerInfo = serverList.filter(
         server => server.server_id === Number(serverId),
-    )[0].server_name
+    )[0]
 
-    const [serverName, setServerName] = useState(currentServerName)
+    const [serverName, setServerName] = useState(currentServerInfo.server_name)
 
     const handleChangeServerName = async () => {
         try {
@@ -59,15 +59,13 @@ export default function page() {
         }
     }
 
-    const [icon, setIcon] = useState(null)
+    const [icon, setIcon] = useState(currentServerInfo.icon)
+
+    const { handlePutServerIcon } = useServerIcon()
 
     const updateServerIcon = async () => {
         if (icon) {
-            await handlePutIcon(
-                icon,
-                `server-${serverId}-icon`,
-                'server/enable-icon',
-            )
+            await handlePutServerIcon(icon, serverId)
         }
     }
 

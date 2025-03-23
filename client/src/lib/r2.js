@@ -10,7 +10,6 @@ import {
     BUCKET_NAME,
     SECRET_ACCESS_KEY,
 } from '../../r2-env'
-import axios from './axios'
 
 const S3 = new S3Client({
     region: 'auto',
@@ -21,25 +20,7 @@ const S3 = new S3Client({
     },
 })
 
-export const handlePutIcon = async (
-    iconBase64,
-    key,
-    endPoint /* アイコンを有効化するためのリクエスト先(user/enable-icon  or   server/enable-icon) */,
-) => {
-    putIconToR2(iconBase64, key)
-
-    enableIcon(endPoint)
-}
-
-const enableIcon = async endPoint => {
-    try {
-        await axios.put(`api/${endPoint}`)
-    } catch (error) {
-        throw error
-    }
-}
-
-const putIconToR2 = async (iconBase64, key) => {
+export const putIconToR2 = async (iconBase64, key) => {
     const url = await getSignedUrl(
         S3,
         new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key }),
@@ -59,12 +40,7 @@ const putIconToR2 = async (iconBase64, key) => {
     }
 }
 
-export const handleGetIcon = async key => {
-    const icon = getIconFromR2(key)
-    return icon
-}
-
-const getIconFromR2 = async key => {
+export const getIconFromR2 = async key => {
     const url = await getSignedUrl(
         S3,
         new GetObjectCommand({ Bucket: BUCKET_NAME, Key: key }),

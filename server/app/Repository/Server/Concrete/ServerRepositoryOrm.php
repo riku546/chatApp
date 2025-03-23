@@ -75,4 +75,14 @@ class ServerRepositoryOrm implements ServerRepositoryInterface
             throw $th;
         }
     }
+
+    public function enable_icon(int $server_id)
+    {
+        try {
+            Servers::where('id', $server_id)
+                ->update(['set_icon' => 1]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

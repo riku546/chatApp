@@ -6,17 +6,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setServerList } from '../app/store/slice/serverList'
 import { setUserInfo } from '../app/store/slice/userInfo'
 import { setDmList } from '../app/store/slice/dmList'
-import { handleGetIcon } from '@/lib/userIcon'
 import { setFriendIcons } from '@/app/store/slice/friendIcons'
+import useUserIcon from './page/useUserIcon'
+import useServerIcon from './page/useServerIcon'
 
 const useInitialProcess = () => {
     const dispatch = useDispatch()
+
+    const { handleGetUserIcon } = useUserIcon()
+
+    const { handleGetServerIcon } = useServerIcon()
 
     const fetchServerList = async () => {
         try {
             const serverList = (await axios.get('/api/users-servers')).data.data
 
-            
+            for (const server of serverList) {
+                if (server.set_icon) {
+                    const icon = await handleGetServerIcon(server.server_id)
+                    server['icon'] = icon
+                }
+            }
 
             dispatch(setServerList(serverList))
         } catch (error) {
@@ -29,7 +39,7 @@ const useInitialProcess = () => {
             const userInfo = (await axios.get('/api/user/info')).data
 
             if (userInfo.set_icon) {
-                const icon = await handleGetIcon(`user-${userInfo.id}-icon`)
+                const icon = await handleGetUserIcon(userInfo.id)
                 userInfo['icon'] = icon
             }
 
@@ -57,7 +67,7 @@ const useInitialProcess = () => {
 
             for (const friend of friendList) {
                 if (friend.set_icon) {
-                    const icon = await handleGetIcon(`user-${friend.id}-icon`)
+                    const icon = await handleGetUserIcon(friend.id)
                     friendIconList[friend.id] = icon
                 }
             }
