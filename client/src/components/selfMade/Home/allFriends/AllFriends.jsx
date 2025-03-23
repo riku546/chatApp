@@ -23,11 +23,12 @@ const AllFriends = ({ friendList }) => {
                         <Avatar className="w-8 h-8 flex items-center justify-center">
                             {friend.set_icon ? (
                                 <Image
-                                    width={24}
-                                    height={24}
+                                    width={40}
+                                    height={40}
                                     src={friendIcons[friend.id]}
                                     alt="Avatar"
                                     objectFit="cover"
+                                    className='rounded-full'
                                 />
                             ) : (
                                 <User size={24} />

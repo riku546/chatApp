@@ -27,7 +27,7 @@ export default function UserDropMenu({
             <DropdownMenuTrigger>
                 <div
                     key={userId}
-                    className="w-full flex p-2 space-x-4 hover:bg-[#3b3d41] cursor-pointer">
+                    className="w-full flex items-center p-2 space-x-4 hover:bg-[#3b3d41] cursor-pointer">
                     {setIcon ? (
                         <Image
                             width={40}

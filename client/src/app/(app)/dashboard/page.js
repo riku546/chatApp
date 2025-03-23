@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import useInitialProcess from '@/hooks/useInitialProcess'
-import { setUserInfo } from '@/app/store/slice/userInfo'
+import { setUserIcon, setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
 import IconChange from '@/components/selfMade/IconChange'
 import useUserIcon from '@/hooks/page/useUserIcon'
@@ -17,24 +17,21 @@ import useUserIcon from '@/hooks/page/useUserIcon'
 export default function Page() {
     useInitialProcess()
 
+    const dispatch = useDispatch()
+
     const { handlePutUserIcon } = useUserIcon()
 
     const { logout } = useAuth()
 
     const userInfo = useSelector(state => state.userInfo.value)
-    const defaultIcon = userInfo ? userInfo.icon : null
-
-    const dispatch = useDispatch()
-
-    const [icon, setIcon] = useState(defaultIcon)
 
     const handleSubmit = async event => {
         event.preventDefault()
 
         await updateUserInfo()
 
-        if (icon) {
-            await handlePutUserIcon(icon, userInfo.id)
+        if (userInfo.icon) {
+            await handlePutUserIcon(userInfo.icon, userInfo.id)
         }
     }
 
@@ -48,8 +45,6 @@ export default function Page() {
             throw error
         }
     }
-
-    if (userInfo === null) return <></>
 
     return (
         <div className="min-w-[500px]">
@@ -73,7 +68,7 @@ export default function Page() {
                     プロフィール
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <IconChange icon={icon} setIcon={setIcon} />
+                    <IconChange icon={userInfo.icon} setIcon={setUserIcon}/>
 
                     <div>
                         <Label htmlFor="username" className="text-gray-100">

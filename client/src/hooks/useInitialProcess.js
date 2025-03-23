@@ -92,7 +92,7 @@ const useInitialProcess = () => {
         const isNotServerListFetched = serverList.length === 0
         if (isNotServerListFetched) fetchServerList()
 
-        const isNotUserInfoFetched = userInfo === null
+        const isNotUserInfoFetched = Object.keys(userInfo).length === 0
         if (isNotUserInfoFetched) fetchUserInfo()
 
         const isNotDmListFetched = dmList.length === 0

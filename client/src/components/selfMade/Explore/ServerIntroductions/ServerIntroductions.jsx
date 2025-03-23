@@ -2,19 +2,31 @@
 
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import useServerIcon from '@/hooks/page/useServerIcon'
 import axios from '@/lib/axios'
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
 export default function ServerIntroductions() {
     const [serverInfoList, setServerInfoList] = useState([])
+    const { handleGetServerIcon } = useServerIcon()
 
     const initializedRef = useRef(false)
 
     const fetchServerInfo = async () => {
         try {
-            const res = await axios.get('/api/all-servers')
+            const serverList = await (
+                await axios.get('/api/all-servers')
+            ).data.data
 
-            setServerInfoList(res.data.data)
+            for (const server of serverList) {
+                if (server.set_icon) {
+                    const icon = await handleGetServerIcon(server.id)
+                    server.icon = icon
+                }
+            }
+
+            setServerInfoList(serverList)
         } catch (error) {
             throw error
         }
@@ -80,12 +92,23 @@ const ServerCard = ({ serverInfo }) => {
                 />
             </div>
             <div className="p-3  space-y-4">
-                <div className="flex items-center  mb-2">
-                    <div className="bg-indigo-700 rounded-full w-10 h-10 flex items-center justify-center mr-3">
-                        <span className="text-sm font-sm">
-                            {serverInfo.name.substring(0, 3)}
-                        </span>
-                    </div>
+                <div className="flex items-center  mb-2 space-x-3">
+                    {serverInfo.set_icon ? (
+                        <Image
+                            width={50}
+                            height={50}
+                            src={serverInfo.icon}
+                            alt="Avatar"
+                            objectFit="cover"
+                            className="rounded-full"
+                        />
+                    ) : (
+                        <div className="bg-indigo-700 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                            <span className="text-sm font-sm">
+                                {serverInfo.name.substring(0, 3)}
+                            </span>
+                        </div>
+                    )}
                     <div>
                         <div className="flex items-center">
                             <span className="font-medium">

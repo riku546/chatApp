@@ -54,11 +54,12 @@ const DmList = () => {
                                 className={'w-full justify-start gap-2 h-11 '}>
                                 {dm.set_icon ? (
                                     <Image
-                                        width={24}
-                                        height={24}
+                                        width={35}
+                                        height={35}
                                         src={friendIcons[dm.friend_id]}
                                         alt="Avatar"
                                         objectFit="cover"
+                                        className="rounded-full"
                                     />
                                 ) : (
                                     <User size={24} />

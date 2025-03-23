@@ -1,8 +1,11 @@
 import { User } from 'lucide-react'
 import React, { useRef } from 'react'
 import Image from 'next/image'
+import { useDispatch } from 'react-redux'
 
 const IconChange = ({ icon, setIcon }) => {
+    const dispatch = useDispatch()
+
     const fileInputRef = useRef(null)
 
     const handleIconClick = () => {
@@ -14,7 +17,7 @@ const IconChange = ({ icon, setIcon }) => {
         if (file) {
             const reader = new FileReader()
             reader.onloadend = () => {
-                setIcon(reader.result)
+                dispatch(setIcon(reader.result))
             }
             reader.readAsDataURL(file)
         }
