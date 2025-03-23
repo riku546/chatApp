@@ -100,4 +100,19 @@ class ServerController extends Controller
         }
     }
 
+    public function enable_icon(Request $request)
+    {
+        try {
+            $server_repository = new ServerRepositorySql();
+
+            $server_repository_context = new ServerRepositoryContext($server_repository);
+
+            $server_repository_context->enable_icon($request->server_id);
+
+            return response()->json(['message' => 'icon enabled', "status" => "success"]);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'failed to enable icon', "status" => "error"]);
+        }
+    }
+
 }

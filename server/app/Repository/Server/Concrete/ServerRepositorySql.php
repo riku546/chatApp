@@ -67,4 +67,13 @@ class ServerRepositorySql implements ServerRepositoryInterface
             throw $th;
         }
     }
+
+    public function enable_icon(int $server_id)
+    {
+        try {
+            DB::select('update servers set set_icon = ? where id = ?', [1, $server_id]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

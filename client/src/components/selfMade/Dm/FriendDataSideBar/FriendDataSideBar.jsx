@@ -24,8 +24,8 @@ const FriendDataSideBar = () => {
     }, [])
 
     //アイコンの取得には時間がかかります(cloudflare r2をしようしているので)
-    const friendIconList = useSelector(state => state.friendIconList.value)
-    if (!friendIconList)
+    const friendIcons = useSelector(state => state.friendIcons.value)
+    if (!friendIcons)
         return (
             <div className="flex flex-col  w-80 bg-[#282834] px-6 py-10 space-y-8"></div>
         )
@@ -36,7 +36,7 @@ const FriendDataSideBar = () => {
                 <Image
                     width={50}
                     height={50}
-                    src={friendIconList[friendInfo.id]}
+                    src={friendIcons[friendInfo.id]}
                     alt="Avatar"
                     objectFit="cover"
                 />

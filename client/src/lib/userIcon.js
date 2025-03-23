@@ -21,15 +21,19 @@ const S3 = new S3Client({
     },
 })
 
-export const handlePutIcon = async (iconBase64, key) => {
+export const handlePutIcon = async (
+    iconBase64,
+    key,
+    endPoint /* アイコンを有効化するためのリクエスト先(user/enable-icon  or   server/enable-icon) */,
+) => {
     putIconToR2(iconBase64, key)
 
-    enableIcon()
+    enableIcon(endPoint)
 }
 
-const enableIcon = async () => {
+const enableIcon = async endPoint => {
     try {
-        await axios.put('api/user/enable-icon')
+        await axios.put(`api/${endPoint}`)
     } catch (error) {
         throw error
     }

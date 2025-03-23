@@ -14,12 +14,12 @@ const UserInfoFiled = () => {
         <div className="p-2 bg-[#232428] flex items-center gap-2">
             {userInfo.set_icon ? (
                 <Image
-                    width={24}
-                    height={24}
+                    width={50}
+                    height={50}
                     src={userInfo.icon}
                     alt="Avatar"
                     objectFit="cover"
-                    className=""
+                    className="rounded-full"
                 />
             ) : (
                 <User size={24} />

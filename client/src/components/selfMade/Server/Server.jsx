@@ -12,6 +12,10 @@ import UserList from './userList/UserList'
 const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
 
+    //アイコンの取得には時間がかかる(cloudflare r2のため)
+    const serverUserIcons = useSelector(state => state.serverUserIcons.value)
+    if (!serverUserIcons) return <p>ロード中...</p>
+
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
             <ServerList></ServerList>
@@ -24,10 +28,11 @@ const Server = () => {
                     useMessageCustomHook={useSendMessageInChannel}
                     id={channelId}
                     useOperationMessageCustomHook={useOperationMessageInChannel}
+                    userIconList={serverUserIcons}
                 />
             </div>
 
-            <UserList></UserList>
+            <UserList serverUserIcons={serverUserIcons}></UserList>
         </div>
     )
 }

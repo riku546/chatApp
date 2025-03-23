@@ -6,9 +6,9 @@ import Image from 'next/image'
 import { useSelector } from 'react-redux'
 
 const AllFriends = ({ friendList }) => {
-    const friendIconList = useSelector(state => state.friendIconList.value)
+    const friendIcons = useSelector(state => state.friendIcons.value)
 
-    if (!friendIconList) return <p>ロード中</p>
+    if (!friendIcons) return <p>ロード中</p>
 
     return (
         <>
@@ -25,7 +25,7 @@ const AllFriends = ({ friendList }) => {
                                 <Image
                                     width={24}
                                     height={24}
-                                    src={friendIconList[friend.id]}
+                                    src={friendIcons[friend.id]}
                                     alt="Avatar"
                                     objectFit="cover"
                                 />

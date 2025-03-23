@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import UserDropMenu from '../../UserDropMenu'
 
-const UserList = () => {
+const UserList = ({ serverUserIcons }) => {
     const [userList, setUserList] = useState([])
     const server_id = useSelector(state => state.currentWatchServerId.value)
 
@@ -29,6 +29,8 @@ const UserList = () => {
                 <UserDropMenu
                     userName={user.name}
                     userId={user.id}
+                    setIcon={user.set_icon}
+                    userIconList={serverUserIcons}
                     align={'end'}
                     alignOffset={240}
                 />

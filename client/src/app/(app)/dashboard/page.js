@@ -20,18 +20,23 @@ export default function Page() {
     const { logout } = useAuth()
 
     const userInfo = useSelector(state => state.userInfo.value)
-    const dispatch = useDispatch()
-    console.log(userInfo)
+    const defaultIcon = userInfo ? userInfo.icon : null
 
-    const [avatar, setAvatar] = useState(userInfo.icon)
+    const dispatch = useDispatch()
+
+    const [icon, setIcon] = useState(defaultIcon)
 
     const handleSubmit = async event => {
         event.preventDefault()
 
         await updateUserInfo()
 
-        if (avatar) {
-            await handlePutIcon(avatar, `user-${userInfo.id}-icon`)
+        if (icon) {
+            await handlePutIcon(
+                icon,
+                `user-${userInfo.id}-icon`,
+                'user/enable-icon',
+            )
         }
     }
 
@@ -70,7 +75,7 @@ export default function Page() {
                     プロフィール
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <IconChange avatar={avatar} setAvatar={setAvatar} />
+                    <IconChange icon={icon} setIcon={setIcon} />
 
                     <div>
                         <Label htmlFor="username" className="text-gray-100">

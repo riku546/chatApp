@@ -12,9 +12,9 @@ import FriendDataSideBar from './FriendDataSideBar/FriendDataSideBar'
 const Dm = () => {
     const dmId = useSelector(state => state.currentWatchDmId.value)
 
-    const friendIconList = useSelector(state => state.friendIconList.value)
-
-    if(!friendIconList) return <p>ロード中...</p>
+    //アイコンの取得には時間がかかる(cloudflare r2のため)
+    const friendIcons = useSelector(state => state.friendIcons.value)
+    if(!friendIcons) return <p>ロード中...</p>
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
@@ -26,7 +26,7 @@ const Dm = () => {
                     id={dmId}
                     useMessageCustomHook={useSendMessageInDm}
                     useOperationMessageCustomHook={useOperationMessageInDm}
-                    userIconList={friendIconList}
+                    userIconList={friendIcons}
                 />
             </div>
             <FriendDataSideBar  />

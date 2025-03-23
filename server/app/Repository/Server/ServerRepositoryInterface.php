@@ -9,4 +9,5 @@ interface ServerRepositoryInterface
     public function show_detail_info(int $id);
     public function update_server(string $server_name, int $id);
     public function delete_server(int $id);
+    public function enable_icon(int $server_id);
 }

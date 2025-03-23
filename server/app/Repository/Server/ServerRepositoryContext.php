@@ -41,4 +41,9 @@ class ServerRepositoryContext implements ServerRepositoryInterface
     {
         return $this->serverRepository->delete_server($id);
     }
+
+    public function enable_icon(int $server_id)
+    {
+        $this->serverRepository->enable_icon($server_id);
+    }
 }

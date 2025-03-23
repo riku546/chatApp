@@ -25,8 +25,8 @@ const DmList = () => {
     const dmList = useSelector(state => state.dmList.value)
 
     //アイコンの取得には時間がかかります(cloudflare r2をしようしているので)
-    const friendIconList = useSelector(state => state.friendIconList.value)
-    if (!friendIconList) return <ScrollArea className="flex-1"></ScrollArea>
+    const friendIcons = useSelector(state => state.friendIcons.value)
+    if (!friendIcons) return <ScrollArea className="flex-1"></ScrollArea>
 
     return (
         <ScrollArea className="flex-1">
@@ -55,7 +55,7 @@ const DmList = () => {
                                     <Image
                                         width={24}
                                         height={24}
-                                        src={friendIconList[dm.friend_id]}
+                                        src={friendIcons[dm.friend_id]}
                                         alt="Avatar"
                                         objectFit="cover"
                                     />

@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/server/{id}', [ServerController::class, 'show_detail_info']);
     Route::put('/server/update', [ServerController::class, 'update_server']);
     Route::delete('/server/delete/{id}', [ServerController::class, 'delete_server']);
+    Route::put('/server/enable-icon', [ServerController::class, 'enable_icon']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

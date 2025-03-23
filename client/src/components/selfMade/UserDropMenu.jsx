@@ -17,6 +17,7 @@ export default function UserDropMenu({
     align,
     alignOffset,
 }) {
+  
     const myselfInfo = useSelector(state => state.userInfo.value)
 
     if (!myselfInfo) return <></>
@@ -29,8 +30,8 @@ export default function UserDropMenu({
                     className="w-full flex p-2 space-x-4 hover:bg-[#3b3d41] cursor-pointer">
                     {setIcon ? (
                         <Image
-                            width={24}
-                            height={24}
+                            width={40}
+                            height={40}
                             src={
                                 myselfInfo.id === userId
                                     ? myselfInfo['icon']
@@ -38,6 +39,7 @@ export default function UserDropMenu({
                             }
                             alt="Avatar"
                             objectFit="cover"
+                            className='rounded-full'
                         />
                     ) : (
                         <User className="w-6" />

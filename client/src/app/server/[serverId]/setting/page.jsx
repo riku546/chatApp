@@ -17,8 +17,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+import useInitialProcess from '@/hooks/useInitialProcess'
+import IconChange from '@/components/selfMade/IconChange'
+import { handlePutIcon } from '@/lib/userIcon'
 
 export default function page() {
+    useInitialProcess()
+
     const serverId = useParams().serverId
 
     const channelId = useSelector(state => state.currentWatchChannelId.value)
@@ -54,6 +59,18 @@ export default function page() {
         }
     }
 
+    const [icon, setIcon] = useState(null)
+
+    const updateServerIcon = async () => {
+        if (icon) {
+            await handlePutIcon(
+                icon,
+                `server-${serverId}-icon`,
+                'server/enable-icon',
+            )
+        }
+    }
+
     return (
         <div className="min-h-screen bg-[#2f3136] text-white font-sans">
             <div className="max-w-3xl mx-auto p-6">
@@ -68,6 +85,15 @@ export default function page() {
                 </div>
 
                 <div className="space-y-10">
+                    <div className="flex space-x-4 items-center">
+                        <IconChange icon={icon} setIcon={setIcon} />
+                        <Button
+                            onClick={updateServerIcon}
+                            className="bg-green-700 hover:bg-green-800 hover:cursor-pointer">
+                            アイコンを保存
+                        </Button>
+                    </div>
+
                     <div className="space-y-2">
                         <label
                             htmlFor="channel-name"

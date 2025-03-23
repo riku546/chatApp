@@ -1,12 +1,11 @@
 import { User } from 'lucide-react'
 import React, { useRef } from 'react'
-import { Button } from '../ui/button'
 import Image from 'next/image'
 
-const IconChange = ({ avatar, setAvatar }) => {
+const IconChange = ({ icon, setIcon }) => {
     const fileInputRef = useRef(null)
 
-    const handleAvatarClick = () => {
+    const handleIconClick = () => {
         fileInputRef.current?.click()
     }
 
@@ -15,7 +14,7 @@ const IconChange = ({ avatar, setAvatar }) => {
         if (file) {
             const reader = new FileReader()
             reader.onloadend = () => {
-                setAvatar(reader.result)
+                setIcon(reader.result)
             }
             reader.readAsDataURL(file)
         }
@@ -25,10 +24,10 @@ const IconChange = ({ avatar, setAvatar }) => {
         <div className="flex flex-col items-center">
             <div
                 className="relative flex justify-center items-center w-28 h-28 rounded-full  cursor-pointer"
-                onClick={handleAvatarClick}>
-                {avatar ? (
+                onClick={handleIconClick}>
+                {icon ? (
                     <Image
-                        src={avatar}
+                        src={icon}
                         alt="Avatar"
                         layout="fill"
                         objectFit="cover"
@@ -45,12 +44,6 @@ const IconChange = ({ avatar, setAvatar }) => {
                 className="hidden"
                 accept="image/*"
             />
-            <Button
-                type="button"
-                onClick={handleAvatarClick}
-                className="mt-2 bg-[#554cc4]">
-                アバターを変更
-            </Button>
         </div>
     )
 }
