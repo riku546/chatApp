@@ -96,6 +96,13 @@ const ChannelList = () => {
                                 </div>
                                 <div>
                                     <Link
+                                        onClick={() =>
+                                            //設定ページで使用するチャネル名を必要なので、localStorageに保存
+                                            localStorage.setItem(
+                                                'currentWatchChannelName',
+                                                channel.name,
+                                            )
+                                        }
                                         href={`/server/${serverId}/channel/${channel.id}/setting`}>
                                         <Settings size={16} />
                                     </Link>

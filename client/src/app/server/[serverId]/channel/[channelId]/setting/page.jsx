@@ -6,7 +6,7 @@ import axios from '@/lib/axios'
 import { X } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
     Dialog,
@@ -17,18 +17,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
+import useInitialProcess from '@/hooks/useInitialProcess'
 
 export default function page() {
     const serverId = useParams().serverId
     const channelId = useParams().channelId
 
-    const channelList = useSelector(state => state.channelList.value)
-
-    const currenChannelName = channelList.filter(
-        channel => channel.id === Number(channelId),
-    )[0].name
-
-    const [channelName, setChannelName] = useState(currenChannelName)
+    const [channelName, setChannelName] = useState(
+        localStorage.getItem('currentWatchChannelName'),
+    )
 
     const handleChangeChannelName = async () => {
         try {
@@ -103,7 +100,7 @@ export default function page() {
 
 const ChannelDeleteDialog = ({ handleDeleteChannel }) => (
     <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
             <Button className="bg-red-700 hover:bg-red-800 hover:cursor-pointer">
                 削除
             </Button>
@@ -113,7 +110,7 @@ const ChannelDeleteDialog = ({ handleDeleteChannel }) => (
                 <DialogTitle>チャンネルを削除しますか？</DialogTitle>
             </DialogHeader>
             <DialogFooter>
-                <DialogClose>
+                <DialogClose asChild>
                     <Button
                         onClick={handleDeleteChannel}
                         type="submit"

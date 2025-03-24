@@ -6,7 +6,7 @@ import axios from '@/lib/axios'
 import { X } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
     Dialog,
@@ -30,11 +30,7 @@ export default function page() {
 
     const serverList = useSelector(state => state.serverList.value)
 
-    const currentServerInfo = serverList.filter(
-        server => server.server_id === Number(serverId),
-    )[0]
-
-    const [serverName, setServerName] = useState(currentServerInfo.server_name)
+    const [serverName, setServerName] = useState('')
 
     const handleChangeServerName = async () => {
         try {
@@ -59,7 +55,7 @@ export default function page() {
         }
     }
 
-    const [icon, setIcon] = useState(currentServerInfo.icon)
+    const [icon, setIcon] = useState(null)
 
     const { handlePutServerIcon } = useServerIcon()
 
@@ -68,6 +64,17 @@ export default function page() {
             await handlePutServerIcon(icon, serverId)
         }
     }
+
+    useEffect(() => {
+        if (serverList.length === 0) return
+
+        const currentServerInfo = serverList.filter(
+            server => server.server_id === Number(serverId),
+        )[0]
+
+        setServerName(currentServerInfo.server_name)
+        setIcon(currentServerInfo.icon)
+    }, [serverList])
 
     return (
         <div className="min-h-screen bg-[#2f3136] text-white font-sans">
@@ -128,7 +135,7 @@ export default function page() {
 
 const ServerDeleteDialog = ({ handleDeleteServer }) => (
     <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
             <Button className="bg-red-700 hover:bg-red-800 hover:cursor-pointer">
                 削除
             </Button>
@@ -138,7 +145,7 @@ const ServerDeleteDialog = ({ handleDeleteServer }) => (
                 <DialogTitle>サーバーを削除しますか？</DialogTitle>
             </DialogHeader>
             <DialogFooter>
-                <DialogClose>
+                <DialogClose asChild>
                     <Button
                         onClick={handleDeleteServer}
                         type="submit"

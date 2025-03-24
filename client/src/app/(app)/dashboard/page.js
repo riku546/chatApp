@@ -24,6 +24,11 @@ export default function Page() {
     const { logout } = useAuth()
 
     const userInfo = useSelector(state => state.userInfo.value)
+    const [icon, setIcon] = useState(null)
+
+    useEffect(() => {
+        setIcon(userInfo.icon)
+    }, [userInfo])
 
     const handleSubmit = async event => {
         event.preventDefault()
@@ -68,7 +73,7 @@ export default function Page() {
                     プロフィール
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <IconChange icon={userInfo.icon} setIcon={setUserIcon}/>
+                    <IconChange icon={icon} setIcon={setIcon} />
 
                     <div>
                         <Label htmlFor="username" className="text-gray-100">
