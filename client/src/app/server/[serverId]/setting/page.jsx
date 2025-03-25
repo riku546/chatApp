@@ -63,6 +63,9 @@ export default function page() {
         if (icon) {
             await handlePutServerIcon(icon, serverId)
         }
+
+        //画像の設定をしたら、reduxのuserInfoのiconを更新するためにページを更新して再fetchする
+        location.reload()
     }
 
     useEffect(() => {

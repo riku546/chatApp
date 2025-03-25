@@ -10,6 +10,7 @@ export default function IconChange({ icon, setIcon }) {
     const fileInputRef = useRef(null)
 
     const [isOpen, setIsOpen] = useState(false)
+    const [croppingImage, setCroppingImage] = useState(null)
 
     const handleIconClick = () => {
         fileInputRef.current?.click()
@@ -19,9 +20,11 @@ export default function IconChange({ icon, setIcon }) {
         const file = event.target.files?.[0]
         if (file) {
             const reader = new FileReader()
+
             reader.onloadend = () => {
-                setIcon(reader.result)
+                setCroppingImage(reader.result)
             }
+
             reader.readAsDataURL(file)
 
             //画像を選択したら、クロップ画面を開く
@@ -58,7 +61,7 @@ export default function IconChange({ icon, setIcon }) {
                 <IconCropDialog
                     isOpen={isOpen}
                     handleClose={() => setIsOpen(false)}
-                    icon={icon}
+                    icon={croppingImage}
                     setIcon={setIcon}
                 />
             )}
@@ -106,11 +109,11 @@ const CropFiled = ({ handleClose, icon, setIcon }) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="flex flex-col items-center justify-center space-y-4 bg-slate-800 p-4">
             <Cropper
                 src={icon}
                 background={false}
-                className="w-[400px] h-[400px]"
+                className="w-[500px] h-[500px]"
                 //1 : 1のアスペクト比
                 aspectRatio={1}
                 cropBoxResizable={false}
@@ -120,7 +123,9 @@ const CropFiled = ({ handleClose, icon, setIcon }) => {
                 ref={cropperRef}
             />
 
-            <Button onClick={handleCrop}>切り抜く</Button>
+            <Button className="bg-[#695df2]" onClick={handleCrop}>
+                切り抜く
+            </Button>
         </div>
     )
 }

@@ -13,9 +13,12 @@ import { setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
 import IconChange from '@/components/selfMade/IconChange'
 import useUserIcon from '@/hooks/page/useUserIcon'
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
     useInitialProcess()
+
+    const router = useRouter()
 
     const dispatch = useDispatch()
 
@@ -38,6 +41,9 @@ export default function Page() {
         if (userInfo.icon) {
             await handlePutUserIcon(icon, userInfo.id)
         }
+
+        //画像の設定をしたら、reduxのuserInfoのiconを更新するためにページを更新して再fetchする
+        location.reload()
     }
 
     const updateUserInfo = async () => {
