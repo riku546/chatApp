@@ -27,11 +27,10 @@ const AddFriend = () => {
                 <p className="text-gray-400 text-sm mb-4">
                     DiscordユーザーIDでフレンドを追加できます。
                 </p>
-                <div className="flex gap-2">
+                <div className="flex flex-col space-y-3 md:flex md:flex-row md:items-center md:space-y-0 gap-2">
                     <Input
                         ref={inputRef}
-                        placeholder="DiscordユーザーIDでフレンドを追加できます。"
-                        className="flex-1 bg-[#1E1F22] border-none text-gray-100 placeholder:text-gray-500"
+                        className="md:flex-1 bg-[#1E1F22] border-none text-gray-100 "
                     />
                     <Button
                         className="bg-[#695df2]  text-white"

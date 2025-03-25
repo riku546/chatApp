@@ -48,10 +48,14 @@ const Home = () => {
     }, [])
 
     return (
-        <div className="flex h-screen bg-[#313338] text-gray-100">
-            <ServerList />
+        <div className="flex flex-col md:flex-row h-screen bg-[#313338] text-gray-100">
+            <div className='hidden md:block'>
+                <ServerList />
+            </div>
 
-            <DmListAndUserFiled />
+            <div className='hidden md:flex'>
+                <DmListAndUserFiled />
+            </div>
 
             <div className=" flex-1 flex-col">
                 <HomeHeader changeDisplayType={changeDisplayType}></HomeHeader>
@@ -59,6 +63,8 @@ const Home = () => {
                     {handleDisplayType(displayType)}
                 </div>
             </div>
+
+            <div>fd</div>
         </div>
     )
 }
