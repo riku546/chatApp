@@ -31,6 +31,7 @@ import { DialogClose } from '@radix-ui/react-dialog'
 import { Button } from '../ui/button'
 import UserDropMenu from './UserDropMenu'
 import { useSelector } from 'react-redux'
+import ReactLoading from 'react-loading'
 
 export default function MessageContent({
     messageType, // dm or channel
@@ -42,10 +43,23 @@ export default function MessageContent({
     const messages = useSelector(state => state.message.value)
 
     const userId = useSelector(state => state.userInfo.value).id
-    
+
     const scrollRef = useAutoScroll(messages)
     usePusher(messageType, id)
     const { messageInputRef, handleEnterKey } = useMessageCustomHook(id)
+
+    const isLoadingMessage = useSelector(state => state.isLoadingMessage.value)
+    if (isLoadingMessage)
+        return (
+            <div className=" flex flex-col h-screen items-center justify-center bg-[#313338] ">
+                <ReactLoading
+                    type={'spin'}
+                    color="#3B82F6"
+                    height={50}
+                    width={50}
+                />
+            </div>
+        )
 
     return (
         <div className=" flex flex-col h-screen bg-[#313338] text-gray-100">

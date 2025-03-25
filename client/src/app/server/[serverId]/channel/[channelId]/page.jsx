@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'
 import { setCurrentWatchServerId } from '@/app/store/slice/currentWatchServerId'
 import { setCurrentWatchChannelId } from '@/app/store/slice/currentWatchChannelId'
 import useServerUserIcons from '@/hooks/page/useServerUserIcons'
+import { setIsLoadingMessage } from '@/app/store/slice/isLoadingMessage'
 
 const page = () => {
     useInitialProcess()
@@ -23,6 +24,8 @@ const page = () => {
     useServerUserIcons(serverId)
 
     useChannel(serverId, channelId)
+
+    dispatch(setIsLoadingMessage(true))
 
     return <Server />
 }

@@ -8,13 +8,24 @@ import {
 } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
 import UserList from './userList/UserList'
+import ReactLoading from 'react-loading'
 
 const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
 
     //アイコンの取得には時間がかかる(cloudflare r2のため)
     const serverUserIcons = useSelector(state => state.serverUserIcons.value)
-    if (!serverUserIcons) return <p>ロード中...</p>
+    if (!serverUserIcons)
+        return (
+            <div className="flex h-screen items-center justify-center bg-[#313338] text-gray-100">
+                <ReactLoading
+                    type={'spin'}
+                    color="#3B82F6"
+                    height={50}
+                    width={50}
+                />
+            </div>
+        )
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">

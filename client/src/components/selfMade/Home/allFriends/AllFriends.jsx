@@ -4,11 +4,22 @@ import { Avatar } from '@radix-ui/react-avatar'
 import { User } from 'lucide-react'
 import Image from 'next/image'
 import { useSelector } from 'react-redux'
+import ReactLoading from 'react-loading'
 
 const AllFriends = ({ friendList }) => {
     const friendIcons = useSelector(state => state.friendIcons.value)
 
-    if (!friendIcons) return <p>ロード中</p>
+    if (!friendIcons)
+        return (
+            <div className="flex  justify-center">
+                <ReactLoading
+                    type={'spin'}
+                    color="#3B82F6"
+                    height={50}
+                    width={50}
+                />
+            </div>
+        )
 
     return (
         <>
@@ -28,7 +39,7 @@ const AllFriends = ({ friendList }) => {
                                     src={friendIcons[friend.id]}
                                     alt="Avatar"
                                     objectFit="cover"
-                                    className='rounded-full'
+                                    className="rounded-full"
                                 />
                             ) : (
                                 <User size={24} />

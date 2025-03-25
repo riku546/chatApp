@@ -6,6 +6,7 @@ import axios from '@/lib/axios'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import { useDispatch } from 'react-redux'
 import { setMessage } from '@/app/store/slice/message'
+import { setIsLoadingMessage } from '@/app/store/slice/isLoadingMessage'
 
 export default function useDm(dmId) {
     // DMのIDをReduxに保存
@@ -19,6 +20,8 @@ export default function useDm(dmId) {
             const res = await axios.get(`api/dm/${id}/message`)
 
             dispatch(setMessage(res.data.data))
+
+            dispatch(setIsLoadingMessage(false))
         } catch (error) {
             throw error
         }

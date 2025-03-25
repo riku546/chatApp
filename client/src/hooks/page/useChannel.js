@@ -6,6 +6,7 @@ import axios from '@/lib/axios'
 import { setChannelList } from '@/app/store/slice/channelList'
 import { useDispatch } from 'react-redux'
 import { setMessage } from '@/app/store/slice/message'
+import { setIsLoadingMessage } from '@/app/store/slice/isLoadingMessage'
 
 const useChannel = (serverId, channelId) => {
     const dispatch = useDispatch()
@@ -29,6 +30,8 @@ const useChannel = (serverId, channelId) => {
             const res = await axios.get(`api/channel/${channelId}/messages`)
 
             dispatch(setMessage(res.data.data))
+
+            dispatch(setIsLoadingMessage(false))
         } catch (error) {
             throw error
         }

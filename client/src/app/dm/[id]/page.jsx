@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation'
 import { setCurrentWatchDmId } from '@/app/store/slice/currentWatchDmId'
 import useInitialProcess from '@/hooks/useInitialProcess'
 import useDm from '@/hooks/page/useDm'
+import { setIsLoadingMessage } from '@/app/store/slice/isLoadingMessage'
 
 export default function Page() {
     useInitialProcess()
@@ -15,6 +16,9 @@ export default function Page() {
     const dmId = useParams().id
 
     useDm(dmId)
+
+    const dispatch = useDispatch()
+    dispatch(setIsLoadingMessage(true))
 
     return <Dm />
 }

@@ -9,6 +9,7 @@ import channelListReducer from './slice/channelList'
 import messageReducer from './slice/message'
 import friendIconsReducer from './slice/friendIcons'
 import serverUserIconsReducer from './slice/serverUserIcons'
+import isLoadingMessageReducer from './slice/isLoadingMessage'
 
 const store = configureStore({
     reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
         message: messageReducer,
         friendIcons: friendIconsReducer,
         serverUserIcons: serverUserIconsReducer,
+        isLoadingMessage: isLoadingMessageReducer,
     },
 })
 
