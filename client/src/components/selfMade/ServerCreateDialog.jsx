@@ -81,11 +81,11 @@ const ServerCreateDialog = () => {
     }
 
     return (
-        <Dialog>
-            <DialogTrigger className="flex items-center justify-center w-12 h-12 bg-green-700 rounded-full hover:cursor-pointer ">
+        <Dialog >
+            <DialogTrigger  className="flex items-center justify-center w-12 h-12 bg-green-700 rounded-full hover:cursor-pointer ">
                 <Plus />
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent >
                 <DialogHeader>
                     <DialogTitle>サーバーを作成する</DialogTitle>
                 </DialogHeader>

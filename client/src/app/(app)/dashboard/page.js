@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import useInitialProcess from '@/hooks/useInitialProcess'
-import { setUserIcon, setUserInfo } from '@/app/store/slice/userInfo'
+import { setUserInfo } from '@/app/store/slice/userInfo'
 import axios from '@/lib/axios'
 import IconChange from '@/components/selfMade/IconChange'
 import useUserIcon from '@/hooks/page/useUserIcon'
@@ -36,7 +36,7 @@ export default function Page() {
         await updateUserInfo()
 
         if (userInfo.icon) {
-            await handlePutUserIcon(userInfo.icon, userInfo.id)
+            await handlePutUserIcon(icon, userInfo.id)
         }
     }
 
