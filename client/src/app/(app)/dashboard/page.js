@@ -58,7 +58,7 @@ export default function Page() {
     }
 
     return (
-        <div className="min-w-[500px]">
+        <div className="w-full p-3 md:w-[500px]">
             <nav className="absolute top-3 left-4 flex flex-col space-y-4">
                 <Link href={'/'}>
                     <Button type="button" className="bg-[#554cc4] w-full">

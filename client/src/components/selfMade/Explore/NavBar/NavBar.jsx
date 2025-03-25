@@ -7,7 +7,7 @@ import { HouseWifi } from 'lucide-react'
 export default function NavBar() {
     return (
         <div className="flex">
-            <div className="w-60 bg-[#2b2d31] flex flex-col">
+            <div className="lg:w-60 bg-[#2b2d31] flex flex-col">
                 <Nav />
                 <UserInfoFiled />
             </div>
