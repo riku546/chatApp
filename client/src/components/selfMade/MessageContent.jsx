@@ -62,7 +62,7 @@ export default function MessageContent({
         )
 
     return (
-        <div className=" flex flex-col h-screen bg-[#313338] text-gray-100">
+        <div className=" flex flex-col overflow-y-auto h-full md:h-screen bg-[#313338] text-gray-100">
             {/* Messages Container */}
             <div className="flex-1 px-8 overflow-y-auto scrollbar space-y-12">
                 {messages &&

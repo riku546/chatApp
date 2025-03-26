@@ -8,7 +8,9 @@ import HomeHeader from './HomeHeader/HomeHeader'
 import DmListAndUserFiled from './DmListAndUserFiled/DmListAndUserFiled'
 import ServerList from '../ServerList'
 import axios from '@/lib/axios'
-import BottomNav from '../Responsive/BottomNav'
+import BottomNav from '../Responsive/BottomNav/BottomNav'
+import ServerDrawer from '../Responsive/BottomNav/ServerDrawer'
+import DmDrawer from '../Responsive/BottomNav/DmDrawer'
 
 const Home = () => {
     //フレンド全員 保留中 フレンド追加ページの切り替えるためのstate
@@ -66,10 +68,8 @@ const Home = () => {
             </div>
 
             <BottomNav>
-                <div>ff</div>
-                <div>ff</div>
-                <div>ff</div>
-                <div>ff</div>
+                <ServerDrawer />
+                <DmDrawer />
             </BottomNav>
         </div>
     )

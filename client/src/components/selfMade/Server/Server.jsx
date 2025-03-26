@@ -9,6 +9,10 @@ import {
 import { useSelector } from 'react-redux'
 import UserList from './userList/UserList'
 import ReactLoading from 'react-loading'
+import BottomNav from '../Responsive/BottomNav/BottomNav'
+import ServerDrawer from '../Responsive/BottomNav/ServerDrawer'
+import DmDrawer from '../Responsive/BottomNav/DmDrawer'
+import ChannelDrawer from '../Responsive/BottomNav/ChannelDrawer'
 
 const Server = () => {
     const channelId = useSelector(state => state.currentWatchChannelId.value)
@@ -24,21 +28,36 @@ const Server = () => {
 
     return (
         <div className="flex h-screen bg-[#313338] text-gray-100">
-            <ServerList></ServerList>
+            <div className="hidden md:block">
+                <ServerList></ServerList>
+            </div>
+            <div className="hidden md:flex">
+                <ChannelListAndUserFiled />
+            </div>
+            <div className="h-full flex-1">
+                <div className="h-full flex-1 flex flex-col">
+                    <div className="flex-1 overflow-y-auto">
+                        <MessageContent
+                            messageType={'channel'}
+                            useMessageCustomHook={useSendMessageInChannel}
+                            id={channelId}
+                            useOperationMessageCustomHook={
+                                useOperationMessageInChannel
+                            }
+                            userIconList={serverUserIcons}
+                        />
+                    </div>
 
-            <ChannelListAndUserFiled />
-
-            <div className="flex-1 flex flex-col">
-                <MessageContent
-                    messageType={'channel'}
-                    useMessageCustomHook={useSendMessageInChannel}
-                    id={channelId}
-                    useOperationMessageCustomHook={useOperationMessageInChannel}
-                    userIconList={serverUserIcons}
-                />
+                    <BottomNav>
+                        <ServerDrawer />
+                        <ChannelDrawer />
+                    </BottomNav>
+                </div>
             </div>
 
-            <UserList serverUserIcons={serverUserIcons}></UserList>
+            <div className="hidden md:flex">
+                <UserList serverUserIcons={serverUserIcons}></UserList>
+            </div>
         </div>
     )
 }

@@ -8,6 +8,9 @@ import {
 } from '@/hooks/components/MessageContent'
 import { useSelector } from 'react-redux'
 import FriendDataSideBar from './FriendDataSideBar/FriendDataSideBar'
+import BottomNav from '../Responsive/BottomNav/BottomNav'
+import ServerDrawer from '../Responsive/BottomNav/ServerDrawer'
+import DmDrawer from '../Responsive/BottomNav/DmDrawer'
 
 const Dm = () => {
     const dmId = useSelector(state => state.currentWatchDmId.value)
@@ -22,21 +25,32 @@ const Dm = () => {
         )
 
     return (
-        <div className="flex h-screen bg-[#313338] text-gray-100">
+        <div className="flex  h-screen bg-[#313338] text-gray-100">
             <div className="hidden md:block">
                 <ServerList></ServerList>
             </div>
             <div className=" hidden md:flex">
                 <DmListAndUserFiled />
             </div>
-            <div className="flex-1 overflow-x-hidden">
-                <MessageContent
-                    messageType={'dm'}
-                    id={dmId}
-                    useMessageCustomHook={useSendMessageInDm}
-                    useOperationMessageCustomHook={useOperationMessageInDm}
-                    userIconList={friendIcons}
-                />
+            <div className="h-full flex-1">
+                <div className="h-full flex flex-col ">
+                    <div className="flex-1 overflow-y-auto">
+                        <MessageContent
+                            messageType={'dm'}
+                            id={dmId}
+                            useMessageCustomHook={useSendMessageInDm}
+                            useOperationMessageCustomHook={
+                                useOperationMessageInDm
+                            }
+                            userIconList={friendIcons}
+                        />
+                    </div>
+
+                    <BottomNav>
+                        <ServerDrawer />
+                        <DmDrawer />
+                    </BottomNav>
+                </div>
             </div>
             <div className="hidden xl:flex">
                 <FriendDataSideBar />
