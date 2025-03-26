@@ -10,15 +10,20 @@ import useInitialProcess from '@/hooks/useInitialProcess'
 import useDm from '@/hooks/page/useDm'
 import { setIsLoadingMessage } from '@/app/store/slice/isLoadingMessage'
 
-export default function Page() {
+export default function page() {
     useInitialProcess()
 
     const dmId = useParams().id
 
-    useDm(dmId)
-
     const dispatch = useDispatch()
-    dispatch(setIsLoadingMessage(true))
+
+    useEffect(() => {
+        dispatch(setCurrentWatchDmId(dmId))
+
+        dispatch(setIsLoadingMessage(true))
+    }, [])
+
+    useDm(dmId)
 
     return <Dm />
 }

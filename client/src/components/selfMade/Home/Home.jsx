@@ -8,6 +8,7 @@ import HomeHeader from './HomeHeader/HomeHeader'
 import DmListAndUserFiled from './DmListAndUserFiled/DmListAndUserFiled'
 import ServerList from '../ServerList'
 import axios from '@/lib/axios'
+import BottomNav from '../Responsive/BottomNav'
 
 const Home = () => {
     //フレンド全員 保留中 フレンド追加ページの切り替えるためのstate
@@ -49,11 +50,11 @@ const Home = () => {
 
     return (
         <div className="flex flex-col md:flex-row h-screen bg-[#313338] text-gray-100">
-            <div className='hidden md:block'>
+            <div className="hidden md:block">
                 <ServerList />
             </div>
 
-            <div className='hidden md:flex'>
+            <div className="hidden md:flex">
                 <DmListAndUserFiled />
             </div>
 
@@ -64,7 +65,12 @@ const Home = () => {
                 </div>
             </div>
 
-            <div>fd</div>
+            <BottomNav>
+                <div>ff</div>
+                <div>ff</div>
+                <div>ff</div>
+                <div>ff</div>
+            </BottomNav>
         </div>
     )
 }

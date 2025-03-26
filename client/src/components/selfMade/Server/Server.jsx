@@ -18,12 +18,7 @@ const Server = () => {
     if (!serverUserIcons)
         return (
             <div className="flex h-screen items-center justify-center bg-[#313338] text-gray-100">
-                <ReactLoading
-                    type={'spin'}
-                    color="#3B82F6"
-                    height={50}
-                    width={50}
-                />
+                ローディング...
             </div>
         )
 

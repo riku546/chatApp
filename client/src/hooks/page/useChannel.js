@@ -32,6 +32,7 @@ const useChannel = (serverId, channelId) => {
             dispatch(setMessage(res.data.data))
 
             dispatch(setIsLoadingMessage(false))
+
         } catch (error) {
             throw error
         }
