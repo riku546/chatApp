@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactLoading from 'react-loading'
 
 export default function ServerIntroductions() {
-    const [serverInfoList, setServerInfoList] = useState([])
+    const [serverInfoList, setServerInfoList] = useState(null)
     const { handleGetServerIcon } = useServerIcon()
 
     const initializedRef = useRef(false)
@@ -40,7 +40,7 @@ export default function ServerIntroductions() {
         fetchServerInfo()
     }, [])
 
-    if (serverInfoList.length === 0)
+    if (!serverInfoList)
         return (
             <div className="flex flex-col h-screen overflow-y-auto scrollbar">
                 <Header />
